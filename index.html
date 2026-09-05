@@ -38,6 +38,7 @@
   .nav-links a{text-decoration:none; font-weight:600; font-size:15px; color:var(--charcoal-soft); transition:color .15s ease;}
   .nav-links a:hover{color:var(--brick);}
   .nav-cta{background:var(--ink); color:var(--ivory); padding:10px 20px; border-radius:6px; text-decoration:none; font-weight:700; font-size:14px; border:1px solid var(--ink);}
+  .nav-owner-link{font-weight:700; font-size:14px; color:var(--brick); text-decoration:none; margin-right:18px;}
   .nav-toggle{display:none; background:none; border:none; cursor:pointer; padding:4px;}
   .nav-toggle span{display:block; width:24px; height:2px; background:var(--ink); margin:5px 0;}
 
@@ -57,6 +58,21 @@
   .hero h1 em{font-style:italic; color:var(--marigold); font-weight:500;}
   .hero p.lede{font-size:18px; color:#D9D3C4; max-width:460px; margin:0 0 34px;}
   .hero-actions{display:flex; gap:14px; flex-wrap:wrap; margin-bottom:36px;}
+
+  /* ---------- NOBROKER-STYLE HERO SEARCH ---------- */
+  .hero-search{background:var(--ivory); border-radius:10px; padding:8px; max-width:480px; margin-bottom:14px;}
+  .search-tabs{display:flex; gap:4px; padding:6px 6px 10px;}
+  .search-tab{background:none; border:none; padding:9px 14px; border-radius:6px; font-family:var(--sans); font-weight:700; font-size:13px; color:var(--charcoal-soft); cursor:pointer; display:flex; align-items:center; gap:6px;}
+  .search-tab.active{background:var(--ink); color:var(--ivory);}
+  .search-tab.disabled{opacity:0.55; cursor:not-allowed;}
+  .soon-badge{background:var(--marigold); color:var(--ink); font-size:9px; font-weight:800; padding:2px 6px; border-radius:999px; letter-spacing:0.3px;}
+  .search-bar{display:flex; gap:8px; padding:0 6px 6px;}
+  .search-bar select{flex:1; padding:13px 14px; border-radius:6px; border:1px solid var(--line); background:#fff; font-family:var(--sans); font-size:14.5px; color:var(--charcoal);}
+  .search-go{background:var(--brick); color:var(--ivory); border:none; padding:13px 24px; border-radius:6px; font-weight:800; font-size:14.5px; cursor:pointer; white-space:nowrap;}
+  .search-go:hover{background:#A9432B;}
+  .hero-owner-note{font-size:13.5px; color:#B9B2A0; margin:0 0 30px;}
+  .hero-owner-note a{color:var(--marigold); font-weight:700; text-decoration:none;}
+  @media (max-width:480px){.search-bar{flex-direction:column;} .search-tabs{flex-wrap:wrap;}}
   .btn-primary{background:var(--marigold); color:var(--ink); border:none; padding:15px 26px; border-radius:6px; font-weight:800; font-size:15px; text-decoration:none; display:inline-block; cursor:pointer; transition:background .15s ease, transform .15s ease;}
   .btn-primary:hover{background:#F3B455; transform:translateY(-1px);}
   .btn-ghost{background:transparent; color:var(--ivory); border:1px solid rgba(246,239,226,0.35); padding:15px 26px; border-radius:6px; font-weight:700; font-size:15px; text-decoration:none; display:inline-block;}
@@ -211,6 +227,7 @@
       <li><a href="#roadmap">Roadmap</a></li>
       <li><a href="#faq">FAQ</a></li>
     </ul>
+    <a href="#owners" class="nav-owner-link">Post Property FREE</a>
     <a href="#waitlist" class="nav-cta">Join waitlist</a>
     <button class="nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
   </div>
@@ -222,16 +239,31 @@
       <p class="hero-eyebrow fade-in">NOW LIVE IN PUNE</p>
       <h1 class="fade-in d2">Find your place.<br>Find your <em>people.</em></h1>
       <p class="lede fade-in d3">MakanMate helps students, job seekers, and anyone new to Pune find a verified PG or flat — and a few familiar faces before you've even moved in. No brokerage. No fake listings.</p>
-      <div class="hero-actions fade-in d3">
-        <a href="#waitlist" class="btn-primary" id="heroSeekerBtn">Find a place</a>
-        <a href="#owners" class="btn-ghost">List a property</a>
+      <div class="hero-search fade-in d3">
+        <div class="search-tabs" role="tablist">
+          <button type="button" class="search-tab active" data-mode="pg">PG &amp; Flatmates</button>
+          <button type="button" class="search-tab" data-mode="rent">Rent a Flat</button>
+          <button type="button" class="search-tab disabled" data-mode="buy" disabled>Buy &amp; Sell<span class="soon-badge">Phase 3</span></button>
+        </div>
+        <div class="search-bar">
+          <select id="heroCity" aria-label="Choose your area">
+            <option>Pune — Kothrud</option>
+            <option>Pune — Hinjewadi</option>
+            <option>Pune — Viman Nagar</option>
+            <option>Pune — Baner</option>
+            <option>Pune — Other area</option>
+          </select>
+          <button type="button" class="search-go" id="heroSearchBtn">Search</button>
+        </div>
       </div>
+      <p class="hero-owner-note fade-in d3">Have a property instead? <a href="#owners">List it free</a></p>
       <div class="hero-trust fade-in d3">
         <span><b>0%</b> brokerage</span>
         <span><b>100%</b> verified listings</span>
         <span><b>Pune</b> pilot, India next</span>
       </div>
     </div>
+
     <div class="hero-art fade-in d3">
       <svg class="skyline" viewBox="0 0 420 360" xmlns="http://www.w3.org/2000/svg">
         <rect x="30" y="180" width="60" height="160" fill="#232B4D"/>
@@ -527,6 +559,21 @@
   const navLinks = document.getElementById('navLinks');
   navToggle.addEventListener('click', () => navLinks.classList.toggle('open'));
   navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
+
+  // Hero search widget — NoBroker-style tabs + locality search
+  const searchTabs = document.querySelectorAll('.search-tab:not(.disabled)');
+  searchTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      searchTabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+    });
+  });
+  document.getElementById('heroSearchBtn').addEventListener('click', () => {
+    const chosenCity = document.getElementById('heroCity').value;
+    document.getElementById('city').value = chosenCity;
+    setFormMode('seeker');
+    document.getElementById('waitlist').scrollIntoView({behavior:'smooth'});
+  });
 
   const toggleSeeker = document.getElementById('toggleSeeker');
   const toggleOwner = document.getElementById('toggleOwner');
