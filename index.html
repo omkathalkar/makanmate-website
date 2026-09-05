@@ -126,6 +126,7 @@
 
   .pune-grid{display:grid; grid-template-columns:0.9fr 1.1fr; gap:56px; align-items:center;}
   .pune-map{background:var(--ivory-2); border:1px solid var(--line); border-radius:10px; padding:32px; min-height:280px; display:flex; flex-direction:column; justify-content:center; gap:18px;}
+  .pune-photo{width:100%; height:100%; min-height:280px; object-fit:cover; border-radius:10px; display:block;}
   .pin-row{display:flex; align-items:center; gap:12px; font-size:15px; color:var(--charcoal);}
   .pin-dot{width:9px; height:9px; border-radius:50%; background:var(--brick); flex-shrink:0;}
   .pune-copy p{font-size:16px; color:var(--charcoal-soft); margin:0 0 18px;}
@@ -370,11 +371,8 @@
 
 <section id="pune">
   <div class="wrap pune-grid">
-    <div class="pune-map">
-      <div class="pin-row"><span class="pin-dot"></span>Kothrud — student-heavy, budget PGs</div>
-      <div class="pin-row"><span class="pin-dot"></span>Hinjewadi — IT crowd, shared flats</div>
-      <div class="pin-row"><span class="pin-dot"></span>Viman Nagar — young professionals</div>
-      <div class="pin-row"><span class="pin-dot"></span>Baner — newer builds, couples</div>
+    <div>
+      <img src="images/pune-junction.jpg" alt="Pune Junction railway station" class="pune-photo">
     </div>
     <div class="pune-copy">
       <span class="pune-badge">PILOT CITY</span>
