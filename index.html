@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MakanMate — Find your place. Find your people.</title>
+<meta name="description" content="MakanMate helps students, job seekers, and newcomers find verified, brokerage-free PGs and rentals in Pune — and a community to land softly with.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink: #1B2340;
+    --ink-2: #232B4D;
+    --marigold: #E8A33D;
+    --marigold-dim: #C9862A;
+    --brick: #C1543A;
+    --ivory: #F6EFE2;
+    --ivory-2: #EFE5D2;
+    --charcoal: #2B2420;
+    --charcoal-soft: #5A5044;
+    --line: #DED2B8;
+    --serif: 'Newsreader', serif;
+    --sans: 'Manrope', sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0; font-family:var(--sans); color:var(--charcoal); background:var(--ivory); line-height:1.55;}
+  img,svg{max-width:100%; display:block;}
+  a{color:inherit;}
+  .wrap{max-width:1120px; margin:0 auto; padding:0 28px;}
+
+  .nav{position:sticky; top:0; z-index:50; background:rgba(246,239,226,0.92); backdrop-filter:blur(8px); border-bottom:1px solid var(--line);}
+  .nav-row{display:flex; align-items:center; justify-content:space-between; padding:16px 28px; max-width:1120px; margin:0 auto;}
+  .logo{font-family:var(--serif); font-weight:600; font-size:22px; letter-spacing:0.2px; text-decoration:none; color:var(--ink); display:flex; align-items:center; gap:8px;}
+  .logo-dot{width:8px; height:8px; border-radius:50%; background:var(--marigold); display:inline-block;}
+  .nav-links{display:flex; gap:32px; list-style:none; margin:0; padding:0;}
+  .nav-links a{text-decoration:none; font-weight:600; font-size:15px; color:var(--charcoal-soft); transition:color .15s ease;}
+  .nav-links a:hover{color:var(--brick);}
+  .nav-cta{background:var(--ink); color:var(--ivory); padding:10px 20px; border-radius:6px; text-decoration:none; font-weight:700; font-size:14px; border:1px solid var(--ink);}
+  .nav-toggle{display:none; background:none; border:none; cursor:pointer; padding:4px;}
+  .nav-toggle span{display:block; width:24px; height:2px; background:var(--ink); margin:5px 0;}
+
+  @media (max-width:820px){
+    .nav-links{position:absolute; top:100%; left:0; right:0; background:var(--ivory); flex-direction:column; gap:0; border-bottom:1px solid var(--line); max-height:0; overflow:hidden; transition:max-height .25s ease;}
+    .nav-links.open{max-height:280px;}
+    .nav-links li{border-top:1px solid var(--line);}
+    .nav-links a{display:block; padding:16px 28px;}
+    .nav-toggle{display:block;}
+    .nav-cta{display:none;}
+  }
+
+  .hero{background:var(--ink); color:var(--ivory); padding:76px 0 0; overflow:hidden; position:relative;}
+  .hero-grid{display:grid; grid-template-columns:1.1fr 0.9fr; gap:40px; align-items:center; max-width:1120px; margin:0 auto; padding:0 28px 60px;}
+  .hero-eyebrow{color:var(--marigold); font-weight:700; font-size:14px; margin:0 0 18px; letter-spacing:0.3px;}
+  .hero h1{font-family:var(--serif); font-weight:500; font-size:52px; line-height:1.08; margin:0 0 22px; letter-spacing:-0.5px;}
+  .hero h1 em{font-style:italic; color:var(--marigold); font-weight:500;}
+  .hero p.lede{font-size:18px; color:#D9D3C4; max-width:460px; margin:0 0 34px;}
+  .hero-actions{display:flex; gap:14px; flex-wrap:wrap; margin-bottom:36px;}
+  .btn-primary{background:var(--marigold); color:var(--ink); border:none; padding:15px 26px; border-radius:6px; font-weight:800; font-size:15px; text-decoration:none; display:inline-block; cursor:pointer; transition:background .15s ease, transform .15s ease;}
+  .btn-primary:hover{background:#F3B455; transform:translateY(-1px);}
+  .btn-ghost{background:transparent; color:var(--ivory); border:1px solid rgba(246,239,226,0.35); padding:15px 26px; border-radius:6px; font-weight:700; font-size:15px; text-decoration:none; display:inline-block;}
+  .hero-trust{display:flex; gap:26px; flex-wrap:wrap; font-size:13px; color:#B9B2A0;}
+  .hero-trust span{display:flex; align-items:center; gap:8px;}
+  .hero-trust b{color:var(--ivory); font-weight:700;}
+
+  .hero-art{position:relative; height:360px;}
+  .fade-in{opacity:0; transform:translateY(14px); animation:riseIn .8s ease forwards;}
+  .fade-in.d2{animation-delay:.15s;}
+  .fade-in.d3{animation-delay:.3s;}
+  @keyframes riseIn{to{opacity:1; transform:translateY(0);}}
+  @media (prefers-reduced-motion: reduce){.fade-in{opacity:1; transform:none; animation:none;}}
+
+  @media (max-width:900px){
+    .hero-grid{grid-template-columns:1fr; padding-bottom:40px;}
+    .hero h1{font-size:38px;}
+    .hero-art{height:220px; order:-1;}
+  }
+
+  section{padding:88px 0;}
+  .section-head{max-width:600px; margin-bottom:52px;}
+  .section-head h2{font-family:var(--serif); font-weight:500; font-size:34px; line-height:1.2; margin:0 0 14px; color:var(--ink);}
+  .section-head p{font-size:16.5px; color:var(--charcoal-soft); margin:0;}
+
+  .problem{background:var(--ivory-2); border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
+  .problem-grid{display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:start;}
+  .problem-quote{font-family:var(--serif); font-style:italic; font-size:28px; line-height:1.4; color:var(--ink); margin:0;}
+  .problem-list{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:22px;}
+  .problem-list li{display:flex; gap:16px; padding-bottom:22px; border-bottom:1px solid var(--line);}
+  .problem-list li:last-child{border-bottom:none; padding-bottom:0;}
+  .problem-mark{font-family:var(--serif); font-style:italic; font-size:20px; color:var(--brick); flex-shrink:0;}
+  .problem-list p{margin:0; font-size:15.5px; color:var(--charcoal-soft);}
+  .problem-list strong{color:var(--charcoal); font-weight:700;}
+  @media (max-width:820px){.problem-grid{grid-template-columns:1fr; gap:36px;}}
+
+  .steps{display:grid; grid-template-columns:repeat(3,1fr); gap:36px;}
+  .step{position:relative; padding-top:8px;}
+  .step-num{font-family:var(--serif); font-size:44px; color:var(--marigold-dim); font-weight:500; margin:0 0 14px; line-height:1;}
+  .step h3{font-size:19px; margin:0 0 10px; color:var(--ink);}
+  .step p{font-size:15px; color:var(--charcoal-soft); margin:0;}
+  @media (max-width:820px){.steps{grid-template-columns:1fr; gap:40px;}}
+
+  .audience{background:var(--ink); color:var(--ivory);}
+  .audience .section-head h2, .audience .section-head p{color:var(--ivory);}
+  .audience .section-head p{color:#C9C2AF;}
+  .tag-cloud{display:flex; flex-wrap:wrap; gap:14px;}
+  .tag{border:1px solid rgba(246,239,226,0.25); border-radius:999px; padding:14px 22px; font-size:15px; font-weight:600; display:flex; flex-direction:column; gap:4px;}
+  .tag b{font-size:16px; color:var(--marigold);}
+  .tag span{font-size:13px; font-weight:500; color:#C9C2AF;}
+
+  .pune-grid{display:grid; grid-template-columns:0.9fr 1.1fr; gap:56px; align-items:center;}
+  .pune-map{background:var(--ivory-2); border:1px solid var(--line); border-radius:10px; padding:32px; min-height:280px; display:flex; flex-direction:column; justify-content:center; gap:18px;}
+  .pin-row{display:flex; align-items:center; gap:12px; font-size:15px; color:var(--charcoal);}
+  .pin-dot{width:9px; height:9px; border-radius:50%; background:var(--brick); flex-shrink:0;}
+  .pune-copy p{font-size:16px; color:var(--charcoal-soft); margin:0 0 18px;}
+  .pune-badge{display:inline-block; background:var(--marigold); color:var(--ink); font-weight:800; font-size:13px; padding:6px 14px; border-radius:999px; margin-bottom:18px;}
+  @media (max-width:820px){.pune-grid{grid-template-columns:1fr; gap:32px;}}
+
+  .trust-rows{display:flex; flex-direction:column;}
+  .trust-row{display:grid; grid-template-columns:220px 1fr; gap:28px; padding:28px 0; border-top:1px solid var(--line);}
+  .trust-rows > .trust-row:last-child{border-bottom:1px solid var(--line);}
+  .trust-row h3{margin:0; font-size:18px; color:var(--ink); font-family:var(--serif); font-weight:500;}
+  .trust-row p{margin:0; font-size:15.5px; color:var(--charcoal-soft); max-width:520px;}
+  @media (max-width:700px){.trust-row{grid-template-columns:1fr; gap:8px;}}
+
+  .waitlist{background:var(--ivory-2); border-top:1px solid var(--line);}
+  .waitlist-grid{display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:start;}
+  .waitlist h2{font-family:var(--serif); font-weight:500; font-size:32px; color:var(--ink); margin:0 0 14px;}
+  .waitlist p{color:var(--charcoal-soft); font-size:16px; margin:0;}
+  .form-card{background:var(--ivory); border:1px solid var(--line); border-radius:10px; padding:32px;}
+  .field{margin-bottom:18px;}
+  .field label{display:block; font-size:13px; font-weight:700; color:var(--charcoal); margin-bottom:7px;}
+  .field input, .field select{width:100%; padding:12px 14px; border-radius:6px; border:1px solid var(--line); background:#fff; font-family:var(--sans); font-size:15px; color:var(--charcoal);}
+  .field input:focus, .field select:focus{outline:2px solid var(--brick); outline-offset:1px;}
+  .form-submit{width:100%; background:var(--brick); color:var(--ivory); border:none; padding:15px; border-radius:6px; font-weight:800; font-size:15px; cursor:pointer;}
+  .form-submit:hover{background:#A9432B;}
+  .form-note{font-size:13px; color:var(--charcoal-soft); margin-top:12px; text-align:center;}
+  .form-success{display:none; text-align:center; padding:20px 0;}
+  .form-success h3{font-family:var(--serif); color:var(--ink); font-size:22px; margin:0 0 8px;}
+  .form-success p{color:var(--charcoal-soft); font-size:15px; margin:0;}
+  @media (max-width:820px){.waitlist-grid{grid-template-columns:1fr; gap:32px;}}
+
+  footer{background:var(--ink); color:#B9B2A0; padding:52px 0 32px;}
+  .footer-top{display:flex; justify-content:space-between; flex-wrap:wrap; gap:32px; padding-bottom:32px; border-bottom:1px solid rgba(246,239,226,0.15); margin-bottom:24px;}
+  .footer-logo{font-family:var(--serif); font-size:20px; color:var(--ivory); margin:0 0 8px;}
+  .footer-tag{font-size:14px; max-width:280px; margin:0;}
+  .footer-cols{display:flex; gap:64px; flex-wrap:wrap;}
+  .footer-col h4{color:var(--ivory); font-size:13px; margin:0 0 14px;}
+  .footer-col ul{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:10px;}
+  .footer-col a{text-decoration:none; font-size:14px; color:#B9B2A0;}
+  .footer-col a:hover{color:var(--marigold);}
+  .footer-bottom{display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px; font-size:13px;}
+
+  .skyline{width:100%; height:100%;}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-row">
+    <a href="#top" class="logo"><span class="logo-dot"></span>MakanMate</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#how">How it works</a></li>
+      <li><a href="#audience">Who it's for</a></li>
+      <li><a href="#pune">Pune</a></li>
+      <li><a href="#trust">Trust &amp; safety</a></li>
+    </ul>
+    <a href="#waitlist" class="nav-cta">Join waitlist</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="hero-grid">
+    <div>
+      <p class="hero-eyebrow fade-in">NOW LIVE IN PUNE</p>
+      <h1 class="fade-in d2">Find your place.<br>Find your <em>people.</em></h1>
+      <p class="lede fade-in d3">MakanMate helps students, job seekers, and anyone new to Pune find a verified PG or flat — and a few familiar faces before you've even moved in. No brokerage. No fake listings.</p>
+      <div class="hero-actions fade-in d3">
+        <a href="#waitlist" class="btn-primary">Join the waitlist</a>
+        <a href="#how" class="btn-ghost">See how it works</a>
+      </div>
+      <div class="hero-trust fade-in d3">
+        <span><b>0%</b> brokerage</span>
+        <span><b>100%</b> verified listings</span>
+        <span><b>Pune</b> pilot, India next</span>
+      </div>
+    </div>
+    <div class="hero-art fade-in d3">
+      <svg class="skyline" viewBox="0 0 420 360" xmlns="http://www.w3.org/2000/svg">
+        <rect x="30" y="180" width="60" height="160" fill="#232B4D"/>
+        <rect x="100" y="120" width="50" height="220" fill="#2A3357"/>
+        <rect x="160" y="200" width="70" height="140" fill="#1F2748"/>
+        <rect x="240" y="90" width="55" height="250" fill="#2A3357"/>
+        <rect x="305" y="160" width="65" height="180" fill="#232B4D"/>
+        <g fill="#E8A33D" opacity="0.9">
+          <rect x="42" y="200" width="10" height="12"/>
+          <rect x="62" y="200" width="10" height="12"/>
+          <rect x="42" y="230" width="10" height="12"/>
+          <rect x="112" y="145" width="10" height="12"/>
+          <rect x="132" y="145" width="10" height="12"/>
+          <rect x="112" y="175" width="10" height="12"/>
+          <rect x="132" y="205" width="10" height="12"/>
+          <rect x="176" y="225" width="10" height="12"/>
+          <rect x="196" y="225" width="10" height="12"/>
+          <rect x="176" y="255" width="10" height="12"/>
+          <rect x="255" y="115" width="10" height="12"/>
+          <rect x="275" y="115" width="10" height="12"/>
+          <rect x="255" y="150" width="10" height="12"/>
+          <rect x="275" y="185" width="10" height="12"/>
+          <rect x="320" y="185" width="10" height="12"/>
+          <rect x="340" y="185" width="10" height="12"/>
+          <rect x="320" y="215" width="10" height="12"/>
+        </g>
+        <g fill="#C1543A" opacity="0.55">
+          <rect x="62" y="230" width="10" height="12"/>
+          <rect x="132" y="175" width="10" height="12"/>
+          <rect x="196" y="255" width="10" height="12"/>
+          <rect x="275" y="150" width="10" height="12"/>
+          <rect x="340" y="215" width="10" height="12"/>
+        </g>
+        <rect x="0" y="340" width="420" height="2" fill="rgba(246,239,226,0.15)"/>
+        <circle cx="360" cy="55" r="22" fill="#F3B455" opacity="0.85"/>
+      </svg>
+    </div>
+  </div>
+</header>
+
+<section class="problem">
+  <div class="wrap problem-grid">
+    <p class="problem-quote">"I landed in Pune with two bags, a job start date, and absolutely no idea where I'd sleep that week."</p>
+    <ul class="problem-list">
+      <li><span class="problem-mark">1</span><p><strong>Brokers eat a month's rent</strong> before you've even seen the place properly.</p></li>
+      <li><span class="problem-mark">2</span><p><strong>Listings lie.</strong> The photos are old, the "5 min from station" is a 25-minute auto ride.</p></li>
+      <li><span class="problem-mark">3</span><p><strong>You move in alone.</strong> No one to ask where the good chai stall is, or who to call when the geyser breaks.</p></li>
+    </ul>
+  </div>
+</section>
+
+<section id="how">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Three steps, not three weeks</h2>
+      <p>MakanMate is built to compress the hardest part of moving cities into a few days, not a few stressful weeks.</p>
+    </div>
+    <div class="steps">
+      <div class="step"><p class="step-num">01</p><h3>Tell us your move</h3><p>Your city, your budget, your dates, and whether you'd rather live solo or share. Takes under two minutes.</p></div>
+      <div class="step"><p class="step-num">02</p><h3>See verified places only</h3><p>Every listing is visited and checked by our Pune team before it goes live — real photos, real rent, real distances.</p></div>
+      <div class="step"><p class="step-num">03</p><h3>Move in, meet your mates</h3><p>We introduce you to others who just moved to the same area — so week one doesn't feel like week one.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="audience" id="audience">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Built for the newly arrived</h2>
+      <p>Whoever you are when you land, there's a version of MakanMate for you.</p>
+    </div>
+    <div class="tag-cloud">
+      <div class="tag"><b>Students</b><span>Near campus, PG-friendly, mess included</span></div>
+      <div class="tag"><b>Job seekers</b><span>Short lease while you find your feet</span></div>
+      <div class="tag"><b>Bachelors</b><span>Shared flats, split bills, sorted</span></div>
+      <div class="tag"><b>Couples</b><span>Couple-friendly listings, clearly marked</span></div>
+      <div class="tag"><b>Remote workers</b><span>Wi-fi first, quiet hours respected</span></div>
+      <div class="tag"><b>New to Pune</b><span>Zero local contacts required</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="pune">
+  <div class="wrap pune-grid">
+    <div class="pune-map">
+      <div class="pin-row"><span class="pin-dot"></span>Kothrud — student-heavy, budget PGs</div>
+      <div class="pin-row"><span class="pin-dot"></span>Hinjewadi — IT crowd, shared flats</div>
+      <div class="pin-row"><span class="pin-dot"></span>Viman Nagar — young professionals</div>
+      <div class="pin-row"><span class="pin-dot"></span>Baner — newer builds, couples</div>
+    </div>
+    <div class="pune-copy">
+      <span class="pune-badge">PILOT CITY</span>
+      <h2 style="font-family:var(--serif); font-weight:500; font-size:30px; color:var(--ink); margin:0 0 16px;">We're starting exactly where the problem is worst.</h2>
+      <p>Pune pulls in more students and first-job movers every year than almost any other Indian city — and has some of the messiest, most broker-heavy rental hunting to go with it. We're building MakanMate here first, getting every detail right neighbourhood by neighbourhood, before taking it national.</p>
+      <p>Next stops: Bengaluru, Hyderabad, and beyond — wherever people are landing somewhere new.</p>
+    </div>
+  </div>
+</section>
+
+<section id="trust">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Trust, before anything else</h2>
+      <p>Moving cities already asks a lot of trust from you. We don't add to that.</p>
+    </div>
+    <div class="trust-rows">
+      <div class="trust-row"><h3>Verified, always</h3><p>Every listing is physically checked by someone on our Pune team before it's published. What you see is what you'll get.</p></div>
+      <div class="trust-row"><h3>Zero brokerage</h3><p>You deal with the owner or us directly. No middleman fee eating into your first month's budget.</p></div>
+      <div class="trust-row"><h3>Transparent pricing</h3><p>Rent, deposit, and every recurring charge shown upfront — nothing revealed only after you've paid a token amount.</p></div>
+      <div class="trust-row"><h3>Community, not just contracts</h3><p>We connect new arrivals in the same area so your first week has a few familiar faces in it.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="waitlist" id="waitlist">
+  <div class="wrap waitlist-grid">
+    <div>
+      <h2>Be first in when we open your area</h2>
+      <p>We're onboarding Pune neighbourhoods gradually to keep every listing verified. Join the waitlist and we'll let you know the moment your area's live.</p>
+    </div>
+    <div class="form-card">
+      <form id="waitlistForm">
+        <div id="formFields">
+          <div class="field"><label for="name">Full name</label><input type="text" id="name" required placeholder="Your name"></div>
+          <div class="field"><label for="email">Email</label><input type="email" id="email" required placeholder="you@email.com"></div>
+          <div class="field">
+            <label for="city">Looking for a place in</label>
+            <select id="city">
+              <option>Pune — Kothrud</option>
+              <option>Pune — Hinjewadi</option>
+              <option>Pune — Viman Nagar</option>
+              <option>Pune — Baner</option>
+              <option>Pune — Other area</option>
+            </select>
+          </div>
+          <button type="submit" class="form-submit">Join the waitlist</button>
+          <p class="form-note">No spam. Just one email when your area opens.</p>
+        </div>
+        <div class="form-success" id="formSuccess">
+          <h3>You're on the list.</h3>
+          <p>We'll email you the moment listings open in your area.</p>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-top">
+      <div>
+        <p class="footer-logo">MakanMate</p>
+        <p class="footer-tag">Find your place. Find your people. Starting in Pune.</p>
+      </div>
+      <div class="footer-cols">
+        <div class="footer-col">
+          <h4>Explore</h4>
+          <ul><li><a href="#how">How it works</a></li><li><a href="#audience">Who it's for</a></li><li><a href="#pune">Pune</a></li></ul>
+        </div>
+        <div class="footer-col">
+          <h4>Company</h4>
+          <ul><li><a href="#trust">Trust &amp; safety</a></li><li><a href="#waitlist">Join waitlist</a></li></ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 MakanMate. All rights reserved.</span>
+      <span>Pune, India</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const navToggle = document.getElementById('navToggle');
+  const navLinks = document.getElementById('navLinks');
+  navToggle.addEventListener('click', () => navLinks.classList.toggle('open'));
+  navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
+
+  const form = document.getElementById('waitlistForm');
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    document.getElementById('formFields').style.display = 'none';
+    document.getElementById('formSuccess').style.display = 'block';
+  });
+</script>
+
+</body>
+</html>
