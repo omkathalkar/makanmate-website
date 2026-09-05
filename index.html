@@ -618,10 +618,18 @@
     btn.disabled = true;
     btn.textContent = 'Sending…';
     try {
-      const res = await fetch('https://formspree.io/f/xldblwyb', {
+      const data = {
+        name: form.querySelector('#name').value,
+        email: form.querySelector('#email').value,
+        area: form.querySelector('#city').value,
+        form_type: form.querySelector('#formTypeHidden').value,
+        property_type: form.querySelector('#propertyType').value || '',
+        _subject: form.querySelector('#formSubject').value,
+      };
+      const res = await fetch('https://formsubmit.co/ajax/contact@makanmate.in', {
         method: 'POST',
-        body: new FormData(form),
-        headers: { 'Accept': 'application/json' }
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify(data)
       });
       if (res.ok) {
         document.getElementById('formFields').style.display = 'none';
