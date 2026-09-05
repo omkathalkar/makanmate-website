@@ -489,12 +489,14 @@
         <button type="button" id="toggleOwner">I have a property to list</button>
       </div>
       <form id="waitlistForm">
+        <input type="hidden" name="_subject" id="formSubject" value="MakanMate waitlist — Seeker">
+        <input type="hidden" name="_next" value="">
         <div id="formFields">
-          <div class="field"><label for="name">Full name</label><input type="text" id="name" required placeholder="Your name"></div>
-          <div class="field"><label for="email">Email</label><input type="email" id="email" required placeholder="you@email.com"></div>
+          <div class="field"><label for="name">Full name</label><input type="text" id="name" name="name" required placeholder="Your name"></div>
+          <div class="field"><label for="email">Email</label><input type="email" id="email" name="email" required placeholder="you@email.com"></div>
           <div class="field">
             <label for="city" id="cityLabel">Looking for a place in</label>
-            <select id="city">
+            <select id="city" name="area">
               <option>Pune — Kothrud</option>
               <option>Pune — Hinjewadi</option>
               <option>Pune — Viman Nagar</option>
@@ -504,13 +506,14 @@
           </div>
           <div class="field" id="propertyTypeField" style="display:none;">
             <label for="propertyType">Property type</label>
-            <select id="propertyType">
+            <select id="propertyType" name="property_type">
               <option>PG</option>
               <option>Shared flat</option>
               <option>1 BHK</option>
               <option>2 BHK or larger</option>
             </select>
           </div>
+          <input type="hidden" name="form_type" id="formTypeHidden" value="seeker">
           <button type="submit" class="form-submit" id="formSubmitBtn">Join the waitlist</button>
           <p class="form-note" id="formNote">No spam. Just one email when your area opens.</p>
         </div>
@@ -590,6 +593,8 @@
       formSubmitBtn.textContent = 'List your property';
       formNote.textContent = 'No listing fee during the Pune pilot.';
       formSuccessText.textContent = "We'll reach out to schedule a verification visit.";
+      document.getElementById('formTypeHidden').value = 'owner';
+      document.getElementById('formSubject').value = 'MakanMate — Property listing request';
     } else {
       toggleSeeker.classList.add('active');
       toggleOwner.classList.remove('active');
@@ -598,6 +603,8 @@
       formSubmitBtn.textContent = 'Join the waitlist';
       formNote.textContent = 'No spam. Just one email when your area opens.';
       formSuccessText.textContent = "We'll email you the moment listings open in your area.";
+      document.getElementById('formTypeHidden').value = 'seeker';
+      document.getElementById('formSubject').value = 'MakanMate waitlist — Seeker';
     }
   }
   toggleSeeker.addEventListener('click', () => setFormMode('seeker'));
@@ -605,10 +612,30 @@
   document.getElementById('ownerCtaBtn').addEventListener('click', () => setFormMode('owner'));
 
   const form = document.getElementById('waitlistForm');
-  form.addEventListener('submit', function(e){
+  form.addEventListener('submit', async function(e){
     e.preventDefault();
-    document.getElementById('formFields').style.display = 'none';
-    document.getElementById('formSuccess').style.display = 'block';
+    const btn = document.getElementById('formSubmitBtn');
+    btn.disabled = true;
+    btn.textContent = 'Sending…';
+    try {
+      const res = await fetch('https://formspree.io/f/xldblwyb', {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { 'Accept': 'application/json' }
+      });
+      if (res.ok) {
+        document.getElementById('formFields').style.display = 'none';
+        document.getElementById('formSuccess').style.display = 'block';
+      } else {
+        btn.disabled = false;
+        btn.textContent = document.getElementById('formTypeHidden').value === 'owner' ? 'List your property' : 'Join the waitlist';
+        alert('Something went wrong. Please email us at contact@makanmate.in');
+      }
+    } catch {
+      btn.disabled = false;
+      btn.textContent = document.getElementById('formTypeHidden').value === 'owner' ? 'List your property' : 'Join the waitlist';
+      alert('Something went wrong. Please email us at contact@makanmate.in');
+    }
   });
 </script>
 
