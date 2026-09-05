@@ -493,7 +493,8 @@
         <input type="hidden" name="_next" value="">
         <div id="formFields">
           <div class="field"><label for="name">Full name</label><input type="text" id="name" name="name" required placeholder="Your name"></div>
-          <div class="field"><label for="email">Email</label><input type="email" id="email" name="email" required placeholder="you@email.com"></div>
+          <div class="field"><label for="phone">Phone number</label><input type="tel" id="phone" name="phone" required placeholder="+91 98765 43210"></div>
+          <div class="field"><label for="email">Email <span style="font-weight:400;color:var(--charcoal-soft);">(optional)</span></label><input type="email" id="email" name="email" placeholder="you@email.com"></div>
           <div class="field">
             <label for="city" id="cityLabel">Looking for a place in</label>
             <select id="city" name="area">
@@ -620,6 +621,7 @@
     try {
       const data = {
         name: form.querySelector('#name').value,
+        phone: form.querySelector('#phone').value,
         email: form.querySelector('#email').value,
         area: form.querySelector('#city').value,
         form_type: form.querySelector('#formTypeHidden').value,
