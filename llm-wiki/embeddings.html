@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Embeddings — LLM Wiki</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav>
+  <a class="home-link" href="index.html">LLM Wiki</a>
+  <a href="tokenization.html">Tokenization</a>
+  <a href="embeddings.html" class="active">Embeddings</a>
+  <a href="attention.html">Attention</a>
+  <a href="transformer.html">Transformer</a>
+  <a href="training.html">Training</a>
+  <a href="inference.html">Inference</a>
+</nav>
+<main>
+  <p class="subtitle">Topic 2 of 6</p>
+  <h1>Embeddings</h1>
+
+  <p>Tokenization gave us integers. But raw integers are a terrible input to a neural network, and here's why: the number 5000 is not "more" than the number 50 in any meaningful way. Token IDs are arbitrary labels — we could shuffle the entire vocabulary and nothing about the language would change. The model shouldn't treat them as numbers.</p>
+
+  <p>What we want instead is for each token to be represented as a vector — a list of floating-point numbers — that lives in a high-dimensional space where related tokens end up close together and unrelated tokens end up far apart. That's what embeddings do.</p>
+
+  <div class="section-label">Intuition</div>
+  <h2>A lookup table that learns</h2>
+
+  <p>An embedding layer is just a lookup table. You have a matrix of shape <code>[vocab_size, embedding_dim]</code>. To embed token ID 42, you grab row 42 of that matrix. That's it.</p>
+
+  <p>The magic is that these rows are learned. During training, gradient descent adjusts every row so that tokens that appear in similar contexts end up with similar vectors. The network never explicitly told that "dog" and "cat" are related — it figures that out because they appear in similar sentences and so their rows get nudged in the same direction.</p>
+
+<pre><code>import torch
+import torch.nn as nn
+
+vocab_size = 50257   # GPT-2 vocabulary size
+embed_dim  = 768     # GPT-2 small embedding dimension
+
+# This is literally just a matrix: shape [50257, 768]
+embedding = nn.Embedding(vocab_size, embed_dim)
+
+# Look up token IDs. Input: [batch, seq_len], Output: [batch, seq_len, 768]
+token_ids = torch.tensor([[15339, 1917]])  # "hello world" in GPT-2 tokens
+x = embedding(token_ids)
+
+print(x.shape)   # torch.Size([1, 2, 768])
+print(x[0, 0, :5])  # first 5 dims of "hello" embedding (random at init)</code></pre>
+
+  <p>At initialization, those rows are random. After training on hundreds of billions of tokens, they encode real relationships. The rows for "Paris" and "London" will be closer to each other than either is to "banana".</p>
+
+  <h2>The geometry of meaning</h2>
+
+  <p>Here's the thing that felt magical to me when I first saw it demonstrated: the geometry of the embedding space is meaningful in a structured way. The famous example from Word2Vec:</p>
+
+  <blockquote style="border-left: 3px solid var(--border); padding-left: 1rem; margin: 1.5rem 0; color: var(--fg-muted); font-style: italic;">
+    king − man + woman ≈ queen
+  </blockquote>
+
+  <p>This means the vector difference between "king" and "queen" is approximately the same as the vector difference between "man" and "woman". The concept of "royalty" and the concept of "gender" are encoded as consistent directions in this space.</p>
+
+  <p>You can find analogous structure for: countries and capitals, verb tenses, comparative adjectives (big → bigger → biggest), and much more. The model learns this purely from co-occurrence statistics in text.</p>
+
+  <div class="section-label">Code</div>
+  <h2>Exploring embedding geometry</h2>
+
+<pre><code># You'll need: pip install gensim
+# This downloads a pretrained Word2Vec model (~1.6 GB) so be patient.
+import gensim.downloader as api
+
+model = api.load("word2vec-google-news-300")  # 300-dim embeddings
+
+# Classic analogy: king - man + woman
+result = model.most_similar(
+    positive=["king", "woman"],
+    negative=["man"],
+    topn=5
+)
+print("king - man + woman:")
+for word, score in result:
+    print(f"  {word}: {score:.3f}")
+
+# Cosine similarity between words
+pairs = [
+    ("cat", "dog"),
+    ("cat", "banana"),
+    ("Paris", "France"),
+    ("Paris", "London"),
+    ("run", "running"),
+    ("run", "eat"),
+]
+for w1, w2 in pairs:
+    sim = model.similarity(w1, w2)
+    print(f"similarity({w1!r}, {w2!r}) = {sim:.3f}")</code></pre>
+
+  <p>The similarities you'll see are genuinely surprising. "cat" and "dog" are around 0.76. "cat" and "banana" are around 0.27. "Paris" and "London" are around 0.73 — because both are European capital cities and appear in similar contexts. "run" and "running" are around 0.82, even though they're different tokens, because BPE didn't exist in early Word2Vec and they both appear in sentences about physical movement.</p>
+
+  <h2>Positional embeddings: the missing ingredient</h2>
+
+  <p>There's a problem: attention (which we'll cover next) doesn't inherently know where in the sequence each token lives. If you shuffled "the cat sat on the mat" to "mat the on sat cat the", the embedding vectors would be identical — just in different positions in the input tensor. The model wouldn't know they were different.</p>
+
+  <p>So we add a positional embedding to each token embedding. Position 0 gets one vector added to it, position 1 gets a different vector, and so on. Now the model can distinguish "cat is subject" from "cat is object".</p>
+
+<pre><code>import torch
+import torch.nn as nn
+import math
+
+class SimplePositionalEmbedding(nn.Module):
+    def __init__(self, max_seq_len, embed_dim):
+        super().__init__()
+        # Learned positional embeddings (GPT-2's approach)
+        self.pos_embed = nn.Embedding(max_seq_len, embed_dim)
+
+    def forward(self, x):
+        # x shape: [batch, seq_len, embed_dim]
+        seq_len = x.shape[1]
+        positions = torch.arange(seq_len, device=x.device)  # [0, 1, 2, ...]
+        return x + self.pos_embed(positions)  # broadcast add
+
+# GPT-2 uses learned positional embeddings.
+# The original "Attention is All You Need" paper used sinusoidal
+# (fixed, not learned). Both work roughly equally well in practice.
+
+vocab_size, embed_dim, max_len = 50257, 768, 1024
+
+token_emb = nn.Embedding(vocab_size, embed_dim)
+pos_emb   = SimplePositionalEmbedding(max_len, embed_dim)
+
+tokens = torch.tensor([[15339, 1917]])   # "hello world"
+x = token_emb(tokens)       # [1, 2, 768]: token vectors
+x = pos_emb(x)              # [1, 2, 768]: token + position vectors
+print(x.shape)  # torch.Size([1, 2, 768])</code></pre>
+
+  <p>After this step, each token's representation encodes both <em>what it is</em> (token embedding) and <em>where it is</em> (positional embedding). This combined vector is what flows into the attention mechanism.</p>
+
+  <div class="section-label">At Scale</div>
+  <h2>What changes in large models</h2>
+
+  <p>GPT-2 Small uses 768-dimensional embeddings. GPT-3 uses 12,288-dimensional embeddings. More dimensions means more "room" to pack in nuanced relationships — a word can simultaneously encode syntactic role, semantic category, named-entity type, sentiment, and much more, all in orthogonal directions in the same space.</p>
+
+  <p>The embedding table itself becomes a significant fraction of the total parameter count. GPT-2's embedding table is 50,257 × 768 = ~38M parameters, out of a total of 117M. At GPT-3 scale (175B parameters total), the embedding table is 50,257 × 12,288 = ~617M parameters — less than 0.4% of the total.</p>
+
+  <p>One practical trick: modern LLMs often tie the input embedding weights to the output projection weights (the layer that converts the final hidden state back into token probabilities). This halves the memory for these tables and seems to hurt performance only slightly.</p>
+
+  <div class="section-label">Common Misconceptions</div>
+  <h2>Things that trip people up</h2>
+
+  <p><strong>"Similar embeddings means similar meaning."</strong> Roughly true, but carefully. "hot" and "cold" often have high cosine similarity — because they appear in very similar contexts ("the weather is hot/cold", "a hot/cold drink"). Contextual similarity ≠ semantic synonymy. Better embeddings (from transformer models, not Word2Vec) handle this better because the same word gets different embeddings depending on context.</p>
+
+  <p><strong>"Embedding dimensions correspond to human-interpretable features."</strong> They don't, usually. You won't find dimension 42 that cleanly represents "is an animal". The features are distributed across many dimensions simultaneously, and they're often superpositions of multiple concepts. Research on mechanistic interpretability is slowly teasing these apart, but it's hard work.</p>
+
+  <p><strong>"Token embeddings are fixed."</strong> No — they're parameters of the model, updated during training just like all other weights. They start random and are shaped entirely by gradient descent. If you fine-tune a model, the embeddings continue to change.</p>
+
+  <p><strong>"Bigger embedding dimension is always better."</strong> Not for free — it increases computation quadratically in some places and linearly in others. There are trade-offs between depth (more layers) and width (bigger embeddings), and the optimal balance depends on the compute budget. Making embeddings 2× bigger without adding more layers typically underperforms adding more layers with the original embedding size.</p>
+
+  <div class="page-nav">
+    <a href="tokenization.html">← Tokenization</a>
+    <a href="attention.html">Next: Attention →</a>
+  </div>
+</main>
+</body>
+</html>

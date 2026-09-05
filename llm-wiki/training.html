@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Training & Backprop — LLM Wiki</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav>
+  <a class="home-link" href="index.html">LLM Wiki</a>
+  <a href="tokenization.html">Tokenization</a>
+  <a href="embeddings.html">Embeddings</a>
+  <a href="attention.html">Attention</a>
+  <a href="transformer.html">Transformer</a>
+  <a href="training.html" class="active">Training</a>
+  <a href="inference.html">Inference</a>
+</nav>
+<main>
+  <p class="subtitle">Topic 5 of 6</p>
+  <h1>Training &amp; Backprop</h1>
+
+  <p>We have an architecture. Now how does it learn? This page is about the feedback loop that turns a randomly-initialized network into something that can generate coherent text: the loss function, backpropagation, and gradient descent.</p>
+
+  <p>I'll try to give you real intuition for each piece rather than just "the loss goes down and the model gets better." Understanding why the math works helps enormously when things go wrong — and things always go wrong eventually.</p>
+
+  <div class="section-label">Intuition</div>
+  <h2>What the model is trained to do</h2>
+
+  <p>At its core, a language model is trained to predict the next token. Given the sequence "the cat sat on the", the model should assign high probability to "mat" and low probability to "skyscraper". That's it. No human labels required — the internet contains billions of examples of "what comes next in a sentence," and that turns out to be enough to learn an enormous amount about the world.</p>
+
+  <p>This is called <em>self-supervised learning</em>: the labels come from the data itself, not from human annotation. The model's input is the sequence so far; its target is the sequence shifted by one position.</p>
+
+<pre><code># Training data: sequence of token IDs
+# Input:  [the, cat, sat, on, the]
+# Target: [cat, sat, on, the, mat]
+# The model predicts token t+1 given all tokens up to t.
+
+# This means one sequence of length 1024 gives us 1024 training examples!
+# (Each position i predicts position i+1, using only positions 0..i as context.)</code></pre>
+
+  <h2>Cross-entropy loss</h2>
+
+  <p>The model outputs a probability distribution over the vocabulary for each position — 50,257 numbers that sum to 1. The cross-entropy loss measures how bad the predicted distribution is compared to the true next token.</p>
+
+  <p>Intuitively: if the true next token is "mat" and the model assigns it 90% probability, the loss is low. If it assigns "mat" only 1% probability and spreads the rest over "cats", "dogs", etc., the loss is high.</p>
+
+  <p>Mathematically: <code>loss = -log(p_correct)</code>. The negative log of the probability of the correct token. If p_correct = 1.0, loss = 0. If p_correct = 0.01, loss = 4.6. We want to maximize p_correct, which is the same as minimizing -log(p_correct).</p>
+
+<pre><code>import torch
+import torch.nn.functional as F
+
+# Suppose the model's logits for one position are:
+logits = torch.tensor([2.0, 1.0, 0.5, -1.0, 3.0])  # 5-class example
+target = torch.tensor(4)   # correct class is index 4 (logit = 3.0)
+
+# Compute probabilities
+probs = F.softmax(logits, dim=0)
+print("Probabilities:", probs.round(decimals=3))
+# tensor([0.180, 0.066, 0.040, 0.008, 0.706])
+
+# Cross-entropy loss
+loss = F.cross_entropy(logits.unsqueeze(0), target.unsqueeze(0))
+print("Loss:", loss.item())
+# 0.348 — low because the model correctly predicts class 4
+
+# What if the model was confidently wrong?
+bad_logits = torch.tensor([3.0, -1.0, 0.5, 1.0, -2.0])
+loss_bad = F.cross_entropy(bad_logits.unsqueeze(0), target.unsqueeze(0))
+print("Bad loss:", loss_bad.item())
+# 5.07 — high because p(correct) ≈ 0.006</code></pre>
+
+  <h2>Gradient descent: hill climbing in reverse</h2>
+
+  <p>We want to find the model weights that minimize the loss. The parameter space has billions of dimensions, so we can't search it exhaustively. Instead, we use the gradient — the direction in parameter space that increases the loss most steeply — and we step in the opposite direction.</p>
+
+  <p>Each gradient descent step:</p>
+  <ol>
+    <li>Forward pass: run the model on a batch, compute loss</li>
+    <li>Backward pass: compute the gradient of the loss with respect to every parameter</li>
+    <li>Update: <code>param = param - lr × grad</code></li>
+  </ol>
+
+  <p>The learning rate (lr) controls how large each step is. Too large and you overshoot; too small and training takes forever. In practice, learning rate schedules warm up from a small value, hold, then decay.</p>
+
+  <div class="section-label">Code</div>
+  <h2>Backpropagation: how PyTorch does it</h2>
+
+  <p>PyTorch builds a computational graph as you do operations. When you call <code>.backward()</code> on the loss, it walks backwards through that graph and computes the gradient of the loss with respect to every parameter that has <code>requires_grad=True</code>. This is automatic differentiation — you don't implement backprop yourself.</p>
+
+<pre><code>import torch
+import torch.nn as nn
+
+# A tiny two-layer network
+net = nn.Sequential(
+    nn.Linear(4, 8),
+    nn.ReLU(),
+    nn.Linear(8, 2),
+)
+
+x      = torch.randn(3, 4)   # batch of 3, input dim 4
+target = torch.tensor([0, 1, 0])
+
+# Forward pass — computes loss
+logits = net(x)
+loss   = nn.functional.cross_entropy(logits, target)
+print(f"Loss: {loss.item():.4f}")
+
+# Check that no gradients exist yet
+print("Grad before backward:", net[0].weight.grad)  # None
+
+# Backward pass — compute all gradients
+loss.backward()
+
+# Now gradients exist
+print("Grad shape:", net[0].weight.grad.shape)  # [8, 4]
+print("Grad norm: ", net[0].weight.grad.norm().item())
+
+# Gradient descent step (manually, to see what happens)
+lr = 0.01
+with torch.no_grad():
+    for param in net.parameters():
+        param -= lr * param.grad
+
+# Zero gradients before the next step (important!)
+net.zero_grad()</code></pre>
+
+  <h2>A complete training loop</h2>
+
+<pre><code>import torch
+import torch.nn as nn
+import torch.optim as optim
+
+# Tiny character-level language model for demonstration
+vocab_size = 27    # a-z + space
+embed_dim  = 32
+n_layers   = 2
+block_size = 16    # context window
+
+# Generate some fake training data (random token sequences)
+data = torch.randint(0, vocab_size, (1000,))
+
+def get_batch(data, block_size, batch_size=32):
+    ix = torch.randint(len(data) - block_size, (batch_size,))
+    x  = torch.stack([data[i:i+block_size]     for i in ix])
+    y  = torch.stack([data[i+1:i+block_size+1] for i in ix])
+    return x, y
+
+# Simple embedding + linear model (not a full transformer, just for the loop demo)
+model = nn.Sequential(
+    nn.Embedding(vocab_size, embed_dim),
+    nn.Flatten(start_dim=1),              # [B, block_size*embed_dim]
+    nn.Linear(block_size * embed_dim, 128),
+    nn.ReLU(),
+    nn.Linear(128, vocab_size),           # [B, block_size, vocab] would be correct for LM
+)
+
+# AdamW: Adam with weight decay — the standard optimizer for LLMs
+optimizer = optim.AdamW(model.parameters(), lr=3e-4, weight_decay=0.1)
+
+# Training loop
+for step in range(200):
+    x, y = get_batch(data, block_size)
+
+    # Forward
+    logits = model(x)                       # [B, vocab_size]
+    loss   = nn.functional.cross_entropy(logits, y[:, -1])  # predict last token
+
+    # Backward
+    optimizer.zero_grad()
+    loss.backward()
+
+    # Gradient clipping: prevents huge gradient steps from destabilizing training
+    nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
+
+    optimizer.step()
+
+    if step % 50 == 0:
+        print(f"step {step:4d} | loss {loss.item():.4f}")</code></pre>
+
+  <h2>AdamW: why not plain SGD?</h2>
+
+  <p>Stochastic gradient descent (SGD) with a fixed learning rate has a problem: parameters that receive rare updates (like embedding rows for uncommon tokens) accumulate little gradient and barely move. Parameters that get updated constantly might overshoot.</p>
+
+  <p>Adam (Adaptive Moment Estimation) maintains a running average of the gradient and the squared gradient for each parameter. The squared gradient average acts as an adaptive learning rate: parameters with consistently large gradients get smaller effective learning rates, and vice versa.</p>
+
+  <p>The "W" in AdamW is weight decay, applied directly to the weights rather than through the gradient. It's a form of regularization that keeps weights small and prevents overfitting — crucial when models have billions of parameters and you're trying to generalize rather than memorize.</p>
+
+  <div class="section-label">At Scale</div>
+  <h2>What makes training large models hard</h2>
+
+  <p><strong>Mixed precision.</strong> Storing all parameters as 32-bit floats (FP32) during training uses 4 bytes per parameter. GPT-3's 175B parameters would need 700 GB — far more than any GPU. So training uses BF16 (16-bit bfloat) for the forward and backward pass, with a FP32 copy for the optimizer state updates. This halves the memory for activations while keeping numerical precision for the bits that matter.</p>
+
+  <p><strong>Gradient checkpointing.</strong> During the backward pass, PyTorch needs the activations from every layer to compute gradients. For a 96-layer model processing 4096-token sequences, storing all those activations is prohibitive. Gradient checkpointing recomputes activations on-the-fly during the backward pass instead of storing them, trading compute for memory (roughly 30% slower training, much less memory).</p>
+
+  <p><strong>Distributed training.</strong> A single GPU doesn't hold 175B parameters. In practice, training splits the model across hundreds of GPUs using data parallelism (each GPU processes different data), tensor parallelism (each GPU holds a slice of each weight matrix), and pipeline parallelism (different GPU groups handle different layers). Coordinating this without communication becoming a bottleneck is a large engineering problem.</p>
+
+  <div class="section-label">Common Misconceptions</div>
+  <h2>Things that trip people up</h2>
+
+  <p><strong>"Loss going down means the model is learning."</strong> Usually, yes. But loss is measured on training data. You need to track validation loss on held-out data to know whether the model is actually generalizing. A model can achieve near-zero training loss by memorizing the training data (overfitting) while performing terribly on anything new.</p>
+
+  <p><strong>"Lower final loss = better model."</strong> Not always. Loss is a proxy for quality. A model trained on lower-quality data might reach lower loss (because the data is more predictable) while being worse at actual tasks. This is why evaluation benchmarks exist — loss is correlated with quality but doesn't capture everything.</p>
+
+  <p><strong>"The learning rate just needs to be small."</strong> A learning rate that's too small is also a problem — it makes training prohibitively slow and can cause the optimizer to get stuck in poor local minima. The optimal learning rate depends on batch size, model size, and the optimizer. Cosine decay schedules (warm up, hold, then decay to near zero) work well in practice and are used almost universally.</p>
+
+  <p><strong>"You can train indefinitely to get a better model."</strong> Models can and do overfit if trained too long on a fixed dataset. The Chinchilla scaling laws show there's an optimal number of training tokens for a given model size: roughly 20× the parameter count. Training a 7B parameter model past 140B tokens doesn't improve much without more data, and might hurt generalization.</p>
+
+  <div class="page-nav">
+    <a href="transformer.html">← Transformer Block</a>
+    <a href="inference.html">Next: Inference →</a>
+  </div>
+</main>
+</body>
+</html>

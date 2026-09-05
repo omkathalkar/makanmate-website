@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tokenization — LLM Wiki</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav>
+  <a class="home-link" href="index.html">LLM Wiki</a>
+  <a href="tokenization.html" class="active">Tokenization</a>
+  <a href="embeddings.html">Embeddings</a>
+  <a href="attention.html">Attention</a>
+  <a href="transformer.html">Transformer</a>
+  <a href="training.html">Training</a>
+  <a href="inference.html">Inference</a>
+</nav>
+<main>
+  <p class="subtitle">Topic 1 of 6</p>
+  <h1>Tokenization</h1>
+
+  <p>Neural networks work on numbers. Your text is not numbers. So the very first thing any language model has to do is convert a string like <code>"hello world"</code> into a sequence of integers like <code>[15339, 1917]</code>. That conversion is tokenization, and the integers are called tokens.</p>
+
+  <p>Sounds trivial. It's not. The choices made here ripple through everything else — how long a "context window" feels in practice, whether the model can do arithmetic, even how well it handles non-English languages. Let's build our way up from the simplest possible approach to understanding what real tokenizers do.</p>
+
+  <div class="section-label">Intuition</div>
+  <h2>Start simple: character-level tokenization</h2>
+
+  <p>The most obvious approach: give every unique character a unique integer.</p>
+
+<pre><code>text = "hello world"
+
+# Build vocabulary from the characters in our text
+chars = sorted(set(text))
+char_to_id = {c: i for i, c in enumerate(chars)}
+id_to_char = {i: c for c, i in char_to_id.items()}
+
+print("Vocabulary:", char_to_id)
+# {'': 0, 'd': 1, 'e': 2, 'h': 3, 'l': 4, 'o': 5, 'r': 6, 'w': 7}
+
+tokens = [char_to_id[c] for c in text]
+print("Tokens:", tokens)
+# [3, 2, 4, 4, 5, 0, 7, 5, 6, 4, 1]
+
+decoded = ''.join(id_to_char[t] for t in tokens)
+print("Decoded:", decoded)
+# hello world</code></pre>
+
+  <p>This works! Perfectly lossless — we can always reconstruct the original text. And the vocabulary is tiny: 26 letters + punctuation + digits ≈ maybe 100 tokens for English.</p>
+
+  <p>But here's the problem: sequences get very long. A paragraph of 500 characters becomes 500 tokens. And the model has to learn relationships between tokens — the further apart two related tokens are, the harder that is. If "London" appears six tokens earlier and influences the word "city" now, the model needs to connect them across six steps. At character level, "London" spans six tokens by itself.</p>
+
+  <p>We need bigger tokens. But how do we define them?</p>
+
+  <h2>The naive upgrade: words</h2>
+
+  <p>Split on spaces. "hello world" → ["hello", "world"] → [0, 1]. Shorter sequences, great.</p>
+
+  <p>New problems:</p>
+  <ul>
+    <li><strong>Vocabulary explodes.</strong> English alone has hundreds of thousands of words. Add technical terms, proper nouns, code identifiers — you're looking at millions. That's a huge embedding table to maintain.</li>
+    <li><strong>Unknown words break everything.</strong> Any word not seen during training becomes a dead-end <code>[UNK]</code> token. The model knows nothing about it.</li>
+    <li><strong>Morphology is lost.</strong> "run", "running", "runner" are three unrelated tokens, even though they share a root. The model has to learn their relationship from scratch rather than getting it for free from shared substrings.</li>
+  </ul>
+
+  <p>What we really want is something in between: tokens that are bigger than characters but smaller than words, so that common words stay intact and rare words get broken into recognizable pieces.</p>
+
+  <h2>The solution: Byte Pair Encoding (BPE)</h2>
+
+  <p>The insight is elegant. Start with characters. Then repeatedly find the most common adjacent pair and merge them into a new token. Repeat until you have the vocabulary size you want.</p>
+
+  <p>After enough merges, common words like "the" become single tokens. Rare words like "tokenization" become something like ["token", "ization"]. The model gets meaningful subword units without you having to hand-craft them.</p>
+
+  <div class="section-label">Code</div>
+  <h2>BPE from scratch</h2>
+
+<pre><code>from collections import Counter
+
+def get_pairs(vocab):
+    """Count all adjacent symbol pairs, weighted by word frequency."""
+    pairs = Counter()
+    for word, freq in vocab.items():
+        symbols = word.split()
+        for i in range(len(symbols) - 1):
+            pairs[(symbols[i], symbols[i + 1])] += freq
+    return pairs
+
+def merge_pair(pair, vocab):
+    """Replace every occurrence of (a, b) with ab across the vocabulary."""
+    new_vocab = {}
+    bigram = ' '.join(pair)
+    replacement = ''.join(pair)
+    for word, freq in vocab.items():
+        new_vocab[word.replace(bigram, replacement)] = freq
+    return new_vocab
+
+# Each word is pre-split into characters, with </w> marking word end.
+# Frequencies reflect how often each word appears in our corpus.
+vocab = {
+    'l o w </w>': 5,
+    'l o w e r </w>': 2,
+    'n e w e s t </w>': 6,
+    'w i d e s t </w>': 3,
+}
+
+print("Initial vocabulary:")
+for word in vocab:
+    print(f"  {word}")
+
+for step in range(6):
+    pairs = get_pairs(vocab)
+    if not pairs:
+        break
+    best_pair, count = pairs.most_common(1)[0]
+    vocab = merge_pair(best_pair, vocab)
+    merged = ''.join(best_pair)
+    print(f"\nStep {step+1}: merge '{best_pair[0]}' + '{best_pair[1]}' → '{merged}'  (appeared {count}x)")
+    for word in vocab:
+        print(f"  {word}")</code></pre>
+
+  <p>Run this. The first merge will be <code>e + s → es</code> (appears 9 times: 6 in "newest" + 3 in "widest"). Then <code>es + t → est</code>. Then <code>l + o → lo</code>. The algorithm is discovering that "est" is a meaningful suffix worth treating as a unit — without anyone telling it that.</p>
+
+  <p>In a real tokenizer you'd run this on gigabytes of text until you hit your target vocabulary size (GPT-2: 50,257 tokens; GPT-4: 100,277 tokens). The final merge table gets saved and used at inference time.</p>
+
+  <h2>What real tokenizers look like</h2>
+
+  <p>Modern tokenizers (like OpenAI's <code>tiktoken</code>) operate on bytes rather than characters. This is a small but crucial detail: it means they can handle literally any Unicode text — Chinese, Arabic, emoji, binary data in base64 — without ever producing an unknown token. Everything is a sequence of bytes, and bytes have a fixed vocabulary of 256.</p>
+
+<pre><code># pip install tiktoken
+import tiktoken
+
+enc = tiktoken.get_encoding("cl100k_base")  # GPT-4's tokenizer
+
+examples = [
+    "Hello, world!",
+    "hello, world!",    # lowercase h → different token
+    " hello, world!",   # leading space → still different
+    "1 + 1 = 2",
+    "def fibonacci(n):",
+    "你好世界",           # Chinese
+    "🤔",               # emoji
+]
+
+for text in examples:
+    ids = enc.encode(text)
+    tokens = [enc.decode([i]) for i in ids]
+    print(f"{text!r}")
+    print(f"  ids: {ids}")
+    print(f"  tokens: {tokens}")
+    print(f"  count: {len(ids)}")
+    print()</code></pre>
+
+  <div class="section-label">At Scale</div>
+  <h2>What actually matters when you're using a real model</h2>
+
+  <p>A few things that have practical consequences:</p>
+
+  <p><strong>Context windows are measured in tokens, not words.</strong> GPT-4's 128k context window is 128,000 tokens. A typical English word is about 1.3 tokens. So 128k tokens ≈ 98k words ≈ a medium-length novel. But code is denser (more punctuation, more unusual strings), and some languages pack less meaning per token than English does.</p>
+
+  <p><strong>Tokenization affects cost.</strong> API calls are billed per token. Wordy prompts cost more not just because they're longer but because filler words add tokens without helping the model. Dense, precise prompts are economical.</p>
+
+  <p><strong>The tokenizer is frozen at training time.</strong> You can't add new tokens to GPT-4 without retraining from scratch. The entire model — every weight, every embedding — is coupled to the specific vocabulary. This is why you see new model families (Claude, Llama 3, etc.) rather than incremental vocabulary extensions.</p>
+
+  <div class="section-label">Common Misconceptions</div>
+  <h2>Things that trip people up</h2>
+
+  <p><strong>"Tokens are words."</strong> Usually not. In GPT-4's tokenizer: "tokenization" is one token, "Tokenization" is one (different) token, " tokenization" (with a leading space) is also one token. Punctuation is often its own token. Numbers vary wildly — "100" is one token, "1000" is one token, but "10000" might be two, depending on frequency in training data.</p>
+
+  <p><strong>"Models can do arithmetic."</strong> Sort of, kind of, not really. The issue is that numbers get tokenized in unpredictable ways. "42 + 58" might tokenize as ["42", " +", " 58"], so the model has to figure out addition at the level of token IDs rather than digits. There's no clean "carry the 1" — it all has to be learned implicitly from examples. This is a genuine limitation, and it's why LLMs still struggle with multi-step arithmetic even when they're brilliant at other reasoning tasks.</p>
+
+  <p><strong>"Spaces don't matter."</strong> They very much do. Most tokenizers treat a word differently depending on whether it has a leading space. "Hello" and " Hello" are often different tokens. This is because BPE was trained on natural text where "Hello" at the start of a sentence and " hello" mid-sentence are statistically different contexts.</p>
+
+  <p><strong>"You can fix tokenization issues with prompting."</strong> Not really. If the model struggles to count the letters in "strawberry" (it famously does), no amount of chain-of-thought prompting fully compensates. The problem is structural — the model never sees individual characters during training, only token chunks. The fix is architectural (character-aware tokenizers, or none at all), not prompting-based.</p>
+
+  <div class="page-nav">
+    <span></span>
+    <a href="embeddings.html">Next: Embeddings →</a>
+  </div>
+</main>
+</body>
+</html>

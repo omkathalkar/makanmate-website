@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Transformer Block — LLM Wiki</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav>
+  <a class="home-link" href="index.html">LLM Wiki</a>
+  <a href="tokenization.html">Tokenization</a>
+  <a href="embeddings.html">Embeddings</a>
+  <a href="attention.html">Attention</a>
+  <a href="transformer.html" class="active">Transformer</a>
+  <a href="training.html">Training</a>
+  <a href="inference.html">Inference</a>
+</nav>
+<main>
+  <p class="subtitle">Topic 4 of 6</p>
+  <h1>The Transformer Block</h1>
+
+  <p>We have embeddings (token vectors). We have attention (a mechanism for tokens to exchange information). Now let's put them together into the full architecture. The transformer is surprisingly simple once you see its structure — it's basically one pattern repeated over and over.</p>
+
+  <div class="section-label">Intuition</div>
+  <h2>One block = attention + feedforward, both wrapped in residuals</h2>
+
+  <p>A transformer block takes a sequence of vectors and returns a sequence of the same shape. Internally it does two things:</p>
+  <ol>
+    <li><strong>Attention</strong>: tokens talk to each other, gather context</li>
+    <li><strong>Feedforward (MLP)</strong>: each token independently processes what it just gathered</li>
+  </ol>
+
+  <p>Each of these is wrapped in a <em>residual connection</em> — you add the input to the output, so the block only needs to learn what to change, not what to output from scratch. And each is preceded by <em>layer normalization</em> to keep the scale of activations stable.</p>
+
+  <p>In pseudocode:</p>
+<pre><code># One transformer block:
+x = x + attention(layer_norm(x))
+x = x + feedforward(layer_norm(x))</code></pre>
+
+  <p>That's it. Stack 12, 24, or 96 of these on top of each other and you have GPT-2 Small, GPT-3, or GPT-3 175B respectively.</p>
+
+  <h2>Why residual connections are essential</h2>
+
+  <p>Before residual connections (introduced in ResNet for images), deep networks were essentially impossible to train. Gradients would vanish or explode as they were backpropagated through dozens of layers.</p>
+
+  <p>Residuals fix this elegantly. Because <code>output = input + f(input)</code>, the gradient always has a direct path to flow backward through the addition: <code>dL/dinput = dL/doutput × (1 + df/dinput)</code>. The "1" term is always there, guaranteeing gradient flow regardless of what <code>f</code> learned. Even if every block's transformation goes wrong, the gradient still gets through.</p>
+
+  <p>There's a deeper implication: the transformer is really learning <em>residual updates</em> to a running representation. The embedding starts as a rough token+position vector. Each layer refines it slightly. By the final layer, the representation has been incrementally transformed into something useful for predicting the next token.</p>
+
+  <h2>Layer normalization</h2>
+
+  <p>Layer norm standardizes each vector to have mean ~0 and variance ~1, then scales and shifts with learned parameters. Unlike batch norm (which normalizes across the batch), layer norm normalizes across the embedding dimension of each individual token — it doesn't depend on batch size and works identically during training and inference.</p>
+
+<pre><code>import torch
+import torch.nn as nn
+
+# Layer norm applied to the last dimension (embed_dim)
+ln = nn.LayerNorm(8)  # 8-dimensional embeddings
+
+x = torch.randn(2, 5, 8)  # batch=2, seq=5, dim=8
+print("Before LN - mean:", x.mean(-1).round(decimals=2))
+print("Before LN - std: ", x.std(-1).round(decimals=2))
+
+y = ln(x)
+print("After  LN - mean:", y.mean(-1).round(decimals=3))
+print("After  LN - std: ", y.std(-1).round(decimals=3))
+# → mean ≈ 0.0, std ≈ 1.0 for each token</code></pre>
+
+  <h2>The feedforward network</h2>
+
+  <p>After attention, each position passes through a small MLP independently. Typically: expand to 4× the embedding dimension, apply a nonlinearity (GELU in GPT-2, SwiGLU in Llama), project back down.</p>
+
+  <p>Why 4×? Empirically it works well. The expansion gives the network more capacity to compute transformations before collapsing back. Some interpretability research suggests the MLP layers function as a key-value memory store — the expanded layer "looks up" factual associations (country → capital, etc.) while attention handles the routing.</p>
+
+<pre><code>class FeedForward(nn.Module):
+    def __init__(self, embed_dim):
+        super().__init__()
+        # GPT-2 style: expand 4x, GELU, project back
+        self.net = nn.Sequential(
+            nn.Linear(embed_dim, 4 * embed_dim),
+            nn.GELU(),
+            nn.Linear(4 * embed_dim, embed_dim),
+        )
+
+    def forward(self, x):
+        return self.net(x)  # applied identically to each token position</code></pre>
+
+  <div class="section-label">Code</div>
+  <h2>The full transformer block</h2>
+
+<pre><code>import torch
+import torch.nn as nn
+import torch.nn.functional as F
+
+
+class MultiHeadAttention(nn.Module):
+    def __init__(self, embed_dim, n_heads):
+        super().__init__()
+        self.n_heads  = n_heads
+        self.head_dim = embed_dim // n_heads
+        self.qkv      = nn.Linear(embed_dim, 3 * embed_dim, bias=False)
+        self.proj     = nn.Linear(embed_dim, embed_dim, bias=False)
+
+    def forward(self, x):
+        B, T, C = x.shape
+        Q, K, V = self.qkv(x).chunk(3, dim=-1)
+
+        def split(t):
+            return t.view(B, T, self.n_heads, self.head_dim).transpose(1, 2)
+
+        Q, K, V = split(Q), split(K), split(V)
+        mask   = torch.tril(torch.ones(T, T, device=x.device))
+        scale  = self.head_dim ** 0.5
+        scores = (Q @ K.transpose(-2, -1)) / scale
+        scores = scores.masked_fill(mask == 0, float('-inf'))
+        w      = F.softmax(scores, dim=-1)
+        out    = (w @ V).transpose(1, 2).contiguous().view(B, T, C)
+        return self.proj(out)
+
+
+class TransformerBlock(nn.Module):
+    def __init__(self, embed_dim, n_heads):
+        super().__init__()
+        self.ln1  = nn.LayerNorm(embed_dim)
+        self.attn = MultiHeadAttention(embed_dim, n_heads)
+        self.ln2  = nn.LayerNorm(embed_dim)
+        self.ff   = nn.Sequential(
+            nn.Linear(embed_dim, 4 * embed_dim),
+            nn.GELU(),
+            nn.Linear(4 * embed_dim, embed_dim),
+        )
+
+    def forward(self, x):
+        x = x + self.attn(self.ln1(x))   # attention sublayer
+        x = x + self.ff(self.ln2(x))     # feedforward sublayer
+        return x
+
+
+# Test a single block
+block = TransformerBlock(embed_dim=64, n_heads=4)
+x     = torch.randn(2, 10, 64)   # batch=2, seq_len=10, dim=64
+out   = block(x)
+print(out.shape)   # torch.Size([2, 10, 64]) — same shape in, same shape out</code></pre>
+
+  <h2>The complete GPT architecture</h2>
+
+<pre><code>class GPT(nn.Module):
+    def __init__(self, vocab_size, embed_dim, n_heads, n_layers, max_seq_len):
+        super().__init__()
+        self.token_emb = nn.Embedding(vocab_size, embed_dim)
+        self.pos_emb   = nn.Embedding(max_seq_len, embed_dim)
+        self.blocks    = nn.Sequential(
+            *[TransformerBlock(embed_dim, n_heads) for _ in range(n_layers)]
+        )
+        self.ln_f  = nn.LayerNorm(embed_dim)          # final layer norm
+        self.head  = nn.Linear(embed_dim, vocab_size, bias=False)
+
+        # Weight tying: share token embedding and output projection weights
+        self.head.weight = self.token_emb.weight
+
+    def forward(self, token_ids):
+        B, T = token_ids.shape
+        pos  = torch.arange(T, device=token_ids.device)
+
+        x = self.token_emb(token_ids) + self.pos_emb(pos)  # [B, T, C]
+        x = self.blocks(x)                                  # [B, T, C]
+        x = self.ln_f(x)                                    # [B, T, C]
+        logits = self.head(x)                               # [B, T, vocab]
+        return logits
+
+
+# GPT-2 Small config
+gpt2_small = GPT(
+    vocab_size=50257, embed_dim=768, n_heads=12,
+    n_layers=12, max_seq_len=1024
+)
+
+# Count parameters
+n_params = sum(p.numel() for p in gpt2_small.parameters())
+print(f"Parameters: {n_params / 1e6:.1f}M")  # ~117M
+
+# Forward pass
+tokens = torch.randint(0, 50257, (1, 16))   # batch=1, seq_len=16
+logits = gpt2_small(tokens)
+print("Logits shape:", logits.shape)        # [1, 16, 50257]
+# Each of the 16 positions predicts a distribution over the next token.</code></pre>
+
+  <div class="section-label">At Scale</div>
+  <h2>How GPT-2 → GPT-3 → GPT-4 scales</h2>
+
+  <p>The architecture barely changes. GPT-3 is GPT-2 with:</p>
+  <ul>
+    <li>embed_dim: 768 → 12,288</li>
+    <li>n_heads: 12 → 96</li>
+    <li>n_layers: 12 → 96</li>
+    <li>max_seq_len: 1,024 → 2,048</li>
+    <li>Alternating dense and sparse attention (every other layer)</li>
+  </ul>
+
+  <p>That's ~175B parameters vs. ~117M — a 1,500× increase — with the same basic block structure. The scaling laws (Hoffmann et al., "Chinchilla") show that for a fixed compute budget, you get better loss by scaling model size and training tokens roughly equally rather than making one much bigger than the other.</p>
+
+  <p>Modern models (Llama, Mistral) have architectural improvements: RoPE positional embeddings instead of learned positional embeddings, SwiGLU activations instead of GELU, RMSNorm instead of LayerNorm. These help — but the core pattern (attention + FFN + residuals, repeated N times) is unchanged.</p>
+
+  <div class="section-label">Common Misconceptions</div>
+  <h2>Things that trip people up</h2>
+
+  <p><strong>"The transformer architecture was carefully designed."</strong> Not really — it was found empirically and has since been confirmed by scaling laws and ablations. Many of its specific choices (4× expansion in FFN, 12 heads for 768-dim, pre-norm vs. post-norm) were validated by experiment, not derived from first principles. The architecture is a lucky combination that happens to work extremely well.</p>
+
+  <p><strong>"Deeper is always better."</strong> More layers generally help, but there's a compute-optimal tradeoff. A very deep but narrow model underperforms a shallower but wider one with the same parameter count if the layers are too thin to represent useful features. Scaling laws give the optimal depth/width ratio for a given parameter count.</p>
+
+  <p><strong>"The model stores facts in the weights uniformly."</strong> Mechanistic interpretability research suggests factual associations are disproportionately stored in MLP layers (especially middle and late layers), while attention heads handle syntactic structure and co-reference. It's not a clean separation, but it's not uniform either.</p>
+
+  <p><strong>"The final-layer logits tell you what the model 'thinks'."</strong> The logits are a probability distribution over the next token — that's all. They don't directly tell you confidence, uncertainty, or anything about the model's "reasoning". A model that outputs 99% probability for the correct token might still be completely wrong in its next generation step if context shifts.</p>
+
+  <div class="page-nav">
+    <a href="attention.html">← Attention</a>
+    <a href="training.html">Next: Training →</a>
+  </div>
+</main>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LLM Wiki — How Language Models Work</title>
+  <meta name="description" content="A from-scratch guide to how large language models work, built with code. Intuition first, math second.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav>
+  <a class="home-link" href="index.html">LLM Wiki</a>
+  <a href="tokenization.html">Tokenization</a>
+  <a href="embeddings.html">Embeddings</a>
+  <a href="attention.html">Attention</a>
+  <a href="transformer.html">Transformer</a>
+  <a href="training.html">Training</a>
+  <a href="inference.html">Inference</a>
+</nav>
+<main>
+  <h1>How Language Models Work</h1>
+  <p class="subtitle">A from-scratch guide, built with code</p>
+
+  <p>I'm a PhD student working on efficient AI inference. Over the past couple of years I've read a lot of papers, stared at a lot of code, and spent an embarrassing amount of time confused about things that turned out to be simple once someone explained them properly.</p>
+
+  <p>This wiki is my attempt to write the explanations I wish I'd had. Not the textbook version. Not the "here's the formal definition" version. The version where we build a tiny working thing first, stare at it until it makes sense, and <em>then</em> talk about how real systems scale it up.</p>
+
+  <p>I've tried to follow one rule throughout: intuition first, math and code second. If the code still feels magical after reading the explanation, the explanation isn't good enough yet. I'll keep fixing it.</p>
+
+  <div class="note">
+    <strong>Prerequisites:</strong> basic Python, a rough idea of what a neural network is (weights, forward pass, loss, training). You don't need to know PyTorch — I'll explain what I use as I go. No math beyond high-school algebra is assumed, though some familiarity with matrix multiplication will help.
+  </div>
+
+  <div class="section-label">Topics</div>
+
+  <ul class="topics">
+    <li>
+      <a class="topic-link" href="tokenization.html">1. Tokenization</a>
+      <div class="desc">Before a model can touch your text, it converts it to integers. How that works, why it's trickier than it sounds, and why "1+1=2" is five tokens not three.</div>
+    </li>
+    <li>
+      <a class="topic-link" href="embeddings.html">2. Embeddings</a>
+      <div class="desc">Token integers get mapped to vectors — points in a high-dimensional space where meaning lives. How the geometry of that space actually encodes relationships, and where the intuition breaks down.</div>
+    </li>
+    <li>
+      <a class="topic-link" href="attention.html">3. Attention</a>
+      <div class="desc">The core mechanism of every modern LLM. Every token looks at every other token and decides what to borrow. We build scaled dot-product attention from 20 lines of PyTorch.</div>
+    </li>
+    <li>
+      <a class="topic-link" href="transformer.html">4. The Transformer Block</a>
+      <div class="desc">Attention + layer norm + feedforward network, wrapped in residual connections. Why this particular combination works so well, and what the full GPT architecture looks like.</div>
+    </li>
+    <li>
+      <a class="topic-link" href="training.html">5. Training & Backprop</a>
+      <div class="desc">How the model learns from data. Cross-entropy loss, gradient descent, AdamW. What loss curves actually tell you — and what they don't.</div>
+    </li>
+    <li>
+      <a class="topic-link" href="inference.html">6. Inference</a>
+      <div class="desc">What happens when you hit send. Autoregressive generation, KV caching (the most important optimization you've never heard of), and the sampling strategies that control how "creative" the model is.</div>
+    </li>
+  </ul>
+
+  <p class="coming-soon">
+    Coming later:
+    <span>RLHF</span>
+    <span>Fine-tuning</span>
+    <span>Quantization</span>
+    <span>MoE</span>
+    <span>Speculative decoding</span>
+    <span>Flash Attention</span>
+  </p>
+</main>
+</body>
+</html>

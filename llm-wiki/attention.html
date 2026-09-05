@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Attention — LLM Wiki</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav>
+  <a class="home-link" href="index.html">LLM Wiki</a>
+  <a href="tokenization.html">Tokenization</a>
+  <a href="embeddings.html">Embeddings</a>
+  <a href="attention.html" class="active">Attention</a>
+  <a href="transformer.html">Transformer</a>
+  <a href="training.html">Training</a>
+  <a href="inference.html">Inference</a>
+</nav>
+<main>
+  <p class="subtitle">Topic 3 of 6</p>
+  <h1>Attention</h1>
+
+  <p>Attention is the core operation that makes modern language models work. Every GPT, Claude, Gemini, and Llama is built from stacks of attention layers. If you understand attention — really understand it, not just the formula — you understand 80% of what these models are doing.</p>
+
+  <p>Let's build it from scratch.</p>
+
+  <div class="section-label">Intuition</div>
+  <h2>The problem attention solves</h2>
+
+  <p>Imagine you're reading the sentence: <em>"The animal didn't cross the street because it was too tired."</em></p>
+
+  <p>What does "it" refer to? The animal, not the street. You know this because you read "animal" a few words earlier and held it in mind. More formally: the representation of "it" depends on information from a token seven positions back.</p>
+
+  <p>Before attention, this was handled by RNNs — a hidden state that accumulated information as it marched left to right through the sequence. But that hidden state is a fixed-size bottleneck. By the time you've read 200 tokens, the information from token 1 is badly diluted. Long-range dependencies were notoriously hard to learn.</p>
+
+  <p>Attention throws out the sequential processing entirely. Every token directly looks at every other token and decides: <em>how much should I borrow from each of the others?</em> No bottleneck. No marching left to right. Just a direct, soft connection from every position to every other position.</p>
+
+  <h2>Queries, Keys, and Values</h2>
+
+  <p>Here's the framework. Each token produces three vectors:</p>
+  <ul>
+    <li><strong>Query (Q)</strong>: "what am I looking for?"</li>
+    <li><strong>Key (K)</strong>: "what do I have to offer?"</li>
+    <li><strong>Value (V)</strong>: "what information do I actually pass along?"</li>
+  </ul>
+
+  <p>To compute what token <em>i</em> receives, you take its Query and compute its dot product with every other token's Key. Dot product measures similarity — a high score means "this token has what I'm looking for." Then you take a weighted sum of all tokens' Values, where the weights are those similarity scores.</p>
+
+  <p>Think of it like a search engine. Your Query is the search term. Each token's Key is its metadata. The engine finds the best matches (high dot products) and returns their Values.</p>
+
+  <div class="section-label">Code</div>
+  <h2>Scaled dot-product attention from scratch</h2>
+
+<pre><code>import torch
+import torch.nn.functional as F
+
+def attention(Q, K, V, mask=None):
+    """
+    Q, K, V: shape [batch, seq_len, d_k]
+    Returns: shape [batch, seq_len, d_k]
+    """
+    d_k = Q.shape[-1]
+
+    # Step 1: dot product of every query with every key
+    # [batch, seq_len, seq_len]
+    scores = Q @ K.transpose(-2, -1)
+
+    # Step 2: scale to prevent huge values → softmax saturation
+    scores = scores / (d_k ** 0.5)
+
+    # Step 3: optional causal mask (tokens can't attend to future tokens)
+    if mask is not None:
+        scores = scores.masked_fill(mask == 0, float('-inf'))
+
+    # Step 4: softmax → attention weights (sum to 1 for each query)
+    weights = F.softmax(scores, dim=-1)
+
+    # Step 5: weighted sum of values
+    out = weights @ V
+
+    return out, weights
+
+# Try it on a tiny example
+torch.manual_seed(42)
+batch, seq_len, d_k = 1, 4, 8
+Q = torch.randn(batch, seq_len, d_k)
+K = torch.randn(batch, seq_len, d_k)
+V = torch.randn(batch, seq_len, d_k)
+
+out, weights = attention(Q, K, V)
+print("Output shape:", out.shape)       # [1, 4, 8]
+print("Attention weights:\n", weights[0].round(decimals=3))</code></pre>
+
+  <p>Run this and look at the attention weight matrix. Each row is a distribution over the four tokens — it shows which tokens each position is attending to. Since Q, K, V are random here, the weights will be roughly uniform. In a trained model, they'd be sparse and meaningful.</p>
+
+  <h2>The causal mask: tokens can't see the future</h2>
+
+  <p>During training, the model sees the full sequence and tries to predict each token given only the tokens before it. If token 5 could attend to token 6, it would just cheat and copy the next token rather than learning anything. So we apply a causal mask that zeros out attention to future positions.</p>
+
+<pre><code>def causal_mask(seq_len):
+    """Upper triangle is 0 (blocked), lower triangle is 1 (allowed)."""
+    return torch.tril(torch.ones(seq_len, seq_len))
+
+seq_len = 5
+mask = causal_mask(seq_len)
+print(mask)
+# tensor([[1., 0., 0., 0., 0.],
+#         [1., 1., 0., 0., 0.],
+#         [1., 1., 1., 0., 0.],
+#         [1., 1., 1., 1., 0.],
+#         [1., 1., 1., 1., 1.]])
+
+# Position 0 can only see itself.
+# Position 4 can see all five tokens.
+# This is causal (autoregressive) attention.
+
+Q = torch.randn(1, seq_len, 8)
+K = torch.randn(1, seq_len, 8)
+V = torch.randn(1, seq_len, 8)
+
+out, weights = attention(Q, K, V, mask=mask)
+print("\nMasked attention weights:")
+print(weights[0].round(decimals=3))
+# Upper triangle will be exactly 0.0 for all rows.</code></pre>
+
+  <h2>Multi-head attention</h2>
+
+  <p>One attention head gives each token one way to "look" at the sequence. But "it refers to the animal" and "this verb agrees with that noun" are different kinds of relationships. Running multiple attention heads in parallel lets the model look for different things simultaneously.</p>
+
+  <p>In practice, you split the embedding dimension into <code>n_heads</code> chunks, run attention independently on each chunk, and concatenate the results. GPT-2 Small uses 12 heads on 768-dimensional embeddings → each head operates on 64 dimensions.</p>
+
+<pre><code>import torch
+import torch.nn as nn
+import torch.nn.functional as F
+
+class MultiHeadAttention(nn.Module):
+    def __init__(self, embed_dim, n_heads):
+        super().__init__()
+        assert embed_dim % n_heads == 0
+        self.n_heads = n_heads
+        self.head_dim = embed_dim // n_heads
+
+        # Project input to Q, K, V all at once (3x the dimension)
+        self.qkv_proj = nn.Linear(embed_dim, 3 * embed_dim, bias=False)
+        self.out_proj  = nn.Linear(embed_dim, embed_dim, bias=False)
+
+    def forward(self, x):
+        B, T, C = x.shape  # batch, seq_len, embed_dim
+
+        # Compute Q, K, V in one shot and split
+        qkv = self.qkv_proj(x)           # [B, T, 3C]
+        Q, K, V = qkv.chunk(3, dim=-1)   # each [B, T, C]
+
+        # Reshape for multi-head: [B, n_heads, T, head_dim]
+        def split_heads(t):
+            return t.view(B, T, self.n_heads, self.head_dim).transpose(1, 2)
+
+        Q, K, V = split_heads(Q), split_heads(K), split_heads(V)
+
+        # Causal mask
+        mask = torch.tril(torch.ones(T, T, device=x.device))
+
+        # Scaled dot-product attention (each head independently)
+        scale = self.head_dim ** 0.5
+        scores = (Q @ K.transpose(-2, -1)) / scale
+        scores = scores.masked_fill(mask == 0, float('-inf'))
+        weights = F.softmax(scores, dim=-1)
+        out = weights @ V   # [B, n_heads, T, head_dim]
+
+        # Concatenate heads and project back to embed_dim
+        out = out.transpose(1, 2).contiguous().view(B, T, C)
+        return self.out_proj(out)
+
+# Test
+mha = MultiHeadAttention(embed_dim=64, n_heads=4)
+x   = torch.randn(2, 10, 64)  # batch=2, seq_len=10, dim=64
+out = mha(x)
+print(out.shape)  # torch.Size([2, 10, 64])</code></pre>
+
+  <div class="section-label">At Scale</div>
+  <h2>What changes in large models</h2>
+
+  <p>At GPT-3 scale, attention is computed across sequences of thousands of tokens with 96 heads and 128-dimensional keys. The attention weight matrix for a single layer is [batch × 96 × seq_len × seq_len] — for seq_len = 4096, that's 96 × 4096 × 4096 = 1.6 billion floats per layer, per batch element. This is the dominant memory cost during training.</p>
+
+  <p><strong>Flash Attention</strong> is the optimization that makes this tractable. Instead of materializing the full attention matrix in memory (which can't fit in GPU SRAM for long sequences), it computes attention in tiles, keeping intermediate results in fast on-chip memory. It's mathematically equivalent but 2–4× faster and much more memory efficient. All serious implementations use it.</p>
+
+  <p><strong>KV caching</strong> (covered in the Inference page) is the optimization that makes generation fast. During inference, you don't recompute K and V for tokens you've already processed — you cache them. This is why memory usage grows linearly with generation length.</p>
+
+  <div class="section-label">Common Misconceptions</div>
+  <h2>Things that trip people up</h2>
+
+  <p><strong>"Attention learns what tokens mean."</strong> Attention learns what information to route where, not what things mean. The "meaning" is in the value vectors and the weights downstream. Attention is the routing mechanism; the meaning is built up across many layers.</p>
+
+  <p><strong>"High attention weight = the model thinks this connection is important."</strong> Sort of. But attention weights are notoriously hard to interpret. A head might have high attention from token A to token B because of syntactic agreement — but the actual information being passed (the value) might be about something else entirely. Attention weights are a means of aggregation, not a direct window into model reasoning.</p>
+
+  <p><strong>"More heads is always better."</strong> More heads means each head has fewer dimensions to work with, which can hurt if the heads don't specialize. Empirically, many heads in large models are nearly redundant — you can prune 30–40% of attention heads with minimal loss. The scaling laws suggest depth (more layers) matters more than width (more heads) up to a point.</p>
+
+  <p><strong>"Self-attention understands context."</strong> It <em>aggregates</em> context, which is related but different. A single attention head takes a weighted average of value vectors — it can't do logical operations, it can't count, it can't explicitly reason. The "understanding" that emerges comes from stacking many layers of this simple aggregation and letting the whole system learn whatever representations help minimize training loss.</p>
+
+  <div class="page-nav">
+    <a href="embeddings.html">← Embeddings</a>
+    <a href="transformer.html">Next: Transformer Block →</a>
+  </div>
+</main>
+</body>
+</html>

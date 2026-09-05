@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inference — LLM Wiki</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav>
+  <a class="home-link" href="index.html">LLM Wiki</a>
+  <a href="tokenization.html">Tokenization</a>
+  <a href="embeddings.html">Embeddings</a>
+  <a href="attention.html">Attention</a>
+  <a href="transformer.html">Transformer</a>
+  <a href="training.html">Training</a>
+  <a href="inference.html" class="active">Inference</a>
+</nav>
+<main>
+  <p class="subtitle">Topic 6 of 6</p>
+  <h1>Inference</h1>
+
+  <p>The model is trained. Now you type a prompt and hit enter. What actually happens? This page covers the mechanics of generation: the autoregressive loop, KV caching (the most important optimization you've probably never thought about), and the sampling strategies that control whether the model sounds "creative" or "deterministic".</p>
+
+  <div class="section-label">Intuition</div>
+  <h2>Generation is a loop, not a lookup</h2>
+
+  <p>The model doesn't generate an entire response in one shot. It generates one token at a time, appends that token to its context, then generates the next token given the new context. This is called <em>autoregressive</em> generation.</p>
+
+<pre><code># Pseudocode for generation
+prompt_tokens = tokenize("The capital of France is")
+generated = []
+
+for step in range(max_new_tokens):
+    context = prompt_tokens + generated
+    logits  = model(context)           # [seq_len, vocab_size]
+    next_token = sample(logits[-1])    # pick from the last position
+    generated.append(next_token)
+    if next_token == EOS_TOKEN:
+        break
+
+output = detokenize(generated)
+print(output)  # "Paris."</code></pre>
+
+  <p>The key phrase is "given the new context." Each new token becomes part of the input for the next step. This is why generation is sequential and hard to parallelize — step N depends on the output of step N-1.</p>
+
+  <h2>The problem: this is very slow</h2>
+
+  <p>Each forward pass runs the full model. For a 7B parameter model generating a 500-token response, that's 500 full forward passes. Each forward pass computes attention across the entire context. If your context is 4096 tokens long, the attention computation involves 4096 × 4096 = 16M dot products. Per layer. For 32 layers. Per token.</p>
+
+  <p>The obvious thing to notice: most of this is recomputed every step. The keys and values for the prompt tokens are recalculated identically on every single generation step. That's wasteful.</p>
+
+  <h2>KV Caching: compute it once, use it forever</h2>
+
+  <p>Here's the insight: in causal attention, the key and value vectors for token <em>i</em> depend only on token <em>i</em>'s input, not on any tokens after it. So once we've computed K and V for position 5, those values never change regardless of what comes after position 5.</p>
+
+  <p>KV caching stores K and V for every token we've already processed. On each new generation step, we only need to compute K and V for the <em>new</em> token, then concatenate them with the cached K and V from all previous tokens.</p>
+
+  <div class="section-label">Code</div>
+  <h2>Attention with and without KV cache</h2>
+
+<pre><code>import torch
+import torch.nn.functional as F
+
+# --- WITHOUT KV cache: full recomputation every step ---
+
+def attention_naive(Q, K, V):
+    """Standard attention. Recomputes everything."""
+    d_k    = Q.shape[-1]
+    T      = Q.shape[-2]
+    mask   = torch.tril(torch.ones(T, T))
+    scores = (Q @ K.transpose(-2, -1)) / d_k**0.5
+    scores = scores.masked_fill(mask == 0, float('-inf'))
+    return F.softmax(scores, dim=-1) @ V
+
+# --- WITH KV cache: only compute the new token ---
+
+class KVCache:
+    def __init__(self):
+        self.k_cache = None
+        self.v_cache = None
+
+    def update(self, k_new, v_new):
+        if self.k_cache is None:
+            self.k_cache = k_new
+            self.v_cache = v_new
+        else:
+            self.k_cache = torch.cat([self.k_cache, k_new], dim=1)
+            self.v_cache = torch.cat([self.v_cache, v_new], dim=1)
+        return self.k_cache, self.v_cache
+
+def attention_cached(q_new, k_new, v_new, cache):
+    """
+    q_new, k_new, v_new: [batch, 1, d_k] — only the new token
+    cache: KVCache storing all previous K, V
+    """
+    d_k = q_new.shape[-1]
+    K, V = cache.update(k_new, v_new)  # append and get full history
+    # q_new attends to all K positions (no mask needed: new token is last)
+    scores = (q_new @ K.transpose(-2, -1)) / d_k**0.5
+    return F.softmax(scores, dim=-1) @ V
+
+# Demonstration of memory savings
+d_k, max_len = 64, 512
+print("Without KV cache:")
+print(f"  Each step stores: K shape [1, {max_len}, {d_k}], V shape [1, {max_len}, {d_k}]")
+print(f"  Each step computes: {max_len}x{max_len} attention matrix")
+
+print("\nWith KV cache:")
+print(f"  Cached: K shape grows from [1,1,{d_k}] to [1,{max_len},{d_k}] over {max_len} steps")
+print(f"  Each step: only 1x{max_len} attention (Q is just 1 new token)")</code></pre>
+
+  <p>The computational savings are dramatic. Without KV cache: generating 512 tokens on a 512-token prompt requires 512 full attention passes over 512-1024 tokens each. With KV cache: each step's attention is just a single query attending to a growing key-value history. The total compute drops by roughly 2×.</p>
+
+  <p>The tradeoff: memory. The KV cache grows with every generated token. For a 7B model generating a 4096-token response with batch size 8, the KV cache alone can be several GB. This is why inference memory is often the bottleneck, not compute.</p>
+
+  <h2>A minimal generation loop</h2>
+
+<pre><code>import torch
+import torch.nn.functional as F
+
+def generate(model, prompt_ids, max_new_tokens=50, temperature=1.0, top_k=50):
+    """
+    model: a GPT-style model
+    prompt_ids: [1, prompt_len] tensor of token IDs
+    Returns: list of new token IDs
+    """
+    generated = []
+    context = prompt_ids  # [1, T]
+
+    with torch.no_grad():
+        for _ in range(max_new_tokens):
+            logits = model(context)       # [1, T, vocab_size]
+            next_logits = logits[0, -1]   # logits for the last position
+
+            # Apply temperature
+            next_logits = next_logits / temperature
+
+            # Top-k filtering: zero out everything outside top k
+            if top_k is not None:
+                values, _ = torch.topk(next_logits, top_k)
+                threshold  = values[-1]
+                next_logits[next_logits < threshold] = float('-inf')
+
+            # Sample from the filtered distribution
+            probs = F.softmax(next_logits, dim=-1)
+            next_token = torch.multinomial(probs, num_samples=1)  # [1]
+
+            generated.append(next_token.item())
+
+            # Append to context for next step
+            context = torch.cat([context, next_token.unsqueeze(0)], dim=1)
+
+            if next_token.item() == 50256:  # GPT-2 EOS token
+                break
+
+    return generated</code></pre>
+
+  <h2>Sampling strategies</h2>
+
+  <p>The most important dial: <strong>temperature</strong>. Before softmax, you divide the logits by a temperature value T:</p>
+  <ul>
+    <li><code>T &lt; 1</code>: makes the distribution sharper — the model picks more "expected" tokens. At T → 0, this becomes greedy decoding (always pick the highest probability token).</li>
+    <li><code>T = 1</code>: unchanged distribution from training.</li>
+    <li><code>T &gt; 1</code>: flatter distribution — more randomness, more creativity, more potential for off-topic or nonsensical output.</li>
+  </ul>
+
+<pre><code>import torch
+import torch.nn.functional as F
+
+logits = torch.tensor([3.0, 2.0, 1.0, 0.5, -1.0])  # vocab_size=5
+
+for temp in [0.1, 0.5, 1.0, 2.0]:
+    probs = F.softmax(logits / temp, dim=0)
+    print(f"T={temp}: {probs.round(decimals=3).tolist()}")
+
+# T=0.1: [0.999, 0.001, 0.0, 0.0, 0.0]   ← almost greedy
+# T=0.5: [0.923, 0.069, 0.007, 0.001, 0.0]
+# T=1.0: [0.570, 0.210, 0.077, 0.047, 0.006]  ← original distribution
+# T=2.0: [0.342, 0.249, 0.182, 0.155, 0.073]  ← more uniform</code></pre>
+
+  <p><strong>Top-k sampling</strong>: zero out all tokens except the top k most probable ones, then renormalize and sample. Prevents the model from accidentally sampling a very improbable token. Typical values: k = 40–100.</p>
+
+  <p><strong>Top-p (nucleus) sampling</strong>: instead of a fixed k, include the smallest set of tokens whose cumulative probability exceeds p. More adaptive than top-k: if the model is very confident (one token at 95% probability), nucleus sampling with p=0.9 will include just that token. If the model is uncertain, it includes more options. Typical values: p = 0.9–0.95.</p>
+
+<pre><code>def top_p_filter(logits, p=0.9):
+    sorted_logits, sorted_indices = torch.sort(logits, descending=True)
+    cumulative_probs = torch.cumsum(F.softmax(sorted_logits, dim=-1), dim=-1)
+
+    # Remove tokens with cumulative probability above the threshold
+    sorted_indices_to_remove = cumulative_probs > p
+    # Shift one position right to include the token that pushed us over p
+    sorted_indices_to_remove[..., 1:] = sorted_indices_to_remove[..., :-1].clone()
+    sorted_indices_to_remove[..., 0]  = 0
+
+    indices_to_remove = sorted_indices[sorted_indices_to_remove]
+    logits[indices_to_remove] = float('-inf')
+    return logits</code></pre>
+
+  <div class="section-label">At Scale</div>
+  <h2>Why inference is hard at scale</h2>
+
+  <p>Training is compute-bound: the GPUs are doing matrix multiplications at near-peak FLOP utilization. Inference is memory-bandwidth-bound: the GPUs spend most of their time reading and writing model weights and the KV cache, not doing arithmetic. This is a fundamentally different bottleneck.</p>
+
+  <p>The consequence: throwing more compute (bigger GPU) at inference doesn't help as much as you'd expect. What helps is faster memory bandwidth and smarter memory management. This is why Nvidia's H100 has ~3.35 TB/s memory bandwidth compared to ~900 GB/s for the A100 — a 3.7× improvement specifically designed to help inference throughput.</p>
+
+  <p><strong>Continuous batching</strong>: serve multiple users simultaneously by filling gaps in the batch as users finish their requests rather than waiting for the entire batch to complete. Dramatically improves GPU utilization in production.</p>
+
+  <p><strong>Speculative decoding</strong>: use a small, fast "draft" model to generate several tokens at once, then verify them in parallel with the large model. If the big model agrees with the draft tokens, you get multiple tokens for the cost of one large model forward pass. In the best case, 3–4× throughput improvement. Worth a full page of its own — coming soon.</p>
+
+  <div class="section-label">Common Misconceptions</div>
+  <h2>Things that trip people up</h2>
+
+  <p><strong>"Greedy decoding gives the best output."</strong> Often not. Greedy decoding (always picking the most probable next token) is deterministic and locally optimal — but locally optimal choices can compound into globally suboptimal outputs. A slightly less probable word choice now might open the door to much better completions later. Beam search and sampling with temperature tend to produce better outputs than greedy decoding for most creative and open-ended tasks.</p>
+
+  <p><strong>"Temperature 0 = the model's 'real' answer."</strong> T → 0 gives you the greedy output, which feels more "confident" — but it's just the model completing the pattern with the highest-probability continuation at each step. It doesn't mean the model is more accurate or more truthful. Factual correctness depends on training data and alignment, not sampling strategy.</p>
+
+  <p><strong>"The model generates the entire response instantly."</strong> No — that's just a UI trick where the response is streamed token by token. The model is generating sequentially. What you perceive as "thinking" (a pause before streaming starts) is prefill: processing your prompt in parallel before generation begins. What you see streaming is autoregressive generation, one token at a time.</p>
+
+  <p><strong>"KV caching is always on."</strong> It depends on the deployment. Simple implementations don't use it. Production systems always do. If a system is "generating" quickly for short outputs but slows dramatically for long ones without KV caching, each new token is processing the full growing context from scratch. With KV caching, generation speed is roughly constant per token regardless of context length (up to the cache size limit).</p>
+
+  <div class="page-nav">
+    <a href="training.html">← Training</a>
+    <a href="index.html">↑ Back to Home</a>
+  </div>
+</main>
+</body>
+</html>
