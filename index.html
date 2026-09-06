@@ -173,7 +173,9 @@
   @media (max-width:700px){.trust-row{grid-template-columns:1fr; gap:8px;}}
 
   /* FOUNDER */
-  .founder{background:var(--slate); color:#fff;}
+  .founder{background:var(--slate); color:#fff; position:relative; overflow:hidden;}
+  .founder-bg{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center 40%; opacity:0.22; z-index:0;}
+  .founder-inner{position:relative; z-index:1;}
   .founder-inner{max-width:680px;}
   .founder p.quote{font-family:var(--serif); font-style:italic; font-size:22px; line-height:1.6; margin:0 0 20px; color:#CBD5E1; border-left:3px solid var(--orange); padding-left:24px;}
   .founder-sign{font-size:14px; color:#64748B; font-weight:600;}
@@ -451,6 +453,7 @@
 </section>
 
 <section class="founder">
+  <img src="images/pune-night.jpg" alt="" class="founder-bg" aria-hidden="true">
   <div class="wrap founder-inner">
     <p class="quote">"We built MakanMate because we've both been the person standing outside a PG with two bags, a landlord who wouldn't answer calls, and a broker who'd already been paid. Pune is where we're fixing that first — properly, before we go anywhere else."</p>
     <p class="founder-sign">— The MakanMate founding team</p>
