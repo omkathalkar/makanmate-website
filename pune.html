@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pune — MakanMate</title>
+  <meta name="description" content="MakanMate is starting in Pune — the city that pulls in more students and first-job movers than almost anywhere else in India.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --ink: #1A0B2E;
+      --marigold: #C6FF3D;
+      --marigold-dim: #9FCC1F;
+      --brick: #FF3D6E;
+      --ivory: #FAFAFF;
+      --ivory-2: #F0EDFF;
+      --charcoal: #1D1029;
+      --charcoal-soft: #6B6280;
+      --line: #E3DEF5;
+      --serif: 'Newsreader', serif;
+      --sans: 'Manrope', sans-serif;
+    }
+    *{box-sizing:border-box;}
+    html{scroll-behavior:smooth;}
+    body{margin:0; font-family:var(--sans); color:var(--charcoal); background:var(--ivory); line-height:1.6;}
+    img{max-width:100%; display:block;}
+    a{color:inherit;}
+    .wrap{max-width:1120px; margin:0 auto; padding:0 28px;}
+
+    /* NAV */
+    .nav{position:sticky; top:0; z-index:50; background:rgba(250,250,255,0.92); backdrop-filter:blur(8px); border-bottom:1px solid var(--line);}
+    .nav-row{display:flex; align-items:center; justify-content:space-between; padding:16px 28px; max-width:1120px; margin:0 auto;}
+    .logo{font-family:var(--serif); font-weight:600; font-size:22px; text-decoration:none; color:var(--ink); display:flex; align-items:center; gap:8px;}
+    .logo-dot{width:8px; height:8px; border-radius:50%; background:var(--marigold); display:inline-block;}
+    .nav-cta{background:var(--ink); color:var(--ivory); padding:10px 20px; border-radius:6px; text-decoration:none; font-weight:700; font-size:14px;}
+    .nav-back{font-size:14px; font-weight:600; color:var(--charcoal-soft); text-decoration:none; display:flex; align-items:center; gap:6px;}
+    .nav-back:hover{color:var(--brick);}
+
+    /* HERO */
+    .hero{position:relative; height:72vh; min-height:480px; overflow:hidden;}
+    .hero img{width:100%; height:100%; object-fit:cover; object-position:center 30%;}
+    .hero-overlay{position:absolute; inset:0; background:linear-gradient(to bottom, rgba(26,11,46,0.25) 0%, rgba(26,11,46,0.72) 100%);}
+    .hero-copy{position:absolute; bottom:0; left:0; right:0; padding:52px 28px 52px; max-width:1120px; margin:0 auto;}
+    .hero-copy-inner{max-width:640px;}
+    .hero-eyebrow{color:var(--marigold); font-weight:700; font-size:13px; letter-spacing:0.3px; margin:0 0 14px;}
+    .hero-copy h1{font-family:var(--serif); font-weight:500; font-size:48px; line-height:1.1; color:#fff; margin:0 0 16px;}
+    .hero-copy p{font-size:17px; color:rgba(255,255,255,0.8); margin:0; max-width:520px;}
+
+    /* INTRO */
+    .intro{padding:72px 0 56px;}
+    .intro-grid{display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:start;}
+    .intro h2{font-family:var(--serif); font-weight:500; font-size:32px; line-height:1.25; color:var(--ink); margin:0 0 20px;}
+    .intro p{font-size:16px; color:var(--charcoal-soft); margin:0 0 16px;}
+    .intro p:last-child{margin:0;}
+    .stat-row{display:flex; flex-direction:column; gap:28px;}
+    .stat{border-left:3px solid var(--marigold); padding-left:20px;}
+    .stat-num{font-family:var(--serif); font-size:38px; font-weight:500; color:var(--ink); line-height:1;}
+    .stat-label{font-size:14px; color:var(--charcoal-soft); margin-top:4px;}
+    @media(max-width:820px){.intro-grid{grid-template-columns:1fr; gap:36px;}}
+
+    /* PHOTO PAIR */
+    .photo-section{padding:0 0 80px;}
+    .photo-grid{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+    .photo-card{position:relative; border-radius:12px; overflow:hidden;}
+    .photo-card img{width:100%; height:420px; object-fit:cover; display:block;}
+    .photo-label{position:absolute; bottom:0; left:0; right:0; padding:20px; background:linear-gradient(to top, rgba(26,11,46,0.85), transparent); color:#fff;}
+    .photo-label h3{font-family:var(--serif); font-size:20px; font-weight:500; margin:0 0 4px;}
+    .photo-label p{font-size:13px; color:rgba(255,255,255,0.75); margin:0;}
+    @media(max-width:700px){.photo-grid{grid-template-columns:1fr;} .photo-card img{height:280px;}}
+
+    /* NEIGHBOURHOODS */
+    .hoods{background:var(--ivory-2); border-top:1px solid var(--line); border-bottom:1px solid var(--line); padding:72px 0;}
+    .hoods-head{margin-bottom:48px;}
+    .hoods-head h2{font-family:var(--serif); font-weight:500; font-size:32px; color:var(--ink); margin:0 0 12px;}
+    .hoods-head p{font-size:16px; color:var(--charcoal-soft); margin:0; max-width:560px;}
+    .hoods-group{margin-bottom:40px;}
+    .hoods-group:last-child{margin-bottom:0;}
+    .group-label{font-size:11px; font-weight:800; letter-spacing:0.4px; text-transform:uppercase; color:var(--brick); margin:0 0 20px;}
+    .hoods-cards{display:grid; grid-template-columns:repeat(auto-fill, minmax(240px, 1fr)); gap:16px;}
+    .hood-card{background:#fff; border:1px solid var(--line); border-radius:10px; padding:20px 22px;}
+    .hood-name{font-weight:700; font-size:16px; color:var(--ink); margin:0 0 6px;}
+    .hood-desc{font-size:14px; color:var(--charcoal-soft); margin:0 0 14px; line-height:1.5;}
+    .hood-tags{display:flex; flex-wrap:wrap; gap:6px;}
+    .hood-tag{font-size:11px; font-weight:700; background:var(--ivory-2); border:1px solid var(--line); border-radius:999px; padding:3px 10px; color:var(--charcoal-soft);}
+
+    /* CTA STRIP */
+    .cta-strip{background:var(--ink); padding:72px 0;}
+    .cta-inner{max-width:640px;}
+    .cta-inner h2{font-family:var(--serif); font-weight:500; font-size:34px; color:#fff; margin:0 0 14px; line-height:1.2;}
+    .cta-inner p{font-size:16px; color:rgba(255,255,255,0.65); margin:0 0 28px;}
+    .btn-primary{background:var(--marigold); color:var(--ink); border:none; padding:15px 28px; border-radius:6px; font-weight:800; font-size:15px; text-decoration:none; display:inline-block; cursor:pointer;}
+    .btn-primary:hover{background:#D4FF6B;}
+
+    /* FOOTER */
+    footer{background:var(--ink); color:#A99DC4; padding:28px 0;}
+    .footer-row{display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px; font-size:13px; border-top:1px solid rgba(255,255,255,0.1); padding-top:24px;}
+    .footer-logo{font-family:var(--serif); font-size:16px; color:#fff;}
+
+    @media(max-width:600px){
+      .hero-copy h1{font-size:32px;}
+      .hero{height:60vh;}
+    }
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-row">
+    <a href="index.html" class="logo"><span class="logo-dot"></span>MakanMate</a>
+    <a href="index.html" class="nav-back">← Back to home</a>
+    <a href="index.html#waitlist" class="nav-cta">Join waitlist</a>
+  </div>
+</nav>
+
+<!-- HERO: Mandai at sunset -->
+<div class="hero">
+  <img src="images/pune-mandai.jpg" alt="Mahatma Phule Mandai, Pune at sunset">
+  <div class="hero-overlay"></div>
+  <div class="wrap">
+    <div class="hero-copy-inner" style="position:relative; z-index:1; padding:52px 0;">
+      <p class="hero-eyebrow">PILOT CITY</p>
+      <h1>This is where<br>we start.</h1>
+      <p>Pune pulls in more students and first-job movers than almost any other city in India — and has some of the messiest, broker-heavy rental hunting to match. We're fixing it here first.</p>
+    </div>
+  </div>
+</div>
+
+<!-- INTRO + STATS -->
+<section class="intro">
+  <div class="wrap intro-grid">
+    <div>
+      <h2>Why Pune, and why now</h2>
+      <p>Every year, hundreds of thousands of people arrive in Pune — students joining Symbiosis, COEP, or Fergusson; engineers starting at Infosys or TCS in Hinjewadi; recent graduates chasing their first job in the IT corridor. They all need a place to stay, and they all face the same broken system.</p>
+      <p>Brokers who disappear after taking their fee. Photos that are three years old. Landlords who suddenly add conditions. And no one you know to tell you which areas are safe, which ones flood in monsoon, or where the nearest decent canteen is.</p>
+      <p>MakanMate isn't building for all of India at once. We're building neighbourhood by neighbourhood in Pune, getting every detail right before we go anywhere else.</p>
+    </div>
+    <div class="stat-row">
+      <div class="stat">
+        <div class="stat-num">7+</div>
+        <div class="stat-label">Pune neighbourhoods currently being onboarded</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">0%</div>
+        <div class="stat-label">Brokerage fee — ever, for seekers</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">100%</div>
+        <div class="stat-label">Listings physically verified before going live</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PHOTO PAIR -->
+<div class="photo-section">
+  <div class="wrap">
+    <div class="photo-grid">
+      <div class="photo-card">
+        <img src="images/pune-mandai.jpg" alt="Mahatma Phule Mandai at sunset">
+        <div class="photo-label">
+          <h3>Mahatma Phule Mandai</h3>
+          <p>Deccan / FC Road — the heart of old Pune</p>
+        </div>
+      </div>
+      <div class="photo-card">
+        <img src="images/pune-junction.jpg" alt="Pune Junction railway station">
+        <div class="photo-label">
+          <h3>Pune Junction</h3>
+          <p>Where most newcomers arrive — 560m above sea level</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- NEIGHBOURHOODS -->
+<section class="hoods">
+  <div class="wrap">
+    <div class="hoods-head">
+      <h2>Where we operate</h2>
+      <p>Each neighbourhood gets verified listings before we open it. Here's where we are and what each area is best for.</p>
+    </div>
+
+    <div class="hoods-group">
+      <p class="group-label">Student hubs</p>
+      <div class="hoods-cards">
+        <div class="hood-card">
+          <p class="hood-name">Kothrud</p>
+          <p class="hood-desc">Dense with colleges, budget PGs everywhere, and the kind of mess that serves 30 items under ₹80.</p>
+          <div class="hood-tags"><span class="hood-tag">Budget PGs</span><span class="hood-tag">College crowd</span><span class="hood-tag">Mess included</span></div>
+        </div>
+        <div class="hood-card">
+          <p class="hood-name">Karve Nagar</p>
+          <p class="hood-desc">Quieter than Kothrud, slightly cheaper, strong PG culture with many family-run properties.</p>
+          <div class="hood-tags"><span class="hood-tag">Quiet</span><span class="hood-tag">Budget-friendly</span><span class="hood-tag">Family PGs</span></div>
+        </div>
+        <div class="hood-card">
+          <p class="hood-name">Deccan / FC Road</p>
+          <p class="hood-desc">Walk-to-campus for many colleges, great café culture, slightly pricier but worth it for the vibe.</p>
+          <div class="hood-tags"><span class="hood-tag">Walk to college</span><span class="hood-tag">Cafés</span><span class="hood-tag">Lively</span></div>
+        </div>
+        <div class="hood-card">
+          <p class="hood-name">Katraj</p>
+          <p class="hood-desc">More affordable end of the student belt. Good connectivity, increasingly popular for PG seekers.</p>
+          <div class="hood-tags"><span class="hood-tag">Affordable</span><span class="hood-tag">Growing area</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hoods-group">
+      <p class="group-label">Young professional &amp; IT hubs</p>
+      <div class="hoods-cards">
+        <div class="hood-card">
+          <p class="hood-name">Hinjewadi</p>
+          <p class="hood-desc">Pune's biggest IT park. Demand for shared flats is extremely high — good inventory, competitive rents.</p>
+          <div class="hood-tags"><span class="hood-tag">IT crowd</span><span class="hood-tag">Shared flats</span><span class="hood-tag">High demand</span></div>
+        </div>
+        <div class="hood-card">
+          <p class="hood-name">Wakad</p>
+          <p class="hood-desc">Just next to Hinjewadi, better infrastructure, slightly more expensive but more liveable.</p>
+          <div class="hood-tags"><span class="hood-tag">Near IT park</span><span class="hood-tag">Good infra</span></div>
+        </div>
+        <div class="hood-card">
+          <p class="hood-name">Baner</p>
+          <p class="hood-desc">Popular with couples and young professionals. Newer builds, good restaurants, weekend market.</p>
+          <div class="hood-tags"><span class="hood-tag">Couples</span><span class="hood-tag">Newer builds</span><span class="hood-tag">1–2 BHK</span></div>
+        </div>
+        <div class="hood-card">
+          <p class="hood-name">Viman Nagar</p>
+          <p class="hood-desc">Close to the airport and Kalyani Nagar. Popular with expats and senior professionals.</p>
+          <div class="hood-tags"><span class="hood-tag">Near airport</span><span class="hood-tag">Upmarket</span></div>
+        </div>
+        <div class="hood-card">
+          <p class="hood-name">Kharadi</p>
+          <p class="hood-desc">Fast-growing IT corridor on the east side. Younger crowd, newer flats, still affordable.</p>
+          <div class="hood-tags"><span class="hood-tag">IT corridor</span><span class="hood-tag">Affordable</span><span class="hood-tag">Growing fast</span></div>
+        </div>
+        <div class="hood-card">
+          <p class="hood-name">Magarpatta / Hadapsar</p>
+          <p class="hood-desc">Planned township feel, good for families and long-stay professionals.</p>
+          <div class="hood-tags"><span class="hood-tag">Township</span><span class="hood-tag">Long stay</span></div>
+        </div>
+        <div class="hood-card">
+          <p class="hood-name">Aundh</p>
+          <p class="hood-desc">Upmarket, well-connected, popular with those who want peace without losing proximity to the city.</p>
+          <div class="hood-tags"><span class="hood-tag">Upmarket</span><span class="hood-tag">Peaceful</span><span class="hood-tag">Well-connected</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-strip">
+  <div class="wrap">
+    <div class="cta-inner">
+      <h2>Ready to find your place in Pune?</h2>
+      <p>Join the waitlist and we'll let you know the moment your neighbourhood opens. No spam — one email, when it's live.</p>
+      <a href="index.html#waitlist" class="btn-primary">Join the waitlist</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-row">
+      <span class="footer-logo">MakanMate</span>
+      <span>© 2026 MakanMate · contact@makanmate.in · Pune, India</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
