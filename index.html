@@ -10,16 +10,16 @@
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root{
-    --ink: #1B2340;
-    --ink-2: #232B4D;
-    --marigold: #E8A33D;
-    --marigold-dim: #C9862A;
-    --brick: #C1543A;
-    --ivory: #F6EFE2;
-    --ivory-2: #EFE5D2;
-    --charcoal: #2B2420;
-    --charcoal-soft: #5A5044;
-    --line: #DED2B8;
+    --ink: #1A0B2E;
+    --ink-2: #2A1548;
+    --marigold: #C6FF3D;
+    --marigold-dim: #9FCC1F;
+    --brick: #FF3D6E;
+    --ivory: #FAFAFF;
+    --ivory-2: #F0EDFF;
+    --charcoal: #1D1029;
+    --charcoal-soft: #6B6280;
+    --line: #E3DEF5;
     --serif: 'Newsreader', serif;
     --sans: 'Manrope', sans-serif;
   }
@@ -56,7 +56,7 @@
   .hero-eyebrow{color:var(--marigold); font-weight:700; font-size:14px; margin:0 0 18px; letter-spacing:0.3px;}
   .hero h1{font-family:var(--serif); font-weight:500; font-size:52px; line-height:1.08; margin:0 0 22px; letter-spacing:-0.5px;}
   .hero h1 em{font-style:italic; color:var(--marigold); font-weight:500;}
-  .hero p.lede{font-size:18px; color:#D9D3C4; max-width:460px; margin:0 0 34px;}
+  .hero p.lede{font-size:18px; color:#D8CFEA; max-width:460px; margin:0 0 34px;}
   .hero-actions{display:flex; gap:14px; flex-wrap:wrap; margin-bottom:36px;}
 
   /* ---------- NOBROKER-STYLE HERO SEARCH ---------- */
@@ -69,14 +69,14 @@
   .search-bar{display:flex; gap:8px; padding:0 6px 6px;}
   .search-bar select{flex:1; padding:13px 14px; border-radius:6px; border:1px solid var(--line); background:#fff; font-family:var(--sans); font-size:14.5px; color:var(--charcoal);}
   .search-go{background:var(--brick); color:var(--ivory); border:none; padding:13px 24px; border-radius:6px; font-weight:800; font-size:14.5px; cursor:pointer; white-space:nowrap;}
-  .search-go:hover{background:#A9432B;}
-  .hero-owner-note{font-size:13.5px; color:#B9B2A0; margin:0 0 30px;}
+  .search-go:hover{background:#E0296A;}
+  .hero-owner-note{font-size:13.5px; color:#A99DC4; margin:0 0 30px;}
   .hero-owner-note a{color:var(--marigold); font-weight:700; text-decoration:none;}
   @media (max-width:480px){.search-bar{flex-direction:column;} .search-tabs{flex-wrap:wrap;}}
   .btn-primary{background:var(--marigold); color:var(--ink); border:none; padding:15px 26px; border-radius:6px; font-weight:800; font-size:15px; text-decoration:none; display:inline-block; cursor:pointer; transition:background .15s ease, transform .15s ease;}
-  .btn-primary:hover{background:#F3B455; transform:translateY(-1px);}
+  .btn-primary:hover{background:#D4FF6B; transform:translateY(-1px);}
   .btn-ghost{background:transparent; color:var(--ivory); border:1px solid rgba(246,239,226,0.35); padding:15px 26px; border-radius:6px; font-weight:700; font-size:15px; text-decoration:none; display:inline-block;}
-  .hero-trust{display:flex; gap:26px; flex-wrap:wrap; font-size:13px; color:#B9B2A0;}
+  .hero-trust{display:flex; gap:26px; flex-wrap:wrap; font-size:13px; color:#A99DC4;}
   .hero-trust span{display:flex; align-items:center; gap:8px;}
   .hero-trust b{color:var(--ivory); font-weight:700;}
 
@@ -118,15 +118,17 @@
 
   .audience{background:var(--ink); color:var(--ivory);}
   .audience .section-head h2, .audience .section-head p{color:var(--ivory);}
-  .audience .section-head p{color:#C9C2AF;}
+  .audience .section-head p{color:#A99DC4;}
   .tag-cloud{display:flex; flex-wrap:wrap; gap:14px;}
   .tag{border:1px solid rgba(246,239,226,0.25); border-radius:999px; padding:14px 22px; font-size:15px; font-weight:600; display:flex; flex-direction:column; gap:4px;}
   .tag b{font-size:16px; color:var(--marigold);}
-  .tag span{font-size:13px; font-weight:500; color:#C9C2AF;}
+  .tag span{font-size:13px; font-weight:500; color:#A99DC4;}
 
+  .pune-visual{display:flex; flex-direction:column; gap:16px;}
+  .pune-photo{width:100%; height:220px; object-fit:cover; border-radius:10px; border:1px solid var(--line); display:block;}
   .pune-grid{display:grid; grid-template-columns:0.9fr 1.1fr; gap:56px; align-items:center;}
-  .pune-map{background:var(--ivory-2); border:1px solid var(--line); border-radius:10px; padding:32px; min-height:280px; display:flex; flex-direction:column; justify-content:center; gap:18px;}
-  .pune-photo{width:100%; height:100%; min-height:280px; object-fit:cover; border-radius:10px; display:block;}
+  .pune-map{background:var(--ivory-2); border:1px solid var(--line); border-radius:10px; padding:24px; display:flex; flex-direction:column; justify-content:center; gap:14px;}
+  .pune-group-label{font-size:11px; font-weight:800; letter-spacing:0.4px; text-transform:uppercase; color:var(--brick); margin:0;}
   .pin-row{display:flex; align-items:center; gap:12px; font-size:15px; color:var(--charcoal);}
   .pin-dot{width:9px; height:9px; border-radius:50%; background:var(--brick); flex-shrink:0;}
   .pune-copy p{font-size:16px; color:var(--charcoal-soft); margin:0 0 18px;}
@@ -150,21 +152,21 @@
   .field input, .field select{width:100%; padding:12px 14px; border-radius:6px; border:1px solid var(--line); background:#fff; font-family:var(--sans); font-size:15px; color:var(--charcoal);}
   .field input:focus, .field select:focus{outline:2px solid var(--brick); outline-offset:1px;}
   .form-submit{width:100%; background:var(--brick); color:var(--ivory); border:none; padding:15px; border-radius:6px; font-weight:800; font-size:15px; cursor:pointer;}
-  .form-submit:hover{background:#A9432B;}
+  .form-submit:hover{background:#E0296A;}
   .form-note{font-size:13px; color:var(--charcoal-soft); margin-top:12px; text-align:center;}
   .form-success{display:none; text-align:center; padding:20px 0;}
   .form-success h3{font-family:var(--serif); color:var(--ink); font-size:22px; margin:0 0 8px;}
   .form-success p{color:var(--charcoal-soft); font-size:15px; margin:0;}
   @media (max-width:820px){.waitlist-grid{grid-template-columns:1fr; gap:32px;}}
 
-  footer{background:var(--ink); color:#B9B2A0; padding:52px 0 32px;}
+  footer{background:var(--ink); color:#A99DC4; padding:52px 0 32px;}
   .footer-top{display:flex; justify-content:space-between; flex-wrap:wrap; gap:32px; padding-bottom:32px; border-bottom:1px solid rgba(246,239,226,0.15); margin-bottom:24px;}
   .footer-logo{font-family:var(--serif); font-size:20px; color:var(--ivory); margin:0 0 8px;}
   .footer-tag{font-size:14px; max-width:280px; margin:0;}
   .footer-cols{display:flex; gap:64px; flex-wrap:wrap;}
   .footer-col h4{color:var(--ivory); font-size:13px; margin:0 0 14px;}
   .footer-col ul{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:10px;}
-  .footer-col a{text-decoration:none; font-size:14px; color:#B9B2A0;}
+  .footer-col a{text-decoration:none; font-size:14px; color:#A99DC4;}
   .footer-col a:hover{color:var(--marigold);}
   .footer-bottom{display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px; font-size:13px;}
 
@@ -181,23 +183,11 @@
   .owners-cta{margin-top:28px;}
   @media (max-width:820px){.owners-grid{grid-template-columns:1fr; gap:32px;}}
 
-  /* ---------- ROADMAP ---------- */
-  .roadmap-track{display:flex; flex-direction:column;}
-  .roadmap-item{display:grid; grid-template-columns:150px 1fr; gap:28px; padding:28px 0; border-top:1px solid var(--line);}
-  .roadmap-track > .roadmap-item:last-child{border-bottom:1px solid var(--line);}
-  .roadmap-phase{font-family:var(--serif); font-size:15px; font-weight:600; color:var(--brick); margin:0;}
-  .roadmap-status{display:inline-block; font-size:11px; font-weight:800; letter-spacing:0.3px; padding:4px 10px; border-radius:999px; margin-top:8px;}
-  .roadmap-status.now{background:var(--marigold); color:var(--ink);}
-  .roadmap-status.next{background:#fff; color:var(--charcoal-soft); border:1px solid var(--line);}
-  .roadmap-item h3{margin:0 0 8px; font-size:19px; color:var(--ink); font-family:var(--serif); font-weight:500;}
-  .roadmap-item p{margin:0; font-size:15px; color:var(--charcoal-soft); max-width:560px;}
-  @media (max-width:700px){.roadmap-item{grid-template-columns:1fr; gap:10px;}}
-
   /* ---------- FOUNDER NOTE ---------- */
   .founder{background:var(--ink); color:var(--ivory);}
   .founder-inner{max-width:680px;}
   .founder p.quote{font-family:var(--serif); font-style:italic; font-size:22px; line-height:1.55; margin:0 0 20px; color:var(--ivory);}
-  .founder-sign{font-size:14px; color:#C9C2AF; font-weight:600;}
+  .founder-sign{font-size:14px; color:#A99DC4; font-weight:600;}
 
   /* ---------- FAQ ---------- */
   .faq-list{display:flex; flex-direction:column; max-width:760px;}
@@ -225,7 +215,6 @@
       <li><a href="#audience">Who it's for</a></li>
       <li><a href="#owners">For owners</a></li>
       <li><a href="#pune">Pune</a></li>
-      <li><a href="#roadmap">Roadmap</a></li>
       <li><a href="#faq">FAQ</a></li>
     </ul>
     <a href="#owners" class="nav-owner-link">Post Property FREE</a>
@@ -244,14 +233,25 @@
         <div class="search-tabs" role="tablist">
           <button type="button" class="search-tab active" data-mode="pg">PG &amp; Flatmates</button>
           <button type="button" class="search-tab" data-mode="rent">Rent a Flat</button>
-          <button type="button" class="search-tab disabled" data-mode="buy" disabled>Buy &amp; Sell<span class="soon-badge">Phase 3</span></button>
+          <button type="button" class="search-tab disabled" data-mode="buy" disabled>Buy &amp; Sell<span class="soon-badge">Coming soon</span></button>
         </div>
         <div class="search-bar">
           <select id="heroCity" aria-label="Choose your area">
-            <option>Pune — Kothrud</option>
-            <option>Pune — Hinjewadi</option>
-            <option>Pune — Viman Nagar</option>
-            <option>Pune — Baner</option>
+            <optgroup label="Student hubs">
+              <option>Pune — Kothrud</option>
+              <option>Pune — Karve Nagar</option>
+              <option>Pune — Deccan / FC Road</option>
+              <option>Pune — Katraj</option>
+            </optgroup>
+            <optgroup label="Young professional & IT hubs">
+              <option>Pune — Hinjewadi</option>
+              <option>Pune — Wakad</option>
+              <option>Pune — Baner</option>
+              <option>Pune — Viman Nagar</option>
+              <option>Pune — Kharadi</option>
+              <option>Pune — Magarpatta / Hadapsar</option>
+              <option>Pune — Aundh</option>
+            </optgroup>
             <option>Pune — Other area</option>
           </select>
           <button type="button" class="search-go" id="heroSearchBtn">Search</button>
@@ -267,12 +267,12 @@
 
     <div class="hero-art fade-in d3">
       <svg class="skyline" viewBox="0 0 420 360" xmlns="http://www.w3.org/2000/svg">
-        <rect x="30" y="180" width="60" height="160" fill="#232B4D"/>
-        <rect x="100" y="120" width="50" height="220" fill="#2A3357"/>
-        <rect x="160" y="200" width="70" height="140" fill="#1F2748"/>
-        <rect x="240" y="90" width="55" height="250" fill="#2A3357"/>
-        <rect x="305" y="160" width="65" height="180" fill="#232B4D"/>
-        <g fill="#E8A33D" opacity="0.9">
+        <rect x="30" y="180" width="60" height="160" fill="#2A1548"/>
+        <rect x="100" y="120" width="50" height="220" fill="#3D1F63"/>
+        <rect x="160" y="200" width="70" height="140" fill="#200D3A"/>
+        <rect x="240" y="90" width="55" height="250" fill="#3D1F63"/>
+        <rect x="305" y="160" width="65" height="180" fill="#2A1548"/>
+        <g fill="#C6FF3D" opacity="0.9">
           <rect x="42" y="200" width="10" height="12"/>
           <rect x="62" y="200" width="10" height="12"/>
           <rect x="42" y="230" width="10" height="12"/>
@@ -291,7 +291,7 @@
           <rect x="340" y="185" width="10" height="12"/>
           <rect x="320" y="215" width="10" height="12"/>
         </g>
-        <g fill="#C1543A" opacity="0.55">
+        <g fill="#FF3D6E" opacity="0.55">
           <rect x="62" y="230" width="10" height="12"/>
           <rect x="132" y="175" width="10" height="12"/>
           <rect x="196" y="255" width="10" height="12"/>
@@ -299,7 +299,7 @@
           <rect x="340" y="215" width="10" height="12"/>
         </g>
         <rect x="0" y="340" width="420" height="2" fill="rgba(246,239,226,0.15)"/>
-        <circle cx="360" cy="55" r="22" fill="#F3B455" opacity="0.85"/>
+        <circle cx="360" cy="55" r="22" fill="#D4FF6B" opacity="0.85"/>
       </svg>
     </div>
   </div>
@@ -361,24 +361,34 @@
       <div class="owners-cta"><a href="#waitlist" class="btn-primary" id="ownerCtaBtn" style="background:var(--brick); color:var(--ivory);">List your property</a></div>
     </div>
     <div class="pune-map">
-      <div class="pin-row"><span class="pin-dot"></span>PG owners — Kothrud, Hinjewadi</div>
-      <div class="pin-row"><span class="pin-dot"></span>1 &amp; 2 BHK owners — Baner, Viman Nagar</div>
-      <div class="pin-row"><span class="pin-dot"></span>Shared flats — near IT parks</div>
-      <div class="pin-row"><span class="pin-dot"></span>Currently onboarding 4 neighbourhoods</div>
+      <div class="pin-row"><span class="pin-dot"></span>PG owners — Kothrud, Karve Nagar, Katraj</div>
+      <div class="pin-row"><span class="pin-dot"></span>Flat owners — Baner, Viman Nagar, Wakad</div>
+      <div class="pin-row"><span class="pin-dot"></span>Shared flats — near IT parks (Hinjewadi, Kharadi, Magarpatta)</div>
+      <div class="pin-row"><span class="pin-dot"></span>Currently onboarding 7 neighbourhoods</div>
     </div>
   </div>
 </section>
 
 <section id="pune">
   <div class="wrap pune-grid">
-    <div>
-      <img src="images/pune-junction.jpg" alt="Pune Junction railway station" class="pune-photo">
+    <div class="pune-visual">
+      <img src="images/pune-junction.jpg" alt="Pune Junction railway station sign" class="pune-photo">
+      <div class="pune-map">
+        <p class="pune-group-label">Student hubs</p>
+        <div class="pin-row"><span class="pin-dot"></span>Kothrud — colleges, budget PGs</div>
+        <div class="pin-row"><span class="pin-dot"></span>Karve Nagar &amp; Katraj — hostels, mess-included PGs</div>
+        <div class="pin-row"><span class="pin-dot"></span>Deccan / FC Road — walk-to-college, café culture</div>
+        <p class="pune-group-label" style="margin-top:14px;">Young professional &amp; IT hubs</p>
+        <div class="pin-row"><span class="pin-dot"></span>Hinjewadi &amp; Wakad — IT crowd, shared flats</div>
+        <div class="pin-row"><span class="pin-dot"></span>Kharadi &amp; Magarpatta — IT park adjacent</div>
+        <div class="pin-row"><span class="pin-dot"></span>Baner, Aundh &amp; Viman Nagar — newer builds, couples</div>
+      </div>
     </div>
     <div class="pune-copy">
       <span class="pune-badge">PILOT CITY</span>
       <h2 style="font-family:var(--serif); font-weight:500; font-size:30px; color:var(--ink); margin:0 0 16px;">We're starting exactly where the problem is worst.</h2>
-      <p>Pune pulls in more students and first-job movers every year than almost any other Indian city — and has some of the messiest, most broker-heavy rental hunting to go with it. We're building MakanMate here first, getting every detail right neighbourhood by neighbourhood, before taking it national.</p>
-      <p>Next stops: Bengaluru, Hyderabad, and beyond — wherever people are landing somewhere new.</p>
+      <p>Pune pulls in more students and first-job movers every year than almost any other Indian city — and has some of the messiest, most broker-heavy rental hunting to go with it.</p>
+      <p>We're not spreading across five cities at once. Every neighbourhood we add gets the same in-person verification before a single listing goes live — depth first, breadth later.</p>
     </div>
   </div>
 </section>
@@ -394,47 +404,6 @@
       <div class="trust-row"><h3>Zero brokerage</h3><p>You deal with the owner or us directly. No middleman fee eating into your first month's budget.</p></div>
       <div class="trust-row"><h3>Transparent pricing</h3><p>Rent, deposit, and every recurring charge shown upfront — nothing revealed only after you've paid a token amount.</p></div>
       <div class="trust-row"><h3>Community, not just contracts</h3><p>We connect new arrivals in the same area so your first week has a few familiar faces in it.</p></div>
-    </div>
-  </div>
-</section>
-
-<section id="roadmap">
-  <div class="wrap">
-    <div class="section-head">
-      <h2>Where MakanMate is headed</h2>
-      <p>We're not trying to do everything on day one. Here's the order we're building in.</p>
-    </div>
-    <div class="roadmap-track">
-      <div class="roadmap-item">
-        <div>
-          <p class="roadmap-phase">Phase 1</p>
-          <span class="roadmap-status now">HAPPENING NOW</span>
-        </div>
-        <div>
-          <h3>Verified PGs &amp; rentals in Pune</h3>
-          <p>Brokerage-free, physically-checked listings across Kothrud, Hinjewadi, Viman Nagar, and Baner — with a community layer so new arrivals aren't landing alone.</p>
-        </div>
-      </div>
-      <div class="roadmap-item">
-        <div>
-          <p class="roadmap-phase">Phase 2</p>
-          <span class="roadmap-status next">NEXT</span>
-        </div>
-        <div>
-          <h3>Expanding across India</h3>
-          <p>Bengaluru and Hyderabad first, then other cities that pull in large numbers of students and first-job movers every year.</p>
-        </div>
-      </div>
-      <div class="roadmap-item">
-        <div>
-          <p class="roadmap-phase">Phase 3</p>
-          <span class="roadmap-status next">LATER</span>
-        </div>
-        <div>
-          <h3>Buy, sell &amp; short stays</h3>
-          <p>Once the rental side earns trust at scale, extending into real estate transactions and hotel-style short stays under the same verified, brokerage-light model.</p>
-        </div>
-      </div>
     </div>
   </div>
 </section>
@@ -489,19 +458,29 @@
         <button type="button" id="toggleOwner">I have a property to list</button>
       </div>
       <form id="waitlistForm">
-        <input type="hidden" name="_subject" id="formSubject" value="MakanMate waitlist — Seeker">
-        <input type="hidden" name="_next" value="">
+        <input type="hidden" id="formTypeHidden" value="seeker">
         <div id="formFields">
           <div class="field"><label for="name">Full name</label><input type="text" id="name" name="name" required placeholder="Your name"></div>
           <div class="field"><label for="phone">Phone number</label><input type="tel" id="phone" name="phone" required placeholder="+91 98765 43210"></div>
-          <div class="field"><label for="email">Email <span style="font-weight:400;color:var(--charcoal-soft);">(optional)</span></label><input type="email" id="email" name="email" placeholder="you@email.com"></div>
+          <div class="field"><label for="email">Email <span style="font-weight:500; color:var(--charcoal-soft);">(optional)</span></label><input type="email" id="email" name="email" placeholder="you@email.com"></div>
           <div class="field">
             <label for="city" id="cityLabel">Looking for a place in</label>
             <select id="city" name="area">
-              <option>Pune — Kothrud</option>
-              <option>Pune — Hinjewadi</option>
-              <option>Pune — Viman Nagar</option>
-              <option>Pune — Baner</option>
+              <optgroup label="Student hubs">
+                <option>Pune — Kothrud</option>
+                <option>Pune — Karve Nagar</option>
+                <option>Pune — Deccan / FC Road</option>
+                <option>Pune — Katraj</option>
+              </optgroup>
+              <optgroup label="Young professional & IT hubs">
+                <option>Pune — Hinjewadi</option>
+                <option>Pune — Wakad</option>
+                <option>Pune — Baner</option>
+                <option>Pune — Viman Nagar</option>
+                <option>Pune — Kharadi</option>
+                <option>Pune — Magarpatta / Hadapsar</option>
+                <option>Pune — Aundh</option>
+              </optgroup>
               <option>Pune — Other area</option>
             </select>
           </div>
@@ -514,7 +493,6 @@
               <option>2 BHK or larger</option>
             </select>
           </div>
-          <input type="hidden" name="form_type" id="formTypeHidden" value="seeker">
           <button type="submit" class="form-submit" id="formSubmitBtn">Join the waitlist</button>
           <p class="form-note" id="formNote">No spam. Just one email when your area opens.</p>
         </div>
@@ -541,7 +519,7 @@
         </div>
         <div class="footer-col">
           <h4>Company</h4>
-          <ul><li><a href="#roadmap">Roadmap</a></li><li><a href="#trust">Trust &amp; safety</a></li><li><a href="#faq">FAQ</a></li><li><a href="#waitlist">Join waitlist</a></li></ul>
+          <ul><li><a href="#trust">Trust &amp; safety</a></li><li><a href="#faq">FAQ</a></li><li><a href="#waitlist">Join waitlist</a></li></ul>
         </div>
         <div class="footer-col">
           <h4>Contact</h4>
@@ -595,7 +573,6 @@
       formNote.textContent = 'No listing fee during the Pune pilot.';
       formSuccessText.textContent = "We'll reach out to schedule a verification visit.";
       document.getElementById('formTypeHidden').value = 'owner';
-      document.getElementById('formSubject').value = 'MakanMate — Property listing request';
     } else {
       toggleSeeker.classList.add('active');
       toggleOwner.classList.remove('active');
@@ -605,7 +582,6 @@
       formNote.textContent = 'No spam. Just one email when your area opens.';
       formSuccessText.textContent = "We'll email you the moment listings open in your area.";
       document.getElementById('formTypeHidden').value = 'seeker';
-      document.getElementById('formSubject').value = 'MakanMate waitlist — Seeker';
     }
   }
   toggleSeeker.addEventListener('click', () => setFormMode('seeker'));
@@ -618,27 +594,23 @@
     const btn = document.getElementById('formSubmitBtn');
     btn.disabled = true;
     btn.textContent = 'Sending…';
+    const data = {
+      name:          form.querySelector('#name').value,
+      phone:         form.querySelector('#phone').value,
+      email:         form.querySelector('#email').value,
+      area:          form.querySelector('#city').value,
+      form_type:     form.querySelector('#formTypeHidden').value,
+      property_type: form.querySelector('#propertyType').value || '',
+    };
     try {
-      const data = {
-        name: form.querySelector('#name').value,
-        phone: form.querySelector('#phone').value,
-        email: form.querySelector('#email').value,
-        area: form.querySelector('#city').value,
-        form_type: form.querySelector('#formTypeHidden').value,
-        property_type: form.querySelector('#propertyType').value || '',
-      };
       await fetch('https://script.google.com/macros/s/AKfycbygMC2ZbCnibqkcUaoTBVkhC09uCup2KMqj6MapPLOXtsym6gb0TgHHhLh35Klm4brEwA/exec', {
         method: 'POST',
         body: JSON.stringify(data),
         mode: 'no-cors'
       });
-      // no-cors means we can't read the response — show success optimistically
-      document.getElementById('formFields').style.display = 'none';
-      document.getElementById('formSuccess').style.display = 'block';
-    } catch {
-      btn.disabled = false;
-      btn.textContent = document.getElementById('formTypeHidden').value === 'owner' ? 'List your property' : 'Join the waitlist';
-    }
+    } catch(err) {}
+    document.getElementById('formFields').style.display = 'none';
+    document.getElementById('formSuccess').style.display = 'block';
   });
 </script>
 
