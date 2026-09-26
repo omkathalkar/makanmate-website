@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Owner Dashboard — MakanMate</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --green:#1F8A5B; --green-dark:#166644; --green-light:#EBF5F0; --green-mid:#C0DDD0;
+    --orange:#C45E1A; --orange-dark:#A84D14; --orange-light:#FBF1E8; --orange-mid:#F0C9A0;
+    --wine:#7C1D35; --wine-light:#F5E8EB;
+    --slate:#1C1611; --slate-mid:#4A3F35; --slate-soft:#7A6E65;
+    --border:#DDD4C8; --bg:#F7F3EE; --white:#FFFDF9;
+    --sans:'Manrope',sans-serif; --serif:'Newsreader',serif;
+  }
+  [data-theme="dark"]{
+    --bg:#110D09; --white:#1A1410; --slate:#F0EBE4; --slate-mid:#D4C8BC; --slate-soft:#9C8E84;
+    --border:#2D2420; --nav-bg:rgba(17,13,9,0.97); --green-light:#091A10; --green-mid:#0F2A1C; --orange-light:#1F1208; --wine-light:#1F0A10; --orange-mid:#3D1F00;
+  }
+  [data-theme="dark"] footer{background:#0A0705;}
+  *{box-sizing:border-box;} html{scroll-behavior:smooth;}
+  body{margin:0; font-family:var(--sans); color:var(--slate-mid); background:var(--bg); line-height:1.6;}
+  img{max-width:100%; display:block;} a{color:inherit; text-decoration:none;}
+  h2{font-family:var(--serif); font-weight:500; font-size:22px; color:var(--slate); margin:0 0 16px;}
+  h3{font-size:16px; font-weight:700; color:var(--slate); margin:0 0 10px;}
+
+  /* NAV */
+  .nav{position:sticky; top:0; z-index:50; background:var(--nav-bg,rgba(255,255,255,0.96)); backdrop-filter:blur(8px); border-bottom:1px solid var(--border);}
+  .nav-row{display:flex; align-items:center; justify-content:space-between; padding:14px 28px; max-width:1120px; margin:0 auto;}
+  .logo{font-family:var(--sans); font-weight:800; font-size:20px; letter-spacing:-0.3px; color:var(--slate); display:flex; align-items:center; gap:9px;}
+  .logo-icon{width:32px; height:32px; background:var(--orange); border-radius:8px; display:flex; align-items:center; justify-content:center;}
+  .logo-tag{font-size:11px; font-weight:700; background:var(--orange-light); color:var(--orange-dark); padding:2px 8px; border-radius:999px; border:1px solid var(--orange-mid);}
+  .nav-links{display:flex; gap:28px; list-style:none; margin:0; padding:0;}
+  .nav-links a{font-weight:600; font-size:14.5px; color:var(--slate-soft); transition:color .15s;}
+  .nav-links a:hover,.nav-links a.active{color:var(--orange);}
+  .nav-cta-orange{background:var(--orange); color:#fff; padding:9px 18px; border-radius:7px; font-weight:700; font-size:14px;}
+  .theme-toggle{background:none; border:none; cursor:pointer; padding:6px; color:var(--slate-soft); display:flex; align-items:center;}
+  .theme-toggle svg{width:18px; height:18px;}
+  .nav-toggle{display:none; background:none; border:none; cursor:pointer; padding:4px;}
+  .nav-toggle span{display:block; width:24px; height:2px; background:var(--slate); margin:5px 0;}
+  @media(max-width:820px){
+    .nav-links{position:absolute; top:100%; left:0; right:0; background:var(--white); flex-direction:column; gap:0; border-bottom:1px solid var(--border); max-height:0; overflow:hidden; transition:max-height .25s;}
+    .nav-links.open{max-height:320px;}
+    .nav-links li{border-top:1px solid var(--border);}
+    .nav-links a{display:block; padding:15px 28px;}
+    .nav-toggle{display:block;} .nav-cta-orange{display:none;}
+  }
+
+  /* OWNER HEADER */
+  .owner-head{background:linear-gradient(135deg,var(--orange-light),var(--bg)); border-bottom:1px solid var(--border); padding:36px 0 28px;}
+  .owner-head-inner{max-width:1120px; margin:0 auto; padding:0 28px; display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap;}
+  .owner-head h1{font-family:var(--serif); font-size:28px; font-weight:500; color:var(--slate); margin:0 0 4px;}
+  .owner-head p{font-size:14.5px; color:var(--slate-soft); margin:0;}
+  .owner-head-avatar{width:56px; height:56px; border-radius:50%; background:var(--orange-light); border:2px solid var(--orange-mid); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:20px; color:var(--orange-dark);}
+
+  /* TABS */
+  .owner-tabs{background:var(--white); border-bottom:1px solid var(--border); position:sticky; top:61px; z-index:40;}
+  .owner-tabs-inner{max-width:1120px; margin:0 auto; padding:0 28px; display:flex; gap:0;}
+  .owner-tab{background:none; border:none; border-bottom:3px solid transparent; padding:16px 20px; font-family:var(--sans); font-size:14.5px; font-weight:700; color:var(--slate-soft); cursor:pointer; transition:all .15s; display:flex; align-items:center; gap:8px;}
+  .owner-tab:hover{color:var(--slate);}
+  .owner-tab.active{color:var(--orange); border-bottom-color:var(--orange);}
+  .tab-count{background:var(--orange-light); color:var(--orange-dark); border-radius:999px; padding:1px 7px; font-size:11.5px; font-weight:800;}
+
+  /* PANELS */
+  .owner-panel{display:none; max-width:1120px; margin:0 auto; padding:32px 28px 60px;}
+  .owner-panel.active{display:block;}
+  @media(max-width:580px){.owner-panel{padding:20px 16px 40px;}}
+
+  /* DASHBOARD */
+  .stat-row{display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:32px;}
+  @media(max-width:720px){.stat-row{grid-template-columns:repeat(2,1fr);}}
+  .stat-card{background:var(--white); border:1px solid var(--border); border-radius:14px; padding:18px 20px;}
+  .stat-label{font-size:12px; text-transform:uppercase; letter-spacing:.5px; color:var(--slate-soft); font-weight:700; margin:0 0 6px;}
+  .stat-val{font-size:28px; font-weight:800; color:var(--slate); margin:0 0 2px;}
+  .stat-sub{font-size:12.5px; color:var(--slate-soft); margin:0;}
+  .stat-positive{color:var(--green-dark);}
+
+  .listing-mgmt{background:var(--white); border:1px solid var(--border); border-radius:16px; overflow:hidden; margin-bottom:24px;}
+  .listing-mgmt-header{padding:18px 22px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between;}
+  .listing-mgmt-header h3{margin:0; font-size:16px;}
+  .status-pill{padding:4px 12px; border-radius:999px; font-size:12px; font-weight:700;}
+  .status-active{background:var(--green-light); color:var(--green-dark);}
+  .listing-mgmt-photo{width:100%; height:200px; object-fit:cover;}
+  .listing-mgmt-body{padding:18px 22px;}
+  .listing-mgmt-row{display:flex; gap:16px; flex-wrap:wrap; margin-top:12px;}
+  .mgmt-stat{display:flex; flex-direction:column; gap:2px; background:var(--bg); border:1px solid var(--border); border-radius:10px; padding:10px 16px; min-width:100px;}
+  .mgmt-stat-label{font-size:11.5px; text-transform:uppercase; letter-spacing:.4px; color:var(--slate-soft); font-weight:700; margin:0;}
+  .mgmt-stat-val{font-size:18px; font-weight:800; color:var(--slate); margin:0;}
+  .mgmt-actions{display:flex; gap:10px; margin-top:16px; flex-wrap:wrap;}
+  .btn-mgmt{padding:10px 18px; border-radius:9px; font-family:var(--sans); font-size:14px; font-weight:700; cursor:pointer; transition:all .15s; border:1.5px solid var(--border);}
+  .btn-mgmt-primary{background:var(--orange); color:#fff; border-color:var(--orange);}
+  .btn-mgmt-primary:hover{background:var(--orange-dark); border-color:var(--orange-dark);}
+  .btn-mgmt-secondary{background:none; color:var(--slate-mid);}
+  .btn-mgmt-secondary:hover{border-color:var(--slate-mid); color:var(--slate);}
+  .btn-mgmt-wa{background:#25D366; color:#fff; border-color:#25D366;}
+  .btn-mgmt-wa:hover{background:#1ebe59;}
+
+  .visits-section{margin-top:24px;}
+  .visit-item{background:var(--white); border:1px solid var(--border); border-radius:12px; padding:16px 18px; margin-bottom:10px; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;}
+  .visit-info h4{margin:0 0 3px; font-size:15px; color:var(--slate);}
+  .visit-info p{margin:0; font-size:13px; color:var(--slate-soft);}
+  .visit-actions{display:flex; gap:8px;}
+  .btn-visit{padding:8px 16px; border-radius:8px; font-family:var(--sans); font-size:13px; font-weight:700; cursor:pointer; border:1.5px solid var(--border); background:none; color:var(--slate-mid); transition:all .15s;}
+  .btn-visit-accept{border-color:var(--green); color:var(--green-dark); background:var(--green-light);}
+  .btn-visit-accept:hover{background:var(--green-mid);}
+  .btn-visit-decline{border-color:var(--border); color:var(--slate-soft);}
+  .btn-visit-done{background:var(--bg); border-color:var(--border); color:var(--slate-soft); cursor:default;}
+
+  /* ADD PROPERTY WIZARD */
+  .wizard-wrap{max-width:680px; margin:0 auto;}
+  .stepper{display:flex; align-items:center; gap:0; margin-bottom:32px;}
+  .step-item{display:flex; align-items:center; gap:0; flex:1;}
+  .step-num{width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:800; flex-shrink:0; border:2px solid var(--border); background:var(--white); color:var(--slate-soft); transition:all .2s;}
+  .step-num.done{background:var(--green); border-color:var(--green); color:#fff;}
+  .step-num.active{background:var(--orange); border-color:var(--orange); color:#fff;}
+  .step-label{font-size:12px; font-weight:700; color:var(--slate-soft); margin-left:8px; white-space:nowrap;}
+  .step-label.active{color:var(--orange);}
+  .step-label.done{color:var(--green-dark);}
+  .step-line{flex:1; height:2px; background:var(--border); margin:0 8px;}
+  .step-line.done{background:var(--green);}
+  .wizard-card{background:var(--white); border:1px solid var(--border); border-radius:16px; padding:28px;}
+  .wizard-step{display:none;}
+  .wizard-step.active{display:block;}
+  .wizard-title{font-family:var(--serif); font-size:22px; font-weight:500; color:var(--slate); margin:0 0 4px;}
+  .wizard-sub{font-size:14.5px; color:var(--slate-soft); margin:0 0 24px;}
+  .form-field{margin-bottom:18px;}
+  .form-field label{display:block; font-size:13.5px; font-weight:700; color:var(--slate); margin-bottom:6px;}
+  .form-field input,.form-field select,.form-field textarea{width:100%; padding:11px 14px; border:1.5px solid var(--border); border-radius:9px; font-family:var(--sans); font-size:14px; color:var(--slate-mid); background:var(--bg); transition:border .15s;}
+  .form-field input:focus,.form-field select:focus,.form-field textarea:focus{outline:none; border-color:var(--orange);}
+  .form-row{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+  @media(max-width:520px){.form-row{grid-template-columns:1fr;}}
+  .form-hint{font-size:12.5px; color:var(--slate-soft); margin-top:4px;}
+  .checkbox-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-top:4px;}
+  .checkbox-item{display:flex; align-items:center; gap:8px; background:var(--bg); border:1.5px solid var(--border); border-radius:9px; padding:10px 14px; cursor:pointer; transition:all .15s; font-size:14px; color:var(--slate-mid);}
+  .checkbox-item input{display:none;}
+  .checkbox-item.checked{background:var(--orange-light); border-color:var(--orange); color:var(--orange-dark);}
+  .checkbox-box{width:18px; height:18px; border:2px solid var(--border); border-radius:5px; flex-shrink:0; display:flex; align-items:center; justify-content:center; transition:all .15s;}
+  .checkbox-item.checked .checkbox-box{background:var(--orange); border-color:var(--orange);}
+  .checkbox-box-check{width:10px; height:10px; border-right:2px solid #fff; border-bottom:2px solid #fff; transform:rotate(45deg) translate(-1px,-2px);}
+  .stepper-row{display:flex; align-items:center; gap:12px;}
+  .stepper-btn{width:36px; height:36px; border-radius:50%; border:1.5px solid var(--border); background:var(--bg); font-size:18px; font-weight:700; color:var(--slate-mid); cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all .15s;}
+  .stepper-btn:hover:not(:disabled){border-color:var(--orange); color:var(--orange);}
+  .stepper-btn:disabled{opacity:.4; cursor:default;}
+  .stepper-val{font-size:18px; font-weight:800; color:var(--slate); min-width:36px; text-align:center;}
+  .photo-upload-area{border:2px dashed var(--border); border-radius:12px; padding:32px; text-align:center; cursor:pointer; transition:border-color .15s;}
+  .photo-upload-area:hover{border-color:var(--orange);}
+  .photo-upload-icon{width:48px; height:48px; margin:0 auto 12px; color:var(--slate-soft);}
+  .photo-upload-text{font-size:15px; font-weight:700; color:var(--slate); margin:0 0 4px;}
+  .photo-upload-sub{font-size:13px; color:var(--slate-soft); margin:0;}
+  .photo-previews{display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:16px;}
+  .photo-preview{aspect-ratio:4/3; border-radius:8px; background:var(--green-light); display:flex; align-items:center; justify-content:center; color:var(--green-dark); font-size:12px; font-weight:700; border:1px solid var(--green-mid);}
+  .wizard-nav{display:flex; justify-content:space-between; align-items:center; margin-top:28px; padding-top:20px; border-top:1px solid var(--border);}
+  .btn-wiz-back{background:none; border:1.5px solid var(--border); border-radius:9px; padding:11px 20px; font-family:var(--sans); font-size:14px; font-weight:700; color:var(--slate-soft); cursor:pointer; transition:all .15s;}
+  .btn-wiz-back:hover{border-color:var(--slate-mid); color:var(--slate);}
+  .btn-wiz-next{background:var(--orange); color:#fff; border:none; border-radius:9px; padding:11px 28px; font-family:var(--sans); font-size:14px; font-weight:700; cursor:pointer; transition:background .15s;}
+  .btn-wiz-next:hover{background:var(--orange-dark);}
+  .wizard-success{text-align:center; padding:20px 0;}
+  .wizard-success-icon{width:64px; height:64px; background:var(--green-light); border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 16px;}
+  .wizard-success h2{font-family:var(--serif); font-size:26px; margin:0 0 8px;}
+  .wizard-success p{color:var(--slate-soft); font-size:15px; max-width:440px; margin:0 auto 20px; line-height:1.6;}
+  .wizard-success-steps{list-style:none; padding:0; margin:0 0 24px; text-align:left; display:inline-block;}
+  .wizard-success-steps li{display:flex; align-items:flex-start; gap:10px; font-size:14.5px; color:var(--slate-mid); margin-bottom:10px;}
+  .success-dot{width:20px; height:20px; border-radius:50%; background:var(--green-light); display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:2px;}
+  .success-dot svg{width:11px; height:11px; stroke:var(--green-dark); fill:none; stroke-width:2.5; stroke-linecap:round; stroke-linejoin:round;}
+  .btn-success-wa{display:inline-flex; align-items:center; gap:8px; background:#25D366; color:#fff; border:none; border-radius:10px; padding:13px 24px; font-family:var(--sans); font-size:15px; font-weight:700; cursor:pointer; margin-right:10px;}
+  .btn-success-back{display:inline-flex; align-items:center; gap:6px; background:none; border:1.5px solid var(--border); border-radius:10px; padding:11px 20px; font-family:var(--sans); font-size:14px; font-weight:700; color:var(--slate-soft); cursor:pointer;}
+
+  footer{background:var(--white); border-top:1px solid var(--border); padding:32px 0;}
+  .footer-inner{max-width:1120px; margin:0 auto; padding:0 28px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; font-size:13.5px; color:var(--slate-soft);}
+  .footer-logo-sm{font-weight:800; font-size:16px; color:var(--slate);}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-row">
+    <a href="index.html" class="logo">
+      <span class="logo-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M3 11L12 4L21 11V21H15V15H9V21H3V11Z" fill="white"/></svg></span>
+      MakanMate
+      <span class="logo-tag">Owner</span>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="owner.html" class="active">My dashboard</a></li>
+      <li><a href="explore.html">Browse listings</a></li>
+      <li><a href="index.html#faq">FAQ</a></li>
+    </ul>
+    <button id="themeToggle" class="theme-toggle"><svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg></button>
+    <a href="#addPanel" class="nav-cta-orange" onclick="showTab('add'); return true;">Add property</a>
+    <button class="nav-toggle" id="navToggle"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<div class="owner-head">
+  <div class="owner-head-inner">
+    <div>
+      <h1>Welcome back, Ramesh</h1>
+      <p>MakanMate Owner · Pune pilot · your listings are live</p>
+    </div>
+    <div class="owner-head-avatar">RP</div>
+  </div>
+</div>
+
+<div class="owner-tabs">
+  <div class="owner-tabs-inner">
+    <button class="owner-tab active" data-tab="dashboard" onclick="showTab('dashboard')">
+      My listings <span class="tab-count">1</span>
+    </button>
+    <button class="owner-tab" data-tab="visits" onclick="showTab('visits')">
+      Visits <span class="tab-count">3</span>
+    </button>
+    <button class="owner-tab" data-tab="rent" onclick="showTab('rent')">
+      Rent
+    </button>
+    <button class="owner-tab" data-tab="add" onclick="showTab('add')">
+      + Add property
+    </button>
+  </div>
+</div>
+
+<!-- DASHBOARD PANEL -->
+<div class="owner-panel active" id="panel-dashboard">
+  <div class="stat-row">
+    <div class="stat-card">
+      <p class="stat-label">Views this month</p>
+      <p class="stat-val">247</p>
+      <p class="stat-sub stat-positive">+18% vs last month</p>
+    </div>
+    <div class="stat-card">
+      <p class="stat-label">Enquiries</p>
+      <p class="stat-val">14</p>
+      <p class="stat-sub">8 replied, 6 pending</p>
+    </div>
+    <div class="stat-card">
+      <p class="stat-label">Visits booked</p>
+      <p class="stat-val">5</p>
+      <p class="stat-sub">3 upcoming, 2 done</p>
+    </div>
+    <div class="stat-card">
+      <p class="stat-label">Occupancy</p>
+      <p class="stat-val">83%</p>
+      <p class="stat-sub">5 of 6 beds filled</p>
+    </div>
+  </div>
+
+  <div class="listing-mgmt">
+    <div class="listing-mgmt-header">
+      <h3>2 BHK premium flat · Hinjewadi Phase 1</h3>
+      <span class="status-pill status-active">Active</span>
+    </div>
+    <img src="images/flat_a_6.jpg" alt="Living room" class="listing-mgmt-photo">
+    <div class="listing-mgmt-body">
+      <p style="margin:0 0 4px; font-size:15px; font-weight:600; color:var(--slate);">Tower B, Sample Residency · ₹38,000 / month</p>
+      <p style="margin:0; font-size:13.5px; color:var(--slate-soft);">Safety score 8.4 · 4.8 stars (7 reviews) · 74% match avg</p>
+      <div class="listing-mgmt-row">
+        <div class="mgmt-stat"><p class="mgmt-stat-label">Views</p><p class="mgmt-stat-val">247</p></div>
+        <div class="mgmt-stat"><p class="mgmt-stat-label">Enquiries</p><p class="mgmt-stat-val">14</p></div>
+        <div class="mgmt-stat"><p class="mgmt-stat-label">Days listed</p><p class="mgmt-stat-val">38</p></div>
+        <div class="mgmt-stat"><p class="mgmt-stat-label">Available</p><p class="mgmt-stat-val">1 Oct</p></div>
+      </div>
+      <div class="mgmt-actions">
+        <button class="btn-mgmt btn-mgmt-primary" onclick="showTab('visits')">Manage visits (3)</button>
+        <button class="btn-mgmt btn-mgmt-wa" onclick="window.open('https://wa.me/919000012345?text=Hi+from+MakanMate+dashboard','_blank')">WhatsApp enquiries</button>
+        <button class="btn-mgmt btn-mgmt-secondary" onclick="location.href='listing.html?id=a'">Preview listing</button>
+      </div>
+    </div>
+  </div>
+
+  <div style="background:var(--orange-light); border:1px solid var(--orange-mid); border-radius:14px; padding:20px 22px; display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;">
+    <div>
+      <p style="margin:0 0 4px; font-weight:700; font-size:15px; color:var(--slate);">Got another property or room?</p>
+      <p style="margin:0; font-size:14px; color:var(--slate-soft);">Listing is free. Add photos, set your rent, we'll verify and go live.</p>
+    </div>
+    <button class="btn-mgmt btn-mgmt-primary" onclick="showTab('add')" style="white-space:nowrap;">Add another property</button>
+  </div>
+</div>
+
+<!-- VISITS PANEL -->
+<div class="owner-panel" id="panel-visits">
+  <h2 style="margin-bottom:20px;">Visit requests</h2>
+
+  <div style="display:flex; gap:10px; margin-bottom:20px; flex-wrap:wrap;">
+    <button class="btn-mgmt btn-mgmt-primary" style="padding:8px 16px; font-size:13px;">New (2)</button>
+    <button class="btn-mgmt btn-mgmt-secondary" style="padding:8px 16px; font-size:13px;">Upcoming (1)</button>
+    <button class="btn-mgmt btn-mgmt-secondary" style="padding:8px 16px; font-size:13px;">Done (4)</button>
+  </div>
+
+  <div id="visitsNew">
+    <div class="visit-item" id="visit1">
+      <div class="visit-info">
+        <h4>Priya Sharma</h4>
+        <p>+91 98765 43210 · Tomorrow, 11:00 am – 12:00 pm · 2 BHK Hinjewadi</p>
+      </div>
+      <div class="visit-actions">
+        <button class="btn-visit btn-visit-accept" onclick="acceptVisit('visit1')">Accept</button>
+        <button class="btn-visit btn-visit-decline" onclick="declineVisit('visit1')">Decline</button>
+      </div>
+    </div>
+    <div class="visit-item" id="visit2">
+      <div class="visit-info">
+        <h4>Karthik Menon</h4>
+        <p>+91 87654 32109 · Day after tomorrow, 4:00 pm – 5:00 pm · 2 BHK Hinjewadi</p>
+      </div>
+      <div class="visit-actions">
+        <button class="btn-visit btn-visit-accept" onclick="acceptVisit('visit2')">Accept</button>
+        <button class="btn-visit btn-visit-decline" onclick="declineVisit('visit2')">Decline</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="visit-item" style="background:var(--bg); opacity:.7;">
+    <div class="visit-info">
+      <h4>Sneha Patil — Confirmed</h4>
+      <p>+91 76543 21098 · Friday, 10:00 am – 11:00 am · 2 BHK Hinjewadi</p>
+    </div>
+    <div class="visit-actions">
+      <button class="btn-visit btn-visit-done" disabled>Confirmed</button>
+    </div>
+  </div>
+
+  <div style="margin-top:28px; padding:18px; background:var(--white); border:1px solid var(--border); border-radius:12px;">
+    <h3 style="margin-bottom:10px;">Send listing on WhatsApp</h3>
+    <p style="font-size:14px; color:var(--slate-soft); margin:0 0 14px;">Share your listing with any enquiry directly from WhatsApp. They can take a 360° virtual tour before deciding to visit.</p>
+    <button class="btn-mgmt btn-mgmt-wa" onclick="window.open('https://wa.me/?text=Check+out+my+property+on+MakanMate:+https://makanmate.in/listing.html?id=a','_blank')">Share listing on WhatsApp</button>
+  </div>
+</div>
+
+<!-- RENT PANEL -->
+<div class="owner-panel" id="panel-rent">
+  <h2 style="margin-bottom:20px;">Rent & reminders</h2>
+
+  <div class="stat-row" style="grid-template-columns:repeat(3,1fr);">
+    <div class="stat-card">
+      <p class="stat-label">This month</p>
+      <p class="stat-val">₹38,000</p>
+      <p class="stat-sub stat-positive">Received 16 Sep</p>
+    </div>
+    <div class="stat-card">
+      <p class="stat-label">Next due</p>
+      <p class="stat-val">16 Oct</p>
+      <p class="stat-sub">20 days away</p>
+    </div>
+    <div class="stat-card">
+      <p class="stat-label">Deposit held</p>
+      <p class="stat-val">₹1,14,000</p>
+      <p class="stat-sub">3 months · Karthik R.</p>
+    </div>
+  </div>
+
+  <div style="background:var(--white); border:1px solid var(--border); border-radius:16px; overflow:hidden;">
+    <div style="padding:18px 22px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between;">
+      <h3 style="margin:0;">Tenant: Karthik Raghavan</h3>
+      <span class="status-pill status-active">Rent paid</span>
+    </div>
+    <div style="padding:18px 22px;">
+      <div style="display:flex; gap:16px; flex-wrap:wrap; margin-bottom:16px;">
+        <div class="mgmt-stat"><p class="mgmt-stat-label">Monthly rent</p><p class="mgmt-stat-val">₹38,000</p></div>
+        <div class="mgmt-stat"><p class="mgmt-stat-label">Last paid</p><p class="mgmt-stat-val">16 Sep</p></div>
+        <div class="mgmt-stat"><p class="mgmt-stat-label">Next due</p><p class="mgmt-stat-val">16 Oct</p></div>
+        <div class="mgmt-stat"><p class="mgmt-stat-label">Agreement</p><p class="mgmt-stat-val">11 months</p></div>
+      </div>
+      <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        <button class="btn-mgmt btn-mgmt-wa" onclick="window.open('https://wa.me/919876543216?text=Hi+Karthik,+rent+of+₹38,000+is+due+on+16+Oct.+Please+pay+via+UPI:+owner@upi','_blank')">Send rent reminder</button>
+        <button class="btn-mgmt btn-mgmt-secondary">View payment history</button>
+        <button class="btn-mgmt btn-mgmt-secondary">Download receipt</button>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:20px; background:var(--green-light); border:1px solid var(--green-mid); border-radius:12px; padding:18px 22px;">
+    <h3 style="color:var(--green-dark); margin-bottom:8px;">Tenant paperwork</h3>
+    <p style="font-size:14px; color:var(--slate-mid); margin:0 0 14px;">Leave and licence agreement, police verification and ID check — all done digitally. Send the links to your tenant from here.</p>
+    <div style="display:flex; gap:10px; flex-wrap:wrap;">
+      <button class="btn-mgmt btn-mgmt-secondary" style="border-color:var(--green-mid); color:var(--green-dark);">Send e-sign link</button>
+      <button class="btn-mgmt btn-mgmt-secondary" style="border-color:var(--green-mid); color:var(--green-dark);">Police verification</button>
+      <button class="btn-mgmt btn-mgmt-secondary" style="border-color:var(--green-mid); color:var(--green-dark);">ID via DigiLocker</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADD PROPERTY PANEL -->
+<div class="owner-panel" id="panel-add" id="addPanel">
+  <div class="wizard-wrap">
+
+    <div class="stepper" id="wizardStepper">
+      <div class="step-item">
+        <div class="step-num active" id="sn1">1</div>
+        <span class="step-label active" id="sl1">Basics</span>
+      </div>
+      <div class="step-line" id="line1"></div>
+      <div class="step-item">
+        <div class="step-num" id="sn2">2</div>
+        <span class="step-label" id="sl2">Rooms</span>
+      </div>
+      <div class="step-line" id="line2"></div>
+      <div class="step-item">
+        <div class="step-num" id="sn3">3</div>
+        <span class="step-label" id="sl3">Features</span>
+      </div>
+      <div class="step-line" id="line3"></div>
+      <div class="step-item">
+        <div class="step-num" id="sn4">4</div>
+        <span class="step-label" id="sl4">Location</span>
+      </div>
+      <div class="step-line" id="line4"></div>
+      <div class="step-item">
+        <div class="step-num" id="sn5">5</div>
+        <span class="step-label" id="sl5">Photos</span>
+      </div>
+    </div>
+
+    <div class="wizard-card">
+
+      <!-- Step 1: Basics -->
+      <div class="wizard-step active" id="step1">
+        <h2 class="wizard-title">Property basics</h2>
+        <p class="wizard-sub">Tell us what kind of place you have and the rent you want.</p>
+        <div class="form-field">
+          <label>Property type</label>
+          <select><option>PG (Paying Guest)</option><option>Shared flat / room</option><option>1 BHK whole flat</option><option>2 BHK whole flat</option><option>3 BHK whole flat</option><option>Studio / 1 RK</option></select>
+        </div>
+        <div class="form-row">
+          <div class="form-field">
+            <label>Monthly rent (₹)</label>
+            <input type="number" placeholder="e.g. 12000" min="1000">
+          </div>
+          <div class="form-field">
+            <label>Deposit (₹)</label>
+            <input type="number" placeholder="e.g. 24000">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-field">
+            <label>Maintenance (₹ / month)</label>
+            <input type="number" placeholder="0 if included in rent">
+          </div>
+          <div class="form-field">
+            <label>Available from</label>
+            <input type="date">
+          </div>
+        </div>
+        <div class="form-field">
+          <label>Property name / building name</label>
+          <input type="text" placeholder="e.g. Sunrise Heights, Flat 302">
+        </div>
+        <div class="form-field">
+          <label>Who is this for?</label>
+          <div class="checkbox-grid">
+            <label class="checkbox-item" onclick="this.classList.toggle('checked')"><span class="checkbox-box"><span class="checkbox-box-check"></span></span>Working professionals</label>
+            <label class="checkbox-item" onclick="this.classList.toggle('checked')"><span class="checkbox-box"><span class="checkbox-box-check"></span></span>Students</label>
+            <label class="checkbox-item" onclick="this.classList.toggle('checked')"><span class="checkbox-box"><span class="checkbox-box-check"></span></span>Women only</label>
+            <label class="checkbox-item" onclick="this.classList.toggle('checked')"><span class="checkbox-box"><span class="checkbox-box-check"></span></span>Couples welcome</label>
+          </div>
+        </div>
+        <div class="wizard-nav">
+          <span style="font-size:13px; color:var(--slate-soft);">Step 1 of 5</span>
+          <button class="btn-wiz-next" onclick="nextStep(1)">Next: Rooms</button>
+        </div>
+      </div>
+
+      <!-- Step 2: Rooms -->
+      <div class="wizard-step" id="step2">
+        <h2 class="wizard-title">Rooms and beds</h2>
+        <p class="wizard-sub">Tell us how many rooms and beds your property has.</p>
+        <div class="form-field">
+          <label>Total bedrooms</label>
+          <div class="stepper-row">
+            <button class="stepper-btn" onclick="adjustVal('bedrooms',-1,1,10)">−</button>
+            <span class="stepper-val" id="bedrooms-val">2</span>
+            <button class="stepper-btn" onclick="adjustVal('bedrooms',1,1,10)">+</button>
+          </div>
+        </div>
+        <div class="form-field">
+          <label>Total beds available for rent</label>
+          <div class="stepper-row">
+            <button class="stepper-btn" onclick="adjustVal('beds',-1,1,20)">−</button>
+            <span class="stepper-val" id="beds-val">3</span>
+            <button class="stepper-btn" onclick="adjustVal('beds',1,1,20)">+</button>
+          </div>
+        </div>
+        <div class="form-field">
+          <label>Bathrooms</label>
+          <div class="stepper-row">
+            <button class="stepper-btn" onclick="adjustVal('baths',-1,1,6)">−</button>
+            <span class="stepper-val" id="baths-val">2</span>
+            <button class="stepper-btn" onclick="adjustVal('baths',1,1,6)">+</button>
+          </div>
+        </div>
+        <div class="form-field">
+          <label>Floor</label>
+          <input type="text" placeholder="e.g. 4th of 12, Ground floor">
+        </div>
+        <div class="form-field">
+          <label>Furnishing</label>
+          <select><option>Fully furnished</option><option>Semi-furnished</option><option>Unfurnished</option></select>
+        </div>
+        <div class="form-field">
+          <label>Sharing type</label>
+          <div class="checkbox-grid">
+            <label class="checkbox-item" onclick="this.classList.toggle('checked')"><span class="checkbox-box"><span class="checkbox-box-check"></span></span>Single occupancy</label>
+            <label class="checkbox-item checked" onclick="this.classList.toggle('checked')"><span class="checkbox-box"><span class="checkbox-box-check"></span></span>Twin sharing</label>
+            <label class="checkbox-item" onclick="this.classList.toggle('checked')"><span class="checkbox-box"><span class="checkbox-box-check"></span></span>Triple sharing</label>
+            <label class="checkbox-item" onclick="this.classList.toggle('checked')"><span class="checkbox-box"><span class="checkbox-box-check"></span></span>Whole flat only</label>
+          </div>
+        </div>
+        <div class="wizard-nav">
+          <button class="btn-wiz-back" onclick="prevStep(2)">Back</button>
+          <button class="btn-wiz-next" onclick="nextStep(2)">Next: Features</button>
+        </div>
+      </div>
+
+      <!-- Step 3: Features -->
+      <div class="wizard-step" id="step3">
+        <h2 class="wizard-title">Features and rules</h2>
+        <p class="wizard-sub">What's included and what are the house rules?</p>
+        <div class="form-field">
+          <label>Included amenities</label>
+          <div class="checkbox-grid">
+            <label class="checkbox-item" onclick="this.classList.toggle('checked')"><span class="checkbox-box"><span class="checkbox-box-check"></span></span>Wi-Fi</label>
+            <label class="checkbox-item" onclick="this.classList.toggle('checked')"><span class="checkbox-box"><span class="checkbox-box-check"></span></span>AC</label>
+            <label class="checkbox-item" onclick="this.classList.toggle('checked')"><span class="checkbox-box"><span class="checkbox-box-check"></span></span>Meals included</label>
+            <label class="checkbox-item" onclick="this.classList.toggle('checked')"><span class="checkbox-box"><span class="checkbox-box-check"></span></span>Laundry</label>
+            <label class="checkbox-item" onclick="this.classList.toggle('checked')"><span class="checkbox-box"><span class="checkbox-box-check"></span></span>Parking</label>
+            <label class="checkbox-item" onclick="this.classList.toggle('checked')"><span class="checkbox-box"><span class="checkbox-box-check"></span></span>Power backup</label>
+            <label class="checkbox-item" onclick="this.classList.toggle('checked')"><span class="checkbox-box"><span class="checkbox-box-check"></span></span>Pool / gym</label>
+            <label class="checkbox-item" onclick="this.classList.toggle('checked')"><span class="checkbox-box"><span class="checkbox-box-check"></span></span>CCTV / guard</label>
+          </div>
+        </div>
+        <div class="form-field">
+          <label>House rules</label>
+          <div class="checkbox-grid">
+            <label class="checkbox-item" onclick="this.classList.toggle('checked')"><span class="checkbox-box"><span class="checkbox-box-check"></span></span>Veg kitchen</label>
+            <label class="checkbox-item" onclick="this.classList.toggle('checked')"><span class="checkbox-box"><span class="checkbox-box-check"></span></span>No smoking</label>
+            <label class="checkbox-item" onclick="this.classList.toggle('checked')"><span class="checkbox-box"><span class="checkbox-box-check"></span></span>No pets</label>
+            <label class="checkbox-item" onclick="this.classList.toggle('checked')"><span class="checkbox-box"><span class="checkbox-box-check"></span></span>Guests allowed</label>
+          </div>
+        </div>
+        <div class="form-field">
+          <label>Anything else? (optional)</label>
+          <textarea rows="3" placeholder="Quiet building, curfew at 11 pm, gated society..."></textarea>
+        </div>
+        <div class="wizard-nav">
+          <button class="btn-wiz-back" onclick="prevStep(3)">Back</button>
+          <button class="btn-wiz-next" onclick="nextStep(3)">Next: Location</button>
+        </div>
+      </div>
+
+      <!-- Step 4: Location -->
+      <div class="wizard-step" id="step4">
+        <h2 class="wizard-title">Location</h2>
+        <p class="wizard-sub">Your full address and the nearest college or IT park. This is what tenants use to calculate commute times.</p>
+        <div class="form-field">
+          <label>Full address</label>
+          <textarea rows="3" placeholder="Flat 302, Tower C, Sunrise Heights, Wakad, Pune, Maharashtra 411057"></textarea>
+          <p class="form-hint">Include society name, tower, flat number, area and PIN code.</p>
+        </div>
+        <div class="form-field">
+          <label>Nearest IT park or college (optional)</label>
+          <select>
+            <option value="">Select nearest landmark</option>
+            <optgroup label="IT parks">
+              <option>Hinjewadi Phase 1</option>
+              <option>Hinjewadi Phase 2</option>
+              <option>Hinjewadi Phase 3</option>
+              <option>Kharadi EON IT Park</option>
+              <option>Magarpatta Cybercity</option>
+            </optgroup>
+            <optgroup label="Colleges">
+              <option>MIT Pune (Kothrud)</option>
+              <option>COEP (Shivajinagar)</option>
+              <option>Symbiosis (Viman Nagar)</option>
+              <option>Pune University (Aundh)</option>
+            </optgroup>
+          </select>
+        </div>
+        <div class="form-row">
+          <div class="form-field">
+            <label>Bus stop distance</label>
+            <input type="text" placeholder="e.g. 300 m, 5 min walk">
+          </div>
+          <div class="form-field">
+            <label>Grocery distance</label>
+            <input type="text" placeholder="e.g. 200 m, 2 min walk">
+          </div>
+        </div>
+        <div class="form-field">
+          <label>Google Maps link (optional)</label>
+          <input type="url" placeholder="https://maps.google.com/...">
+          <p class="form-hint">Paste the share link from Google Maps for your exact pin.</p>
+        </div>
+        <div class="wizard-nav">
+          <button class="btn-wiz-back" onclick="prevStep(4)">Back</button>
+          <button class="btn-wiz-next" onclick="nextStep(4)">Next: Photos</button>
+        </div>
+      </div>
+
+      <!-- Step 5: Photos -->
+      <div class="wizard-step" id="step5">
+        <h2 class="wizard-title">Photos</h2>
+        <p class="wizard-sub">Listings with 5+ photos get 3× more enquiries. Include the bedroom, kitchen, bathroom and a common area.</p>
+        <div class="photo-upload-area" onclick="document.getElementById('photoInput').click()">
+          <div class="photo-upload-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
+          <p class="photo-upload-text">Tap to add photos</p>
+          <p class="photo-upload-sub">JPG or PNG · up to 10 photos · min 800×600 px</p>
+          <input type="file" id="photoInput" multiple accept="image/*" style="display:none;" onchange="previewPhotos(this)">
+        </div>
+        <div class="photo-previews" id="photoPreviews" style="display:none;"></div>
+        <div style="margin-top:20px; background:var(--bg); border:1px solid var(--border); border-radius:12px; padding:16px 18px;">
+          <p style="font-size:14px; font-weight:700; color:var(--slate); margin:0 0 6px;">No camera handy?</p>
+          <p style="font-size:13.5px; color:var(--slate-soft); margin:0 0 12px;">Send your photos on WhatsApp and we'll add them to your listing.</p>
+          <a href="https://wa.me/919000012345?text=I+want+to+add+photos+to+my+MakanMate+listing" target="_blank" rel="noopener" class="btn-mgmt btn-mgmt-wa" style="display:inline-flex; align-items:center; gap:6px; font-size:13px; padding:9px 16px;">Send photos on WhatsApp</a>
+        </div>
+        <div class="wizard-nav">
+          <button class="btn-wiz-back" onclick="prevStep(5)">Back</button>
+          <button class="btn-wiz-next" onclick="submitWizard()" style="background:var(--green);">Submit listing</button>
+        </div>
+      </div>
+
+      <!-- Success -->
+      <div class="wizard-step" id="stepSuccess">
+        <div class="wizard-success">
+          <div class="wizard-success-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="#2DA847" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <h2>Listing submitted!</h2>
+          <p>Our Pune team will visit your property within 2–3 working days to verify and take final photos. Once verified, your listing goes live.</p>
+          <ul class="wizard-success-steps">
+            <li><span class="success-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Property details saved</li>
+            <li><span class="success-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Verification visit being scheduled</li>
+            <li><span class="success-dot"><svg viewBox="0 0 12 12"><path d="M2 6l3 3 5-5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Listing will go live after verification</li>
+          </ul>
+          <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
+            <a href="https://wa.me/919000012345?text=I+submitted+my+property+on+MakanMate" target="_blank" rel="noopener" class="btn-success-wa">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+              WhatsApp us
+            </a>
+            <button class="btn-success-back" onclick="showTab('dashboard')">Back to dashboard</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <span class="footer-logo-sm">MakanMate Owner</span>
+    <span>Verified PGs in Pune. Zero brokerage.</span>
+    <a href="mailto:contact@makanmate.in" style="color:var(--orange); font-weight:700;">contact@makanmate.in</a>
+  </div>
+</footer>
+
+<script>
+  // Theme
+  (function(){
+    const saved = localStorage.getItem('mm-theme') || 'light';
+    document.documentElement.setAttribute('data-theme', saved);
+  })();
+  document.getElementById('themeToggle').addEventListener('click', function(){
+    const html = document.documentElement;
+    const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    localStorage.setItem('mm-theme', next);
+  });
+  const navToggle = document.getElementById('navToggle');
+  const navLinks = document.getElementById('navLinks');
+  navToggle.addEventListener('click', () => navLinks.classList.toggle('open'));
+
+  // Tab switching
+  function showTab(name) {
+    document.querySelectorAll('.owner-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.owner-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('panel-' + name).classList.add('active');
+    document.querySelector(`[data-tab="${name}"]`).classList.add('active');
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  // Wizard step navigation
+  let currentStep = 1;
+  const TOTAL_STEPS = 5;
+
+  function updateStepper(toStep) {
+    for (let i = 1; i <= TOTAL_STEPS; i++) {
+      const sn = document.getElementById('sn' + i);
+      const sl = document.getElementById('sl' + i);
+      sn.classList.remove('active','done');
+      sl.classList.remove('active','done');
+      if (i < toStep) { sn.classList.add('done'); sl.classList.add('done'); sn.textContent = '✓'; }
+      else if (i === toStep) { sn.classList.add('active'); sl.classList.add('active'); sn.textContent = i; }
+      else { sn.textContent = i; }
+      if (i < TOTAL_STEPS) document.getElementById('line' + i).classList.toggle('done', i < toStep);
+    }
+  }
+
+  function nextStep(from) {
+    document.getElementById('step' + from).classList.remove('active');
+    currentStep = from + 1;
+    document.getElementById('step' + currentStep).classList.add('active');
+    updateStepper(currentStep);
+    document.querySelector('.wizard-card').scrollIntoView({behavior:'smooth', block:'start'});
+  }
+
+  function prevStep(from) {
+    document.getElementById('step' + from).classList.remove('active');
+    currentStep = from - 1;
+    document.getElementById('step' + currentStep).classList.add('active');
+    updateStepper(currentStep);
+    document.querySelector('.wizard-card').scrollIntoView({behavior:'smooth', block:'start'});
+  }
+
+  function submitWizard() {
+    document.getElementById('step5').classList.remove('active');
+    document.getElementById('stepSuccess').classList.add('active');
+    for (let i = 1; i <= TOTAL_STEPS; i++) {
+      const sn = document.getElementById('sn' + i);
+      const sl = document.getElementById('sl' + i);
+      sn.classList.remove('active'); sn.classList.add('done'); sn.textContent = '✓';
+      sl.classList.remove('active'); sl.classList.add('done');
+      if (i < TOTAL_STEPS) document.getElementById('line' + i).classList.add('done');
+    }
+    document.querySelector('.wizard-card').scrollIntoView({behavior:'smooth', block:'start'});
+  }
+
+  // Stepper +/- buttons
+  const stepperVals = { bedrooms: 2, beds: 3, baths: 2 };
+  function adjustVal(key, delta, min, max) {
+    stepperVals[key] = Math.min(max, Math.max(min, stepperVals[key] + delta));
+    document.getElementById(key + '-val').textContent = stepperVals[key];
+  }
+
+  // Photo preview
+  function previewPhotos(input) {
+    const files = Array.from(input.files).slice(0, 10);
+    const wrap = document.getElementById('photoPreviews');
+    wrap.style.display = 'grid';
+    wrap.innerHTML = files.map((f,i) => {
+      const url = URL.createObjectURL(f);
+      return `<div class="photo-preview" style="background:none; padding:0;"><img src="${url}" style="width:100%;height:100%;object-fit:cover;border-radius:8px;" alt="Photo ${i+1}"></div>`;
+    }).join('');
+  }
+
+  // Visit actions
+  function acceptVisit(id) {
+    const el = document.getElementById(id);
+    const name = el.querySelector('h4').textContent;
+    el.querySelector('.visit-actions').innerHTML = `<button class="btn-visit btn-visit-done" disabled>Confirmed</button>`;
+    el.style.opacity = '0.7';
+  }
+  function declineVisit(id) {
+    const el = document.getElementById(id);
+    el.style.transition = 'opacity .3s';
+    el.style.opacity = '0';
+    setTimeout(() => el.remove(), 300);
+  }
+
+  // Check URL hash for tab
+  const hash = location.hash.replace('#','');
+  if (hash === 'add') showTab('add');
+</script>
+</body>
+</html>

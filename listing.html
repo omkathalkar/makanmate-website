@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Listing — MakanMate</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --green:#1F8A5B; --green-dark:#166644; --green-light:#EBF5F0; --green-mid:#C0DDD0;
+    --orange:#C45E1A; --orange-dark:#A84D14; --orange-light:#FBF1E8; --orange-mid:#F0C9A0;
+    --wine:#7C1D35; --wine-light:#F5E8EB;
+    --slate:#1C1611; --slate-mid:#4A3F35; --slate-soft:#7A6E65;
+    --border:#DDD4C8; --bg:#F7F3EE; --white:#FFFDF9;
+    --sans:'Manrope',sans-serif; --serif:'Newsreader',serif;
+  }
+  [data-theme="dark"]{
+    --bg:#110D09; --white:#1A1410; --slate:#F0EBE4; --slate-mid:#D4C8BC; --slate-soft:#9C8E84;
+    --border:#2D2420; --nav-bg:rgba(17,13,9,0.97); --green-light:#091A10; --green-mid:#0F2A1C; --orange-light:#1F1208; --wine-light:#1F0A10;
+  }
+  [data-theme="dark"] footer{background:#0A0705;}
+  *{box-sizing:border-box;} html{scroll-behavior:smooth;}
+  body{margin:0; font-family:var(--sans); color:var(--slate-mid); background:var(--bg); line-height:1.6;}
+  img{max-width:100%; display:block;} a{color:inherit; text-decoration:none;}
+  .wrap{max-width:1120px; margin:0 auto; padding:0 28px;}
+  h2{font-family:var(--serif); font-weight:500; font-size:22px; color:var(--slate); margin:0 0 16px;}
+  h3{font-size:15px; font-weight:700; color:var(--slate); margin:0 0 10px;}
+
+  /* NAV */
+  .nav{position:sticky; top:0; z-index:50; background:var(--nav-bg,rgba(255,255,255,0.96)); backdrop-filter:blur(8px); border-bottom:1px solid var(--border);}
+  .nav-row{display:flex; align-items:center; justify-content:space-between; padding:14px 28px; max-width:1120px; margin:0 auto;}
+  .logo{font-family:var(--sans); font-weight:800; font-size:20px; letter-spacing:-0.3px; color:var(--slate); display:flex; align-items:center; gap:9px;}
+  .logo-icon{width:32px; height:32px; background:var(--green); border-radius:8px; display:flex; align-items:center; justify-content:center;}
+  .nav-links{display:flex; gap:28px; list-style:none; margin:0; padding:0;}
+  .nav-links a{font-weight:600; font-size:14.5px; color:var(--slate-soft); transition:color .15s;}
+  .nav-links a:hover{color:var(--green);}
+  .nav-cta{background:var(--green); color:#fff; padding:9px 18px; border-radius:7px; font-weight:700; font-size:14px;}
+  .nav-owner-link{font-weight:700; font-size:14px; color:var(--orange); margin-right:14px;}
+  .theme-toggle{background:none; border:none; cursor:pointer; padding:6px; color:var(--slate-soft); display:flex; align-items:center;}
+  .theme-toggle svg{width:18px; height:18px;}
+  .nav-toggle{display:none; background:none; border:none; cursor:pointer; padding:4px;}
+  .nav-toggle span{display:block; width:24px; height:2px; background:var(--slate); margin:5px 0;}
+  @media(max-width:820px){
+    .nav-links{position:absolute; top:100%; left:0; right:0; background:var(--white); flex-direction:column; gap:0; border-bottom:1px solid var(--border); max-height:0; overflow:hidden; transition:max-height .25s;}
+    .nav-links.open{max-height:320px;}
+    .nav-links li{border-top:1px solid var(--border);}
+    .nav-links a{display:block; padding:15px 28px;}
+    .nav-toggle{display:block;} .nav-cta{display:none;}
+  }
+
+  /* BACK BAR */
+  .back-bar{padding:14px 0; border-bottom:1px solid var(--border); background:var(--white);}
+  .back-bar-inner{max-width:1120px; margin:0 auto; padding:0 28px; display:flex; align-items:center; justify-content:space-between;}
+  .back-link{display:flex; align-items:center; gap:6px; font-weight:600; font-size:14px; color:var(--slate-soft); transition:color .15s;}
+  .back-link:hover{color:var(--green);}
+  .back-link svg{width:16px; height:16px;}
+  .save-btn{display:flex; align-items:center; gap:7px; background:none; border:1.5px solid var(--border); border-radius:8px; padding:7px 14px; font-family:var(--sans); font-size:13.5px; font-weight:700; color:var(--slate-soft); cursor:pointer; transition:all .15s;}
+  .save-btn:hover{border-color:var(--green); color:var(--green);}
+  .save-btn.saved{border-color:#ef4444; color:#ef4444;}
+  .save-btn svg{width:15px; height:15px; fill:none;}
+  .save-btn.saved svg{fill:#ef4444; stroke:#ef4444;}
+
+  /* PHOTO GALLERY */
+  .gallery{background:#000; position:relative;}
+  .gallery-main{width:100%; height:480px; overflow:hidden; position:relative;}
+  .gallery-main img{width:100%; height:100%; object-fit:cover; transition:opacity .3s;}
+  .gallery-placeholder{width:100%; height:480px; background:linear-gradient(135deg,var(--green-mid),var(--green-light)); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px; color:var(--green-dark);}
+  .gallery-placeholder svg{width:64px; height:64px; opacity:.3;}
+  .gallery-placeholder p{font-size:15px; font-weight:600; opacity:.5; margin:0;}
+  .gallery-nav{position:absolute; top:50%; transform:translateY(-50%); background:rgba(255,255,255,.9); border:none; border-radius:50%; width:40px; height:40px; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:background .15s;}
+  .gallery-nav:hover{background:#fff;}
+  .gallery-nav svg{width:18px; height:18px; stroke:var(--slate); fill:none; stroke-width:2.5;}
+  .gallery-prev{left:14px;}
+  .gallery-next{right:14px;}
+  .gallery-counter{position:absolute; bottom:14px; right:14px; background:rgba(15,23,42,.7); color:#fff; border-radius:999px; padding:4px 10px; font-size:12px; font-weight:700; backdrop-filter:blur(4px);}
+  .gallery-tour-badge{position:absolute; bottom:14px; left:14px; background:rgba(15,23,42,.72); color:#fff; border-radius:999px; padding:5px 12px; font-size:12.5px; font-weight:700; backdrop-filter:blur(4px);}
+  .thumbs{display:flex; gap:8px; padding:10px 16px; background:#111; overflow-x:auto;}
+  .thumb{width:80px; height:54px; border-radius:6px; overflow:hidden; cursor:pointer; opacity:.55; border:2px solid transparent; flex-shrink:0; transition:all .15s;}
+  .thumb.active{opacity:1; border-color:var(--green);}
+  .thumb img{width:100%; height:100%; object-fit:cover;}
+  @media(max-width:680px){.gallery-main{height:260px;} .gallery-placeholder{height:260px;} .thumbs{display:none;}}
+
+  /* PAGE LAYOUT */
+  .listing-layout{max-width:1120px; margin:0 auto; padding:32px 28px 60px; display:grid; grid-template-columns:1fr 360px; gap:32px; align-items:start;}
+  @media(max-width:900px){.listing-layout{grid-template-columns:1fr; padding:20px 16px 40px;}}
+
+  /* LEFT COLUMN */
+  .listing-main{}
+  .listing-header{margin-bottom:20px;}
+  .listing-badges{display:flex; gap:8px; margin-bottom:10px; flex-wrap:wrap;}
+  .lbadge{padding:4px 12px; border-radius:999px; font-size:12px; font-weight:700;}
+  .lbadge-green{background:var(--green-light); color:var(--green-dark);}
+  .lbadge-slate{background:var(--bg); border:1px solid var(--border); color:var(--slate-soft);}
+  .listing-title{font-family:var(--serif); font-size:28px; font-weight:500; color:var(--slate); margin:0 0 6px; line-height:1.2;}
+  .listing-area{font-size:15px; color:var(--slate-soft); margin:0;}
+  .price-row{display:flex; align-items:baseline; gap:8px; margin:16px 0 0; flex-wrap:wrap;}
+  .price-main{font-size:30px; font-weight:800; color:var(--slate);}
+  .price-unit{font-size:14px; color:var(--slate-soft); font-weight:600;}
+  .price-avail{font-size:13px; background:var(--green-light); color:var(--green-dark); font-weight:700; padding:4px 10px; border-radius:999px; margin-left:8px;}
+  .movein-breakdown{background:var(--bg); border:1px solid var(--border); border-radius:12px; padding:16px 18px; margin:16px 0 0; display:flex; gap:24px; flex-wrap:wrap;}
+  .movein-item{display:flex; flex-direction:column; gap:2px;}
+  .movein-label{font-size:11.5px; text-transform:uppercase; letter-spacing:.4px; color:var(--slate-soft); font-weight:700;}
+  .movein-val{font-size:16px; font-weight:800; color:var(--slate);}
+  .movein-total{padding-left:24px; border-left:2px solid var(--border);}
+  .movein-total .movein-val{color:var(--green-dark);}
+
+  .section{border-top:1px solid var(--border); padding-top:24px; margin-top:24px;}
+  .safety-bar-wrap{display:flex; align-items:center; gap:12px;}
+  .safety-num{font-size:32px; font-weight:800; color:var(--slate);}
+  .safety-track{flex:1; height:10px; background:var(--border); border-radius:999px; overflow:hidden;}
+  .safety-fill{height:100%; background:linear-gradient(90deg,var(--green),var(--green-dark)); border-radius:999px; transition:width .6s;}
+  .safety-label{font-size:13px; color:var(--slate-soft); font-weight:600;}
+  .commute-row{display:flex; gap:16px; flex-wrap:wrap; margin-top:10px;}
+  .commute-item{background:var(--bg); border:1px solid var(--border); border-radius:10px; padding:12px 16px; display:flex; flex-direction:column; gap:4px; min-width:100px;}
+  .commute-icon{font-size:18px;}
+  .commute-time{font-size:18px; font-weight:800; color:var(--slate);}
+  .commute-label{font-size:12px; color:var(--slate-soft); font-weight:600;}
+  .nearby-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-top:10px;}
+  .nearby-item{background:var(--bg); border:1px solid var(--border); border-radius:10px; padding:10px 14px; display:flex; justify-content:space-between; align-items:center;}
+  .nearby-label{font-size:14px; font-weight:600; color:var(--slate);}
+  .nearby-dist{font-size:13px; color:var(--slate-soft);}
+  .amenities-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:8px; margin-top:10px;}
+  .amenity-item{display:flex; align-items:center; gap:8px; font-size:14px; color:var(--slate-mid);}
+  .amenity-dot{width:6px; height:6px; border-radius:50%; background:var(--green); flex-shrink:0;}
+  .rules-list{list-style:none; padding:0; margin:10px 0 0; display:flex; flex-direction:column; gap:6px;}
+  .rules-list li{display:flex; align-items:center; gap:8px; font-size:14px; color:var(--slate-mid);}
+  .rules-list li::before{content:''; width:6px; height:6px; border-radius:50%; background:var(--orange); flex-shrink:0;}
+  .flat-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:10px;}
+  .flat-item{background:var(--bg); border:1px solid var(--border); border-radius:10px; padding:10px 14px;}
+  .flat-item-label{font-size:11px; text-transform:uppercase; letter-spacing:.4px; color:var(--slate-soft); font-weight:700; margin:0 0 2px;}
+  .flat-item-val{font-size:14.5px; font-weight:700; color:var(--slate); margin:0;}
+  .reviews-list{display:flex; flex-direction:column; gap:16px; margin-top:10px;}
+  .review-item{background:var(--bg); border:1px solid var(--border); border-radius:12px; padding:16px 18px;}
+  .review-header{display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;}
+  .review-name{font-weight:700; font-size:14.5px; color:var(--slate);}
+  .review-stay{font-size:12.5px; color:var(--slate-soft);}
+  .review-stars{font-size:13px; color:var(--green-dark); letter-spacing:1px;}
+  .review-text{font-size:14px; color:var(--slate-mid); margin:0; line-height:1.55;}
+
+  /* RIGHT COLUMN */
+  .listing-sidebar{position:sticky; top:80px;}
+  .sidebar-card{background:var(--white); border:1px solid var(--border); border-radius:16px; padding:22px; margin-bottom:16px;}
+  .owner-card{display:flex; align-items:center; gap:14px; margin-bottom:16px; padding-bottom:16px; border-bottom:1px solid var(--border);}
+  .owner-avatar{width:48px; height:48px; border-radius:50%; background:var(--green-light); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:15px; color:var(--green-dark); flex-shrink:0;}
+  .owner-name{font-weight:700; font-size:15px; color:var(--slate); margin:0 0 2px;}
+  .owner-meta{font-size:13px; color:var(--slate-soft); margin:0;}
+  .btn-whatsapp{display:flex; align-items:center; justify-content:center; gap:8px; width:100%; background:#25D366; color:#fff; border:none; border-radius:10px; padding:13px; font-family:var(--sans); font-size:15px; font-weight:700; cursor:pointer; transition:background .15s; margin-bottom:10px;}
+  .btn-whatsapp:hover{background:#1ebe59;}
+  .btn-whatsapp svg{width:18px; height:18px; fill:#fff;}
+  .btn-reserve{display:flex; align-items:center; justify-content:center; gap:8px; width:100%; background:var(--orange); color:#fff; border:none; border-radius:10px; padding:13px; font-family:var(--sans); font-size:15px; font-weight:700; cursor:pointer; transition:background .15s;}
+  .btn-reserve:hover{background:var(--orange-dark);}
+  .sidebar-note{font-size:12.5px; color:var(--slate-soft); text-align:center; margin-top:10px;}
+
+  /* BOOK VISIT FORM */
+  .book-form{}
+  .book-form h3{margin:0 0 16px; font-size:17px;}
+  .form-field{margin-bottom:14px;}
+  .form-field label{display:block; font-size:13px; font-weight:700; color:var(--slate); margin-bottom:5px;}
+  .form-field input,.form-field select,.form-field textarea{width:100%; padding:10px 12px; border:1.5px solid var(--border); border-radius:8px; font-family:var(--sans); font-size:14px; color:var(--slate-mid); background:var(--bg); transition:border .15s;}
+  .form-field input:focus,.form-field select:focus{outline:none; border-color:var(--green);}
+  .btn-book{width:100%; background:var(--slate); color:#fff; border:none; border-radius:10px; padding:13px; font-family:var(--sans); font-size:15px; font-weight:700; cursor:pointer; transition:background .15s; letter-spacing:.4px;}
+  .btn-book:hover{background:var(--green);}
+  .book-success{text-align:center; padding:16px 0;}
+  .book-success-icon{width:48px; height:48px; background:var(--green-light); border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 12px;}
+  .book-success h4{color:var(--slate); margin:0 0 6px; font-size:16px;}
+  .book-success p{color:var(--slate-soft); font-size:13.5px; margin:0;}
+
+  /* MODAL */
+  .modal-overlay{position:fixed; inset:0; background:rgba(15,23,42,.5); z-index:200; display:flex; align-items:center; justify-content:center; padding:20px; opacity:0; pointer-events:none; transition:opacity .2s;}
+  .modal-overlay.open{opacity:1; pointer-events:all;}
+  .modal{background:var(--white); border-radius:20px; padding:28px; max-width:420px; width:100%; text-align:center;}
+  .modal h3{font-family:var(--serif); font-size:22px; color:var(--slate); margin:0 0 8px;}
+  .modal p{color:var(--slate-soft); font-size:14.5px; margin:0 0 20px; line-height:1.6;}
+  .modal-price{font-size:28px; font-weight:800; color:var(--green-dark); margin:0 0 6px;}
+  .modal-note{font-size:12.5px; color:var(--slate-soft); margin:0 0 22px;}
+  .btn-confirm{width:100%; background:var(--orange); color:#fff; border:none; border-radius:10px; padding:13px; font-family:var(--sans); font-size:15px; font-weight:700; cursor:pointer; margin-bottom:10px; transition:background .15s;}
+  .btn-confirm:hover{background:var(--orange-dark);}
+  .btn-cancel{width:100%; background:none; border:1.5px solid var(--border); border-radius:10px; padding:11px; font-family:var(--sans); font-size:14px; font-weight:600; color:var(--slate-soft); cursor:pointer;}
+  .modal-success h3{color:var(--green-dark);}
+
+  footer{background:var(--white); border-top:1px solid var(--border); padding:32px 0;}
+  .footer-inner{max-width:1120px; margin:0 auto; padding:0 28px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; font-size:13.5px; color:var(--slate-soft);}
+  .footer-logo-sm{font-weight:800; font-size:16px; color:var(--slate);}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-row">
+    <a href="index.html" class="logo">
+      <span class="logo-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M3 11L12 4L21 11V21H15V15H9V21H3V11Z" fill="white"/></svg></span>
+      MakanMate
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="explore.html">Browse listings</a></li>
+      <li><a href="index.html#different">Why MakanMate</a></li>
+      <li><a href="index.html#owners">For owners</a></li>
+      <li><a href="pune.html">Pune guide</a></li>
+    </ul>
+    <a href="owner.html" class="nav-owner-link">List Property Free</a>
+    <button id="themeToggle" class="theme-toggle"><svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg></button>
+    <a href="index.html#waitlist" class="nav-cta">Join waitlist</a>
+    <button class="nav-toggle" id="navToggle"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<div class="back-bar">
+  <div class="back-bar-inner">
+    <a href="explore.html" class="back-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg> Back to listings</a>
+    <button class="save-btn" id="saveBtn"><svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg> Save listing</button>
+  </div>
+</div>
+
+<div id="galleryWrap"></div>
+
+<div class="wrap">
+  <div class="listing-layout" id="listingLayout"></div>
+</div>
+
+<!-- Reserve modal -->
+<div class="modal-overlay" id="reserveModal">
+  <div class="modal" id="reserveModalInner">
+    <div id="reserveFormView">
+      <h3>Reserve this room</h3>
+      <p>Pay a ₹500 token to hold this room for 48 hours while you arrange travel and paperwork. Refundable if you decide not to move in.</p>
+      <div class="modal-price">₹500</div>
+      <p class="modal-note">Refundable · 48-hour hold · no commitment</p>
+      <button class="btn-confirm" id="reserveConfirmBtn">Pay ₹500 to reserve</button>
+      <button class="btn-cancel" id="reserveCancelBtn">Cancel</button>
+    </div>
+    <div id="reserveSuccessView" style="display:none;" class="modal-success">
+      <div class="book-success-icon" style="margin:0 auto 16px;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="#2DA847" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <h3>Room reserved!</h3>
+      <p>The owner has been notified. Your room is held for 48 hours. Check WhatsApp for the confirmation message.</p>
+      <button class="btn-cancel" id="reserveCloseBtn" style="margin-top:16px;">Close</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <span class="footer-logo-sm">MakanMate</span>
+    <span>Verified PGs in Pune. Zero brokerage.</span>
+    <a href="mailto:contact@makanmate.in" style="color:var(--green); font-weight:700;">contact@makanmate.in</a>
+  </div>
+</footer>
+
+<script src="data.js"></script>
+<script>
+  // Theme
+  (function(){
+    const saved = localStorage.getItem('mm-theme') || 'light';
+    document.documentElement.setAttribute('data-theme', saved);
+  })();
+  document.getElementById('themeToggle').addEventListener('click', function(){
+    const html = document.documentElement;
+    const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    localStorage.setItem('mm-theme', next);
+  });
+  const navToggle = document.getElementById('navToggle');
+  const navLinks = document.getElementById('navLinks');
+  navToggle.addEventListener('click', () => navLinks.classList.toggle('open'));
+
+  const params = new URLSearchParams(location.search);
+  const id = params.get('id') || 'b';
+  const l = MM.byId(id);
+  if (!l) { document.body.innerHTML = '<p style="padding:40px;font-family:sans-serif;">Listing not found. <a href="explore.html">Back to listings</a></p>'; }
+  document.title = l.title + ' — MakanMate';
+
+  // Save state
+  const savedList = JSON.parse(localStorage.getItem('mm-saved') || '[]');
+  const saveBtn = document.getElementById('saveBtn');
+  if (savedList.includes(id)) saveBtn.classList.add('saved');
+  saveBtn.addEventListener('click', () => {
+    const idx = savedList.indexOf(id);
+    if (idx === -1) { savedList.push(id); saveBtn.classList.add('saved'); saveBtn.innerHTML = saveBtn.innerHTML.replace('Save listing','Saved'); }
+    else { savedList.splice(idx,1); saveBtn.classList.remove('saved'); saveBtn.innerHTML = saveBtn.innerHTML.replace('Saved','Save listing'); }
+    localStorage.setItem('mm-saved', JSON.stringify(savedList));
+  });
+
+  // Gallery
+  let photoIdx = 0;
+  function renderGallery() {
+    const wrap = document.getElementById('galleryWrap');
+    if (!l.photos.length) {
+      wrap.innerHTML = `<div class="gallery"><div class="gallery-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><p>Photos coming soon — contact owner for a visit</p></div></div>`;
+      return;
+    }
+    const thumbsHtml = l.photos.map((p,i) =>
+      `<div class="thumb ${i===0?'active':''}" data-idx="${i}"><img src="images/${p}.jpg" alt="${l.photoLabels[i]||''}"></div>`
+    ).join('');
+    wrap.innerHTML = `<div class="gallery">
+      <div class="gallery-main" id="galleryMain">
+        <img src="images/${l.photos[0]}.jpg" alt="${l.photoLabels[0]||l.title}" id="galleryImg">
+        <button class="gallery-nav gallery-prev" id="galPrev"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
+        <button class="gallery-nav gallery-next" id="galNext"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></button>
+        <div class="gallery-counter" id="galCounter">1 / ${l.photos.length}</div>
+        ${l.hasTour ? '<div class="gallery-tour-badge">360° tour available</div>' : ''}
+      </div>
+      <div class="thumbs" id="thumbsRow">${thumbsHtml}</div>
+    </div>`;
+    document.getElementById('galPrev').addEventListener('click', () => setPhoto((photoIdx-1+l.photos.length)%l.photos.length));
+    document.getElementById('galNext').addEventListener('click', () => setPhoto((photoIdx+1)%l.photos.length));
+    document.getElementById('thumbsRow').addEventListener('click', e => {
+      const t = e.target.closest('.thumb');
+      if (t) setPhoto(parseInt(t.dataset.idx));
+    });
+  }
+  function setPhoto(idx) {
+    photoIdx = idx;
+    document.getElementById('galleryImg').src = `images/${l.photos[idx]}.jpg`;
+    document.getElementById('galCounter').textContent = `${idx+1} / ${l.photos.length}`;
+    document.querySelectorAll('.thumb').forEach((t,i) => t.classList.toggle('active', i===idx));
+  }
+  renderGallery();
+
+  // Main content
+  function stars(r){ return '★'.repeat(Math.round(r))+'☆'.repeat(5-Math.round(r)); }
+  function amenityIcons(a){ return a.replace('AC','❄️ AC').replace('Wi-Fi','📶 Wi-Fi').replace('meals','🍛').replace('Laundry','🧺 Laundry').replace('CCTV','📹 CCTV').replace('Guard','💂 Guard').replace('Pool','🏊 Pool').replace('Gym','🏋️ Gym').replace('Balcony','🌄 Balcony').replace('Lift','🛗 Lift'); }
+
+  const waMsg = encodeURIComponent(`Hi, I saw ${l.title} on MakanMate and I'm interested. When can I visit?`);
+  const waUrl = `https://wa.me/${l.owner.phone}?text=${waMsg}`;
+
+  const flatSection = l.flat ? `
+    <div class="section">
+      <h2>Flat details</h2>
+      <div class="flat-grid">
+        <div class="flat-item"><p class="flat-item-label">Type</p><p class="flat-item-val">${l.flat.bhk}</p></div>
+        <div class="flat-item"><p class="flat-item-label">Size</p><p class="flat-item-val">${l.flat.sqft} sq ft</p></div>
+        <div class="flat-item"><p class="flat-item-label">Floor</p><p class="flat-item-val">${l.flat.floor}</p></div>
+        <div class="flat-item"><p class="flat-item-label">Furnishing</p><p class="flat-item-val">${l.flat.furnishing}</p></div>
+        <div class="flat-item"><p class="flat-item-label">Bathrooms</p><p class="flat-item-val">${l.flat.bathrooms}</p></div>
+        <div class="flat-item"><p class="flat-item-label">Parking</p><p class="flat-item-val">${l.flat.parking}</p></div>
+        <div class="flat-item"><p class="flat-item-label">Facing</p><p class="flat-item-val">${l.flat.facing}</p></div>
+        <div class="flat-item"><p class="flat-item-label">Building age</p><p class="flat-item-val">${l.flat.buildingAge}</p></div>
+        <div class="flat-item"><p class="flat-item-label">Lock-in</p><p class="flat-item-val">${l.flat.lockIn}</p></div>
+      </div>
+      <div style="margin-top:16px;">
+        <h3 style="margin-bottom:8px;">Society amenities</h3>
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          ${l.flat.society.map(s=>`<span style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:4px 12px;font-size:13px;font-weight:600;color:var(--slate-mid);">${s}</span>`).join('')}
+        </div>
+      </div>
+    </div>` : '';
+
+  const reviewsSection = l.reviews.length ? `
+    <div class="section">
+      <h2>${stars(l.rating)} ${l.rating} · ${l.reviewCount} reviews</h2>
+      <div class="reviews-list">
+        ${l.reviews.map(r=>`<div class="review-item">
+          <div class="review-header">
+            <div><p class="review-name">${r.name}</p><p class="review-stay">${r.stay}</p></div>
+            <span class="review-stars">${stars(r.stars)}</span>
+          </div>
+          <p class="review-text">${r.text}</p>
+        </div>`).join('')}
+      </div>
+    </div>` : '';
+
+  document.getElementById('listingLayout').innerHTML = `
+    <div class="listing-main">
+      <div class="listing-header">
+        <div class="listing-badges">
+          <span class="lbadge lbadge-green">Verified in person</span>
+          <span class="lbadge lbadge-slate">${l.typeLabel}</span>
+          ${l.hasTour ? '<span class="lbadge lbadge-slate">360° tour</span>' : ''}
+        </div>
+        <h1 class="listing-title">${l.title}</h1>
+        <p class="listing-area">${l.address}</p>
+        <div class="price-row">
+          <span class="price-main">${MM.fmt(l.rent)}</span>
+          <span class="price-unit">${l.rentUnit}</span>
+          <span class="price-avail">Available ${l.available}</span>
+        </div>
+        <div class="movein-breakdown">
+          <div class="movein-item"><p class="movein-label">Rent</p><p class="movein-val">${MM.fmt(l.rent)}</p></div>
+          <div class="movein-item"><p class="movein-label">Deposit</p><p class="movein-val">${MM.fmt(l.deposit)}</p></div>
+          ${l.maintenance ? `<div class="movein-item"><p class="movein-label">Maintenance</p><p class="movein-val">${MM.fmt(l.maintenance)}</p></div>` : ''}
+          <div class="movein-item movein-total"><p class="movein-label">Total move-in cost</p><p class="movein-val">${MM.fmt(MM.moveIn(l))}</p></div>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>Safety score</h2>
+        <div class="safety-bar-wrap">
+          <span class="safety-num">${l.safety}</span>
+          <div class="safety-track"><div class="safety-fill" style="width:${l.safety*10}%"></div></div>
+          <span class="safety-label">/ 10</span>
+        </div>
+        <p style="font-size:13.5px; color:var(--slate-soft); margin:8px 0 0;">Scored on street lighting, police proximity, CCTV coverage, women safety reports and fire safety.</p>
+      </div>
+
+      <div class="section">
+        <h2>Commute times</h2>
+        <div class="commute-row">
+          <div class="commute-item"><span class="commute-icon">🚌</span><span class="commute-time">${l.busMin} min</span><span class="commute-label">By bus</span></div>
+          <div class="commute-item"><span class="commute-icon">🛵</span><span class="commute-time">${l.scootyMin} min</span><span class="commute-label">By scooty</span></div>
+          <div class="commute-item"><span class="commute-icon">🚕</span><span class="commute-time">${l.cabMin} min</span><span class="commute-label">By cab</span></div>
+        </div>
+        <div class="nearby-grid">
+          ${l.nearby.map(n=>`<div class="nearby-item"><span class="nearby-label">${n.label}</span><span class="nearby-dist">${n.dist}</span></div>`).join('')}
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>Amenities</h2>
+        <div class="amenities-grid">
+          ${l.amenities.map(a=>`<div class="amenity-item"><span class="amenity-dot"></span><span>${a}</span></div>`).join('')}
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>House rules</h2>
+        <ul class="rules-list">${l.rules.map(r=>`<li>${r}</li>`).join('')}</ul>
+      </div>
+
+      ${flatSection}
+      ${reviewsSection}
+
+      <div class="section">
+        <h2>Why this listing matches</h2>
+        <div style="display:flex; flex-direction:column; gap:10px; margin-top:4px;">
+          ${l.reasons.map(r=>`<div style="display:flex;align-items:flex-start;gap:10px;font-size:14.5px;color:var(--slate-mid);">
+            <span style="flex-shrink:0;font-size:16px;">${r.good?'✓':'—'}</span>
+            <span style="color:${r.good?'var(--green-dark)':'var(--slate-soft)'};">${r.text}</span>
+          </div>`).join('')}
+        </div>
+      </div>
+
+      <div class="section">
+        <a href="https://maps.google.com/?q=${l.lat},${l.lng}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;font-weight:700;font-size:14px;color:var(--green);">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Open in Google Maps
+        </a>
+      </div>
+    </div>
+
+    <div class="listing-sidebar">
+      <div class="sidebar-card">
+        <div class="owner-card">
+          <div class="owner-avatar">${l.owner.initials}</div>
+          <div>
+            <p class="owner-name">${l.owner.name}</p>
+            <p class="owner-meta">Owner since ${l.owner.since} · replies in ${l.owner.replyTime}</p>
+          </div>
+        </div>
+        <a href="${waUrl}" target="_blank" rel="noopener" class="btn-whatsapp">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Chat on WhatsApp
+        </a>
+        <button class="btn-reserve" id="reserveBtn">Reserve for ₹500</button>
+        <p class="sidebar-note">No brokerage · Verified in person · Total cost shown</p>
+      </div>
+
+      <div class="sidebar-card">
+        <div class="book-form" id="bookFormWrap">
+          <h3>Book a visit</h3>
+          <form id="bookForm">
+            <div class="form-field"><label>Your name</label><input type="text" placeholder="Full name" required id="bookName"></div>
+            <div class="form-field"><label>Phone number</label><input type="tel" placeholder="+91 98765 43210" required id="bookPhone"></div>
+            <div class="form-field"><label>Preferred date</label><input type="date" required id="bookDate"></div>
+            <div class="form-field">
+              <label>Preferred time</label>
+              <select id="bookTime">
+                <option>10:00 am – 11:00 am</option>
+                <option>11:00 am – 12:00 pm</option>
+                <option>12:00 pm – 1:00 pm</option>
+                <option>3:00 pm – 4:00 pm</option>
+                <option>4:00 pm – 5:00 pm</option>
+                <option>5:00 pm – 6:00 pm</option>
+              </select>
+            </div>
+            <button type="submit" class="btn-book">Request visit</button>
+          </form>
+        </div>
+        <div class="book-success" id="bookSuccess" style="display:none;">
+          <div class="book-success-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="#2DA847" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <h4>Visit requested!</h4>
+          <p>The owner will confirm on WhatsApp within <strong>${l.owner.replyTime}</strong>. We'll send you a reminder the day before.</p>
+        </div>
+      </div>
+    </div>`;
+
+  // Book visit
+  document.getElementById('bookForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    document.getElementById('bookFormWrap').style.display = 'none';
+    document.getElementById('bookSuccess').style.display = 'block';
+  });
+
+  // Set min date for booking
+  const dateInput = document.getElementById('bookDate');
+  if (dateInput) {
+    const today = new Date();
+    today.setDate(today.getDate() + 1);
+    dateInput.min = today.toISOString().split('T')[0];
+  }
+
+  // Reserve modal
+  document.getElementById('reserveBtn').addEventListener('click', () => document.getElementById('reserveModal').classList.add('open'));
+  document.getElementById('reserveCancelBtn').addEventListener('click', () => document.getElementById('reserveModal').classList.remove('open'));
+  document.getElementById('reserveModal').addEventListener('click', function(e) { if (e.target === this) this.classList.remove('open'); });
+  document.getElementById('reserveConfirmBtn').addEventListener('click', () => {
+    document.getElementById('reserveFormView').style.display = 'none';
+    document.getElementById('reserveSuccessView').style.display = 'block';
+  });
+  document.getElementById('reserveCloseBtn').addEventListener('click', () => {
+    document.getElementById('reserveModal').classList.remove('open');
+    document.getElementById('reserveFormView').style.display = 'block';
+    document.getElementById('reserveSuccessView').style.display = 'none';
+  });
+</script>
+</body>
+</html>
