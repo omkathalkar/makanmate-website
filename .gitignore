@@ -1,0 +1,5 @@
+# Nested Android repo — tracked separately at omkathalkar/makanmate-android
+android/
+
+# macOS
+.DS_Store
