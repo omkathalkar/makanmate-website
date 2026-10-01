@@ -651,102 +651,80 @@ footer {
 /* ── SIGN-IN MODAL ── */
 .modal-overlay {
   display: none; position: fixed; inset: 0; z-index: 200;
-  background: rgba(23,34,29,.55); backdrop-filter: blur(4px);
-  align-items: center; justify-content: center; padding: 24px;
+  background: rgba(23,34,29,.5); backdrop-filter: blur(4px);
 }
-.modal-overlay.open { display: flex; }
+.modal-overlay.open {
+  display: flex; align-items: center; justify-content: center; padding: 20px;
+}
 .modal {
-  background: var(--white); border-radius: 24px;
-  width: 100%; max-width: 420px;
-  box-shadow: 0 24px 64px rgba(23,34,29,.2);
-  overflow: hidden; position: relative;
+  background: var(--white); border-radius: 20px;
+  width: 100%; max-width: 400px;
+  box-shadow: 0 20px 60px rgba(23,34,29,.22);
+  overflow: hidden;
 }
-.modal-close {
-  position: absolute; top: 16px; right: 16px;
-  width: 36px; height: 36px; border-radius: 50%; border: none;
-  background: var(--bg); color: var(--ink); cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 18px; transition: background .15s;
+.modal-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 20px; border-bottom: 1px solid var(--border);
 }
-.modal-close:hover { background: var(--border); }
-.modal-step { display: none; padding: 36px; }
-.modal-step.active { display: block; }
-.modal-logo {
-  display: flex; align-items: center; gap: 9px; margin-bottom: 28px;
-}
-.modal-logo-icon {
-  width: 36px; height: 36px; border-radius: 10px;
+.modal-brand { display: flex; align-items: center; gap: 8px; }
+.modal-brand-icon {
+  width: 30px; height: 30px; border-radius: 8px; flex-shrink: 0;
   background: var(--green); display: flex; align-items: center; justify-content: center; color: #fff;
 }
-.modal-logo span {
-  font-family: var(--serif); font-weight: 600; font-size: 20px; color: var(--ink);
+.modal-brand-name {
+  font-family: var(--serif); font-weight: 600; font-size: 18px; color: var(--ink);
 }
-.modal h2 { font-family: var(--serif); font-weight: 600; font-size: 26px; color: var(--ink); margin: 0 0 8px; }
-.modal .modal-sub { font-size: 15px; color: var(--ink-mid); margin: 0 0 28px; line-height: 1.5; }
-.modal-field { margin-bottom: 16px; }
+.modal-close {
+  width: 32px; height: 32px; border-radius: 50%; border: none; flex-shrink: 0;
+  background: var(--bg); color: var(--ink-soft); cursor: pointer;
+  display: flex; align-items: center; justify-content: center; transition: background .15s;
+}
+.modal-close:hover { background: var(--border); color: var(--ink); }
+.modal-body { padding: 28px 24px 24px; }
+.modal-body h2 {
+  margin: 0 0 6px; font-family: var(--serif); font-weight: 600;
+  font-size: 24px; color: var(--ink);
+}
+.modal-sub { font-size: 15px; color: var(--ink-mid); margin: 0 0 22px; line-height: 1.5; }
+.modal-field { margin-bottom: 14px; }
 .modal-field label {
-  display: block; font-size: 12px; font-weight: 700;
+  display: block; font-size: 11.5px; font-weight: 700;
   text-transform: uppercase; letter-spacing: .5px;
   color: var(--ink-soft); margin-bottom: 6px;
 }
 .modal-field input {
-  width: 100%; padding: 13px 16px; border: 1.5px solid var(--border);
-  border-radius: 12px; font-size: 16px; color: var(--ink); background: var(--white);
+  width: 100%; padding: 12px 14px; border: 1.5px solid var(--border);
+  border-radius: 10px; font-size: 16px; color: var(--ink); background: var(--white);
   transition: border-color .15s; outline: none;
 }
 .modal-field input:focus { border-color: var(--green-focus); }
-.modal-field input.error { border-color: #D93025; }
-.modal-error { font-size: 13px; color: #D93025; margin-top: 4px; display: none; }
-.modal-error.show { display: block; }
-.btn-modal-primary {
-  width: 100%; height: 52px; border-radius: 12px; border: none;
-  background: var(--green); color: #fff; font-size: 17px; font-weight: 600;
-  cursor: pointer; transition: background .15s; margin-top: 8px;
+.modal-field input.is-error { border-color: #D93025; }
+.modal-err { font-size: 12px; color: #D93025; margin-top: 4px; display: none; }
+.modal-err.show { display: block; }
+.btn-modal {
+  display: block; width: 100%; height: 50px; border-radius: 10px; border: none;
+  background: var(--green); color: #fff; font-size: 16px; font-weight: 600;
+  cursor: pointer; transition: background .15s; margin-top: 6px;
 }
-.btn-modal-primary:hover { background: var(--green-dark); }
-.btn-modal-primary:disabled { opacity: .6; cursor: not-allowed; }
-.modal-note { font-size: 13px; color: var(--ink-soft); margin: 12px 0 0; text-align: center; }
-/* OTP boxes */
-.otp-row {
-  display: flex; gap: 12px; margin-bottom: 24px;
-}
-.otp-box {
-  flex: 1; height: 60px; border: 1.5px solid var(--border);
-  border-radius: 12px; text-align: center; font-size: 28px; font-weight: 700;
-  color: var(--ink); background: var(--white); outline: none;
-  transition: border-color .15s;
-}
-.otp-box:focus { border-color: var(--green-focus); }
-.otp-box.error { border-color: #D93025; }
-.otp-hint {
-  background: var(--green-light); border-radius: 10px; padding: 10px 14px;
-  font-size: 13px; color: var(--green-dark); margin-bottom: 16px; line-height: 1.4;
-}
-.modal-back {
-  background: none; border: none; cursor: pointer;
-  font-size: 14px; font-weight: 600; color: var(--green);
-  padding: 0; margin-top: 12px; display: block;
-}
-.modal-back:hover { color: var(--green-dark); text-decoration: underline; }
-/* Success step */
-.modal-success-icon {
-  width: 64px; height: 64px; border-radius: 50%;
+.btn-modal:hover { background: var(--green-dark); }
+.modal-note { font-size: 12px; color: var(--ink-soft); margin: 10px 0 0; text-align: center; }
+/* Success state */
+.modal-success { padding: 40px 24px; text-align: center; }
+.modal-success-check {
+  width: 56px; height: 56px; border-radius: 50%;
   background: var(--green-light); color: var(--green);
-  display: flex; align-items: center; justify-content: center;
-  margin: 0 auto 20px;
+  display: flex; align-items: center; justify-content: center; margin: 0 auto 18px;
 }
-.modal-success-center { text-align: center; }
-.modal-success-center h2 { font-size: 24px; margin-bottom: 8px; }
-.modal-success-center p { color: var(--ink-mid); font-size: 15px; margin: 0 0 24px; }
+.modal-success h2 { margin: 0 0 8px; font-family: var(--serif); font-weight: 600; font-size: 24px; color: var(--ink); }
+.modal-success p { color: var(--ink-mid); font-size: 15px; margin: 0 0 24px; }
 
-/* Signout dropdown */
+/* Signed-in dropdown */
 .nav-user-menu {
   position: absolute; top: calc(100% + 8px); right: 0;
   background: var(--white); border: 1px solid var(--border);
   border-radius: 14px; padding: 8px;
   box-shadow: 0 8px 24px rgba(23,34,29,.12);
-  min-width: 180px; z-index: 110;
-  display: none;
+  min-width: 180px; z-index: 110; display: none;
 }
 .nav-user-menu.open { display: block; }
 .nav-user-wrapper { position: relative; }
@@ -763,73 +741,51 @@ footer {
 <body>
 
 <!-- ── SIGN-IN MODAL ── -->
-<div class="modal-overlay" id="signinModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+<div class="modal-overlay" id="signinModal" role="dialog" aria-modal="true" aria-labelledby="modalHeading">
   <div class="modal">
-    <button class="modal-close" id="modalClose" aria-label="Close">
-      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-        <path d="M1 1l12 12M13 1L1 13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-      </svg>
-    </button>
 
-    <!-- Step 1: Phone -->
-    <div class="modal-step active" id="step1">
-      <div class="modal-logo">
-        <div class="modal-logo-icon">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>
+    <div class="modal-header">
+      <div class="modal-brand">
+        <div class="modal-brand-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>
         </div>
-        <span>MakanMate</span>
+        <span class="modal-brand-name">MakanMate</span>
       </div>
-      <h2 id="modalTitle">Sign in to your account</h2>
-      <p class="modal-sub">Enter your mobile number. We'll send you a one-time code.</p>
-      <div class="modal-field">
-        <label for="phoneInput">Mobile number</label>
-        <input type="tel" id="phoneInput" placeholder="+91 98765 43210" autocomplete="tel">
-        <div class="modal-error" id="phoneError">Please enter a valid 10-digit mobile number.</div>
-      </div>
+      <button class="modal-close" id="modalClose" aria-label="Close">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+          <path d="M1 1l10 10M11 1L1 11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Form view -->
+    <div class="modal-body" id="modalForm">
+      <h2 id="modalHeading">Sign in</h2>
+      <p class="modal-sub">Enter your details to save listings and book visits.</p>
       <div class="modal-field">
         <label for="nameInput">Your name</label>
         <input type="text" id="nameInput" placeholder="Full name" autocomplete="name">
-        <div class="modal-error" id="nameError">Please enter your name.</div>
+        <div class="modal-err" id="nameError">Please enter your name.</div>
       </div>
-      <button class="btn-modal-primary" id="sendOtpBtn">Get OTP</button>
+      <div class="modal-field">
+        <label for="phoneInput">Mobile number</label>
+        <input type="tel" id="phoneInput" placeholder="+91 98765 43210" autocomplete="tel">
+        <div class="modal-err" id="phoneError">Please enter a valid 10-digit number.</div>
+      </div>
+      <button class="btn-modal" id="signinSubmitBtn">Continue</button>
       <p class="modal-note">By continuing you agree to our Terms &amp; Privacy Policy.</p>
     </div>
 
-    <!-- Step 2: OTP -->
-    <div class="modal-step" id="step2">
-      <div class="modal-logo">
-        <div class="modal-logo-icon">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>
-        </div>
-        <span>MakanMate</span>
+    <!-- Success view -->
+    <div class="modal-success" id="modalSuccess" style="display:none">
+      <div class="modal-success-check">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
       </div>
-      <h2>Enter OTP</h2>
-      <p class="modal-sub" id="otpSubText">We sent a 4-digit code to your number.</p>
-      <div class="otp-hint" id="otpHint">
-        For this demo the OTP is <strong>1234</strong> — in production this would come via SMS.
-      </div>
-      <div class="otp-row">
-        <input class="otp-box" type="text" maxlength="1" inputmode="numeric" id="otp0" aria-label="OTP digit 1">
-        <input class="otp-box" type="text" maxlength="1" inputmode="numeric" id="otp1" aria-label="OTP digit 2">
-        <input class="otp-box" type="text" maxlength="1" inputmode="numeric" id="otp2" aria-label="OTP digit 3">
-        <input class="otp-box" type="text" maxlength="1" inputmode="numeric" id="otp3" aria-label="OTP digit 4">
-      </div>
-      <div class="modal-error" id="otpError" style="margin-bottom:12px;">Incorrect OTP. Try again (hint: 1234)</div>
-      <button class="btn-modal-primary" id="verifyOtpBtn">Verify &amp; sign in</button>
-      <button class="modal-back" id="backToStep1">← Change number</button>
+      <h2 id="welcomeName">Welcome!</h2>
+      <p>You're signed in. Browse listings, save favourites, and book visits — all free.</p>
+      <button class="btn-modal" id="closeSuccessBtn" style="max-width:200px;margin:0 auto;">Start browsing</button>
     </div>
 
-    <!-- Step 3: Success -->
-    <div class="modal-step" id="step3" style="padding-top:48px; padding-bottom:48px;">
-      <div class="modal-success-icon">
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
-      </div>
-      <div class="modal-success-center">
-        <h2 id="welcomeName">Welcome!</h2>
-        <p>You're signed in. Browse listings, save favourites, and book visits — all for free.</p>
-        <button class="btn-modal-primary" id="closeSuccessBtn" style="max-width:200px; margin:0 auto;">Start browsing</button>
-      </div>
-    </div>
   </div>
 </div>
 
@@ -1439,111 +1395,60 @@ mobileNav.querySelectorAll('a').forEach(a => {
 
 // ── SIGN-IN MODAL ──
 const modal = document.getElementById('signinModal');
-const openBtn = document.getElementById('openSigninBtn');
-const closeBtn = document.getElementById('modalClose');
-const closeSuccess = document.getElementById('closeSuccessBtn');
 
-function showStep(n) {
-  ['step1','step2','step3'].forEach((id, i) => {
-    document.getElementById(id).classList.toggle('active', i + 1 === n);
-  });
-}
 function openModal() {
+  document.getElementById('modalForm').style.display = '';
+  document.getElementById('modalSuccess').style.display = 'none';
+  document.getElementById('nameInput').value = '';
+  document.getElementById('phoneInput').value = '';
+  ['nameInput','phoneInput'].forEach(id => document.getElementById(id).classList.remove('is-error'));
+  ['nameError','phoneError'].forEach(id => document.getElementById(id).classList.remove('show'));
   modal.classList.add('open');
   document.body.style.overflow = 'hidden';
-  showStep(1);
-  document.getElementById('phoneInput').focus();
+  document.getElementById('nameInput').focus();
 }
 function closeModal() {
   modal.classList.remove('open');
   document.body.style.overflow = '';
 }
-openBtn.addEventListener('click', openModal);
-closeBtn.addEventListener('click', closeModal);
-closeSuccess.addEventListener('click', closeModal);
+
+document.getElementById('openSigninBtn').addEventListener('click', openModal);
+document.getElementById('modalClose').addEventListener('click', closeModal);
+document.getElementById('closeSuccessBtn').addEventListener('click', closeModal);
 modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
 document.addEventListener('keydown', e => { if (e.key === 'Escape' && modal.classList.contains('open')) closeModal(); });
 
-// Step 1 → Step 2
-document.getElementById('sendOtpBtn').addEventListener('click', function() {
-  const phone = document.getElementById('phoneInput').value.trim();
-  const name = document.getElementById('nameInput').value.trim();
+document.getElementById('signinSubmitBtn').addEventListener('click', function() {
+  const nameEl = document.getElementById('nameInput');
+  const phoneEl = document.getElementById('phoneInput');
+  const name = nameEl.value.trim();
+  const phone = phoneEl.value.trim();
   let ok = true;
-  const phoneErr = document.getElementById('phoneError');
-  const nameErr = document.getElementById('nameError');
-  const phoneField = document.getElementById('phoneInput');
-  const nameField = document.getElementById('nameInput');
 
-  // Validate phone (10+ digits)
-  const digits = phone.replace(/\D/g, '');
-  if (digits.length < 10) {
-    phoneField.classList.add('error');
-    phoneErr.classList.add('show');
-    ok = false;
-  } else {
-    phoneField.classList.remove('error');
-    phoneErr.classList.remove('show');
-  }
   if (!name) {
-    nameField.classList.add('error');
-    nameErr.classList.add('show');
+    nameEl.classList.add('is-error');
+    document.getElementById('nameError').classList.add('show');
     ok = false;
   } else {
-    nameField.classList.remove('error');
-    nameErr.classList.remove('show');
+    nameEl.classList.remove('is-error');
+    document.getElementById('nameError').classList.remove('show');
+  }
+  if (phone.replace(/\D/g,'').length < 10) {
+    phoneEl.classList.add('is-error');
+    document.getElementById('phoneError').classList.add('show');
+    ok = false;
+  } else {
+    phoneEl.classList.remove('is-error');
+    document.getElementById('phoneError').classList.remove('show');
   }
   if (!ok) return;
 
-  const displayPhone = phone.length > 6 ? phone.slice(0, -4) + '••••' : phone;
-  document.getElementById('otpSubText').textContent = 'We sent a 4-digit code to ' + displayPhone;
-  showStep(2);
-  document.getElementById('otp0').focus();
-});
-
-// OTP box navigation
-const otpBoxes = [0,1,2,3].map(i => document.getElementById('otp' + i));
-otpBoxes.forEach((box, i) => {
-  box.addEventListener('input', function() {
-    this.value = this.value.replace(/\D/g, '').slice(-1);
-    otpBoxes.forEach(b => b.classList.remove('error'));
-    document.getElementById('otpError').classList.remove('show');
-    if (this.value && i < 3) otpBoxes[i + 1].focus();
-  });
-  box.addEventListener('keydown', function(e) {
-    if (e.key === 'Backspace' && !this.value && i > 0) otpBoxes[i - 1].focus();
-  });
-  box.addEventListener('paste', function(e) {
-    e.preventDefault();
-    const text = (e.clipboardData || window.clipboardData).getData('text').replace(/\D/g, '').slice(0, 4);
-    text.split('').forEach((ch, j) => { if (otpBoxes[j]) otpBoxes[j].value = ch; });
-    const next = Math.min(text.length, 3);
-    otpBoxes[next].focus();
-  });
-});
-
-// Verify OTP
-document.getElementById('verifyOtpBtn').addEventListener('click', function() {
-  const entered = otpBoxes.map(b => b.value).join('');
-  const otpErr = document.getElementById('otpError');
-  if (entered !== '1234') {
-    otpErr.classList.add('show');
-    otpBoxes.forEach(b => b.classList.add('error'));
-    return;
-  }
-  otpErr.classList.remove('show');
-  const name = document.getElementById('nameInput').value.trim();
-  const phone = document.getElementById('phoneInput').value.trim();
   const user = { name, phone };
   localStorage.setItem('mm_user', JSON.stringify(user));
   document.getElementById('welcomeName').textContent = 'Welcome, ' + name.split(' ')[0] + '!';
-  showStep(3);
+  document.getElementById('modalForm').style.display = 'none';
+  document.getElementById('modalSuccess').style.display = '';
   updateNavAuth(user);
-});
-
-document.getElementById('backToStep1').addEventListener('click', function() {
-  otpBoxes.forEach(b => { b.value = ''; b.classList.remove('error'); });
-  document.getElementById('otpError').classList.remove('show');
-  showStep(1);
 });
 
 // ── AUTH STATE ──
