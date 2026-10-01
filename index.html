@@ -1,1067 +1,1598 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MakanMate — Find your place. Find your people.</title>
-<meta name="description" content="MakanMate helps students, job seekers, and newcomers find verified, brokerage-free PGs and rentals in Pune — and a community to land softly with.">
+<title>MakanMate — Find a verified PG in Pune. Pay zero brokerage.</title>
+<meta name="description" content="Browse verified, brokerage-free PGs in Pune. Our team visits every place before it goes live. See the full move-in cost upfront, chat with owners for free.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Mukta:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root{
-    /* Brand greens — deeper, richer forest tone */
-    --green: #1F8A5B;
-    --green-dark: #166644;
-    --green-light: #EBF5F0;
-    --green-mid: #C0DDD0;
-    /* Earthy amber — warmer than the old neon orange */
-    --orange: #C45E1A;
-    --orange-dark: #A84D14;
-    --orange-light: #FBF1E8;
-    --orange-mid: #F0C9A0;
-    /* Burgundy wine — editorial accent for labels & italic highlights */
-    --wine: #7C1D35;
-    --wine-light: #F5E8EB;
-    /* Warm ink tones — no cold blue-grays */
-    --slate: #1C1611;
-    --slate-mid: #4A3F35;
-    --slate-soft: #7A6E65;
-    --border: #DDD4C8;
-    /* Warm ivory cream backgrounds */
-    --bg: #F7F3EE;
-    --white: #FFFDF9;
-    --section-dark: #1C1611;
-    --serif: 'Newsreader', serif;
-    --sans: 'Manrope', sans-serif;
-  }
-  [data-theme="dark"]{
-    --bg: #110D09;
-    --white: #1A1410;
-    --slate: #F0EBE4;
-    --slate-mid: #D4C8BC;
-    --slate-soft: #9C8E84;
-    --border: #2D2420;
-    --nav-bg: rgba(17,13,9,0.97);
-    --green-light: #091A10;
-    --green-mid: #0F2A1C;
-    --orange-light: #1F1208;
-    --wine-light: #1F0A10;
-    --section-dark: #0A0705;
-  }
-  [data-theme="dark"] .audience{background:#0A0705;}
-  [data-theme="dark"] .founder{background:#0A0705;}
-  [data-theme="dark"] footer{background:#0A0705;}
-  [data-theme="dark"] .search-go{color:#fff;}
-  [data-theme="dark"] .form-success-icon{background:var(--green-light);}
-  [data-theme="dark"] .announce-bar{background:#0A0705; border-color:#2D2420;}
-  [data-theme="dark"] .announce-bar span{color:var(--slate-soft);}
-  *{box-sizing:border-box;}
-  html{scroll-behavior:smooth;}
-  body{margin:0; font-family:var(--sans); color:var(--slate-mid); background:var(--white); line-height:1.6;}
-  img,svg{max-width:100%; display:block;}
-  a{color:inherit;}
-  .wrap{max-width:1120px; margin:0 auto; padding:0 28px;}
+:root {
+  --green:       #17744C;
+  --green-dark:  #0F4A31;
+  --green-focus: #1F8A5B;
+  --green-light: #EAF5EF;
+  --green-mid:   #C0DDD0;
+  --ink:         #17221D;
+  --ink-mid:     #45524B;
+  --ink-soft:    #646E68;
+  --bg:          #F7F5F0;
+  --white:       #FFFFFF;
+  --border:      #E6E1D6;
+  --border-light:#D9D3C6;
+  --chip-bg:     #F1EEE7;
+  --serif:       'Fraunces', serif;
+  --sans:        'Mukta', system-ui, sans-serif;
+}
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  font-family: var(--sans);
+  color: var(--ink);
+  background: var(--bg);
+  font-size: 16px;
+  line-height: 1.5;
+}
+img, svg { display: block; max-width: 100%; }
+a { color: var(--green); }
+button, input, select { font-family: inherit; }
+a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible {
+  outline: 3px solid var(--green-focus);
+  outline-offset: 2px;
+}
 
-  /* NAV */
-  .nav{position:sticky; top:0; z-index:50; background:var(--nav-bg, rgba(255,255,255,0.96)); backdrop-filter:blur(8px); border-bottom:1px solid var(--border); box-shadow:0 1px 3px rgba(15,23,42,0.05);}
-  .nav-row{display:flex; align-items:center; justify-content:space-between; padding:14px 28px; max-width:1120px; margin:0 auto;}
-  .logo{font-family:var(--sans); font-weight:800; font-size:20px; letter-spacing:-0.3px; text-decoration:none; color:var(--slate); display:flex; align-items:center; gap:9px;}
-  .logo-icon{width:32px; height:32px; background:var(--green); border-radius:8px; display:flex; align-items:center; justify-content:center; flex-shrink:0;}
-  .nav-links{display:flex; gap:28px; list-style:none; margin:0; padding:0;}
-  .nav-links a{text-decoration:none; font-weight:600; font-size:14.5px; color:var(--slate-soft); transition:color .15s ease;}
-  .nav-links a:hover{color:var(--green);}
-  .nav-cta{background:var(--green); color:#fff; padding:9px 18px; border-radius:7px; text-decoration:none; font-weight:700; font-size:14px; transition:background .15s ease;}
-  .nav-cta:hover{background:var(--green-dark);}
-  .nav-owner-link{font-weight:700; font-size:14px; color:var(--orange); text-decoration:none; margin-right:14px; transition:color .15s ease;}
-  .nav-owner-link:hover{color:var(--orange-dark);}
-  .nav-toggle{display:none; background:none; border:none; cursor:pointer; padding:4px;}
-  .nav-toggle span{display:block; width:24px; height:2px; background:var(--slate); margin:5px 0;}
+/* ── LAYOUT ── */
+.wrap { max-width: 1280px; margin: 0 auto; padding: 0 64px; }
+@media (max-width: 900px) { .wrap { padding: 0 24px; } }
 
-  @media (max-width:820px){
-    .nav-links{position:absolute; top:100%; left:0; right:0; background:var(--white); flex-direction:column; gap:0; border-bottom:1px solid var(--border); max-height:0; overflow:hidden; transition:max-height .25s ease;}
-    .nav-links.open{max-height:320px;}
-    .nav-links li{border-top:1px solid var(--border);}
-    .nav-links a{display:block; padding:15px 28px;}
-    .nav-toggle{display:block;}
-    .nav-cta{display:none;}
-  }
+/* ── HEADER ── */
+.site-header {
+  position: sticky; top: 0; z-index: 100;
+  height: 72px;
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center;
+  box-shadow: 0 1px 4px rgba(23,34,29,.04);
+}
+.header-inner {
+  max-width: 1280px; margin: 0 auto; padding: 0 64px;
+  width: 100%;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.logo {
+  display: flex; align-items: center; gap: 10px;
+  text-decoration: none; color: var(--ink); flex-shrink: 0;
+}
+.logo-icon {
+  width: 36px; height: 36px; border-radius: 10px;
+  background: var(--green); display: flex; align-items: center; justify-content: center;
+  color: #fff; flex-shrink: 0;
+}
+.logo-name {
+  font-family: var(--serif); font-weight: 600; font-size: 23px; letter-spacing: -.3px;
+}
+.main-nav { display: flex; gap: 30px; list-style: none; margin: 0; padding: 0; }
+.main-nav a {
+  text-decoration: none; font-size: 16px; font-weight: 500; color: var(--ink-mid);
+  transition: color .15s;
+}
+.main-nav a:hover { color: var(--ink); }
+.header-actions { display: flex; align-items: center; gap: 12px; }
+.btn-owner {
+  height: 44px; padding: 0 14px; display: inline-flex; align-items: center;
+  font-size: 16px; font-weight: 600; color: var(--green); text-decoration: none;
+  transition: color .15s;
+}
+.btn-owner:hover { color: var(--green-dark); }
+.btn-signin {
+  height: 44px; padding: 0 18px; display: inline-flex; align-items: center;
+  border-radius: 12px; border: 1px solid var(--border-light);
+  background: var(--white); font-size: 16px; font-weight: 600;
+  color: var(--ink); cursor: pointer; transition: border-color .15s;
+  text-decoration: none;
+}
+.btn-signin:hover { border-color: var(--green); }
 
-  /* ANNOUNCE BAR */
-  .announce-bar{background:var(--section-dark); color:var(--slate-soft); padding:10px 0; text-align:center; border-bottom:1px solid rgba(255,255,255,0.06); font-size:11.5px; letter-spacing:2px; text-transform:uppercase; font-weight:700; overflow:hidden;}
-  .announce-inner{display:flex; justify-content:center; gap:40px; flex-wrap:wrap;}
-  .announce-inner span{color:rgba(255,255,255,0.55); white-space:nowrap;}
-  .announce-inner span b{color:var(--green); margin:0 4px;}
+/* User avatar in nav (shown when signed in) */
+.nav-user {
+  display: none; align-items: center; gap: 8px;
+  height: 44px; padding: 0 14px 0 8px;
+  border-radius: 12px; border: 1px solid var(--border-light);
+  background: var(--white); cursor: pointer;
+  font-size: 15px; font-weight: 600; color: var(--ink);
+}
+.nav-user.visible { display: flex; }
+.nav-avatar {
+  width: 30px; height: 30px; border-radius: 50%;
+  background: var(--green); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700; flex-shrink: 0;
+}
+.nav-hamburger {
+  display: none; background: none; border: none; cursor: pointer;
+  padding: 6px; flex-direction: column; gap: 5px;
+}
+.nav-hamburger span {
+  display: block; width: 22px; height: 2px; background: var(--ink); border-radius: 1px;
+}
+@media (max-width: 900px) {
+  .header-inner { padding: 0 24px; }
+  .main-nav { display: none; }
+  .btn-owner { display: none; }
+  .nav-hamburger { display: flex; }
+}
+.mobile-nav {
+  display: none; position: fixed; top: 72px; left: 0; right: 0; z-index: 99;
+  background: var(--white); border-bottom: 1px solid var(--border);
+  padding: 16px 24px 24px; flex-direction: column; gap: 4px;
+}
+.mobile-nav.open { display: flex; }
+.mobile-nav a {
+  display: block; padding: 12px 0; font-size: 16px; font-weight: 500;
+  color: var(--ink-mid); text-decoration: none; border-bottom: 1px solid var(--border);
+}
+.mobile-nav a:last-child { border-bottom: none; }
 
-  /* EYEBROW — · DOT LABEL · */
-  .eyebrow{font-size:11px; letter-spacing:2.5px; text-transform:uppercase; font-weight:700; color:var(--wine); margin:0 0 16px; display:flex; align-items:center; gap:10px;}
-  .eyebrow::before,.eyebrow::after{content:'·'; font-size:14px; opacity:.6;}
-  .pune-badge{display:inline-flex; align-items:center; gap:8px; background:transparent; color:var(--wine); font-weight:700; font-size:11px; letter-spacing:2px; text-transform:uppercase; margin-bottom:18px;}
-  .pune-badge::before,.pune-badge::after{content:'·'; opacity:.5;}
+/* ── HERO ── */
+.hero-section {
+  padding: 72px 0 96px;
+}
+.hero-grid {
+  max-width: 1280px; margin: 0 auto; padding: 0 64px;
+  display: grid; grid-template-columns: 1.08fr 0.92fr;
+  gap: 64px; align-items: center;
+}
+.hero-badge {
+  align-self: flex-start; display: inline-flex; align-items: center; gap: 8px;
+  height: 32px; padding: 0 14px; border-radius: 999px;
+  background: var(--green-light); color: var(--green-dark);
+  font-size: 14px; font-weight: 600; margin-bottom: 28px;
+}
+.hero-dot {
+  width: 8px; height: 8px; border-radius: 50%; background: var(--green-focus);
+}
+.hero-h1 {
+  margin: 0 0 28px; font-family: var(--serif); font-weight: 600;
+  font-size: clamp(44px, 4.5vw, 64px); line-height: 1.04; letter-spacing: -1.4px;
+  color: var(--ink);
+}
+.hero-h1 span { color: var(--green); }
+.hero-lede {
+  margin: 0 0 28px; font-size: 19px; line-height: 1.55;
+  color: var(--ink-mid); max-width: 560px;
+}
+/* Search form */
+.search-card {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: 20px; padding: 10px;
+  box-shadow: 0 16px 40px rgba(23,34,29,.08);
+  display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px;
+}
+.search-tabs { display: flex; gap: 4px; padding: 2px; }
+.search-tab-btn {
+  height: 38px; padding: 0 16px; border-radius: 10px; border: none;
+  font-size: 15px; font-weight: 600; cursor: pointer; transition: all .15s;
+}
+.search-tab-btn.active { background: var(--ink); color: #fff; }
+.search-tab-btn:not(.active) { background: transparent; color: var(--ink-mid); }
+.search-tab-btn:not(.active):hover { background: var(--bg); }
+.search-inputs {
+  display: grid;
+  grid-template-columns: minmax(0,1.5fr) minmax(0,1fr) minmax(0,.85fr) auto;
+  align-items: stretch; border: 1px solid var(--border);
+  border-radius: 14px; padding: 6px;
+}
+.search-field {
+  display: flex; flex-direction: column; gap: 2px; padding: 6px 14px;
+  border-right: 1px solid var(--border);
+}
+.search-field:last-of-type { border-right: none; }
+.search-label {
+  font-size: 12px; font-weight: 600; color: var(--ink-soft);
+  text-transform: uppercase; letter-spacing: .6px;
+}
+.search-field input, .search-field select {
+  border: none; outline: none; padding: 0;
+  font-size: 16px; color: var(--ink); background: transparent;
+}
+.search-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  min-height: 52px; padding: 0 24px; border-radius: 10px; border: none;
+  background: var(--green); color: #fff;
+  font-size: 17px; font-weight: 600; cursor: pointer;
+  text-decoration: none; transition: background .15s; white-space: nowrap;
+}
+.search-btn:hover { background: var(--green-dark); }
+.popular-pills {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 14px;
+}
+.popular-label { color: var(--ink-soft); font-weight: 500; margin-right: 4px; }
+.pill {
+  height: 34px; padding: 0 14px; display: inline-flex; align-items: center;
+  border-radius: 999px; border: 1px solid var(--border-light);
+  background: var(--white); color: var(--ink); text-decoration: none;
+  font-weight: 500; transition: border-color .15s;
+}
+.pill:hover { border-color: var(--green); color: var(--green); }
 
-  /* HERO */
-  .hero{background:var(--bg); padding:80px 0 0; overflow:hidden; position:relative; border-bottom:1px solid var(--border);}
-  .hero::before{content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg, var(--wine), var(--green), var(--orange));}
-  .hero-grid{display:grid; grid-template-columns:1.1fr 0.9fr; gap:48px; align-items:center; max-width:1120px; margin:0 auto; padding:0 28px 72px;}
-  .hero-eyebrow{font-size:11px; letter-spacing:2.5px; text-transform:uppercase; font-weight:700; color:var(--wine); display:flex; align-items:center; gap:10px; margin:0 0 22px;}
-  .hero-eyebrow::before,.hero-eyebrow::after{content:'·'; font-size:14px; opacity:.6;}
-  .hero h1{font-family:var(--serif); font-weight:500; font-size:58px; line-height:1.05; margin:0 0 22px; letter-spacing:-0.5px; color:var(--slate);}
-  .hero h1 em{font-style:italic; color:var(--wine); font-weight:500;}
-  .hero p.lede{font-size:17px; color:var(--slate-soft); max-width:460px; margin:0 0 32px; line-height:1.7;}
+/* Hero right: floating card arrangement */
+.hero-visual {
+  position: relative; height: 560px;
+}
+.hero-photo-frame {
+  position: absolute; top: 0; left: 48px; right: 0; bottom: 20px;
+  border-radius: 28px; overflow: hidden;
+}
+.hero-photo-frame img {
+  width: 100%; height: 100%; object-fit: cover;
+}
+.hero-card-verified {
+  position: absolute; top: 44px; left: 0;
+  width: 290px; padding: 16px 18px;
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: 16px; box-shadow: 0 12px 32px rgba(23,34,29,.10);
+  display: flex; gap: 12px; align-items: flex-start;
+}
+.card-icon-green {
+  width: 40px; height: 40px; flex-shrink: 0;
+  border-radius: 12px; background: var(--green-light);
+  color: var(--green); display: flex; align-items: center; justify-content: center;
+}
+.hero-card-verified strong { font-size: 16px; font-weight: 600; display: block; }
+.hero-card-verified span { font-size: 14px; color: var(--ink-soft); line-height: 1.4; }
+.hero-tag-bus {
+  position: absolute; top: 290px; left: 0;
+  display: inline-flex; align-items: center; gap: 8px;
+  height: 44px; padding: 0 16px;
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: 999px; box-shadow: 0 8px 24px rgba(23,34,29,.08);
+  font-size: 15px; font-weight: 500; color: var(--ink);
+}
+.hero-cost-card {
+  position: absolute; bottom: 0; right: 32px;
+  width: 310px; padding: 20px;
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: 18px; box-shadow: 0 16px 40px rgba(23,34,29,.12);
+  display: flex; flex-direction: column; gap: 10px;
+}
+.cost-row { display: flex; justify-content: space-between; font-size: 15px; color: var(--ink-mid); }
+.cost-row.head { font-size: 16px; font-weight: 600; color: var(--ink); }
+.cost-row.total { font-size: 18px; font-weight: 700; color: var(--ink); }
+.cost-row .zero { color: var(--green); font-weight: 600; }
+.cost-divider { height: 1px; background: var(--border); }
 
-  /* HERO SEARCH */
-  .hero-search{background:var(--white); border-radius:12px; padding:8px; max-width:480px; margin-bottom:16px; box-shadow:0 4px 20px rgba(15,23,42,0.08), 0 0 0 1px var(--border);}
-  .search-tabs{display:flex; gap:4px; padding:6px 6px 10px;}
-  .search-tab{background:none; border:none; padding:9px 14px; border-radius:7px; font-family:var(--sans); font-weight:700; font-size:13px; color:var(--slate-soft); cursor:pointer; display:flex; align-items:center; gap:6px; transition:all .15s ease;}
-  .search-tab.active{background:var(--green); color:#fff;}
-  .search-tab:not(.active):hover{background:var(--bg);}
-  .search-tab.disabled{opacity:0.5; cursor:not-allowed;}
-  .soon-badge{background:var(--orange-light); color:var(--orange); font-size:9px; font-weight:800; padding:2px 6px; border-radius:999px; letter-spacing:0.3px;}
-  .search-bar{display:flex; gap:8px; padding:0 6px 6px;}
-  .search-bar select{flex:1; padding:13px 14px; border-radius:7px; border:1px solid var(--border); background:var(--white); font-family:var(--sans); font-size:14.5px; color:var(--slate);}
-  .search-go{background:var(--slate); color:#fff; border:none; padding:13px 24px; border-radius:7px; font-weight:800; font-size:14.5px; cursor:pointer; white-space:nowrap; transition:background .15s ease; letter-spacing:.5px;}
-  .search-go:hover{background:var(--green);}
-  .hero-owner-note{font-size:13.5px; color:var(--slate-soft); margin:0 0 28px;}
-  .hero-owner-note a{color:var(--green); font-weight:700; text-decoration:none;}
-  .hero-owner-note a:hover{text-decoration:underline;}
-  @media (max-width:480px){.search-bar{flex-direction:column;} .search-tabs{flex-wrap:wrap;}}
-  .btn-primary{background:var(--slate); color:#fff; border:2px solid var(--slate); padding:14px 28px; border-radius:999px; font-weight:800; font-size:14px; text-decoration:none; display:inline-block; cursor:pointer; transition:all .15s ease; letter-spacing:.5px;}
-  .btn-primary:hover{background:transparent; color:var(--slate);}
-  .btn-ghost{background:transparent; color:var(--slate); border:2px solid var(--border); padding:13px 26px; border-radius:999px; font-weight:700; font-size:14px; text-decoration:none; display:inline-block; transition:all .15s ease; letter-spacing:.5px;}
-  .btn-ghost:hover{border-color:var(--slate); color:var(--slate);}
-  .hero-trust{display:flex; gap:0; flex-wrap:wrap; font-size:12.5px; color:var(--slate-soft); border-top:1px solid var(--border); padding-top:20px; margin-top:4px;}
-  .hero-trust span{display:flex; align-items:center; gap:6px; padding:0 20px 0 0; margin-right:20px; border-right:1px solid var(--border);}
-  .hero-trust span:last-child{border-right:none;}
-  .hero-trust b{color:var(--slate); font-weight:700;}
+@media (max-width: 1100px) {
+  .hero-grid { grid-template-columns: 1fr; padding: 0 24px; }
+  .hero-visual { display: none; }
+  .hero-lede { max-width: 100%; }
+}
+@media (max-width: 600px) {
+  .hero-section { padding: 48px 0 64px; }
+  .hero-h1 { font-size: 36px; }
+  .hero-lede { font-size: 17px; }
+  .search-inputs { grid-template-columns: 1fr; }
+  .search-field { border-right: none; border-bottom: 1px solid var(--border); }
+  .search-field:last-of-type { border-bottom: none; }
+}
 
-  .hero-art{position:relative; height:380px;}
-  .fade-in{opacity:0; transform:translateY(14px); animation:riseIn .8s ease forwards;}
-  .fade-in.d2{animation-delay:.15s;}
-  .fade-in.d3{animation-delay:.3s;}
-  @keyframes riseIn{to{opacity:1; transform:translateY(0);}}
-  @media (prefers-reduced-motion: reduce){.fade-in{opacity:1; transform:none; animation:none;}}
+/* ── TRUST STRIP ── */
+.trust-strip {
+  background: var(--white); border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border); padding: 48px 0;
+}
+.trust-grid {
+  max-width: 1280px; margin: 0 auto; padding: 0 64px;
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px;
+}
+.trust-item { display: flex; flex-direction: column; gap: 10px; }
+.trust-icon {
+  width: 44px; height: 44px; border-radius: 12px;
+  background: var(--green-light); color: var(--green);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; font-weight: 700;
+}
+.trust-item h3 { margin: 0; font-size: 18px; font-weight: 600; color: var(--ink); }
+.trust-item p { margin: 0; font-size: 15px; color: var(--ink-mid); }
+@media (max-width: 900px) {
+  .trust-grid { grid-template-columns: 1fr 1fr; padding: 0 24px; }
+}
+@media (max-width: 500px) {
+  .trust-grid { grid-template-columns: 1fr; }
+}
 
-  @media (max-width:900px){
-    .hero-grid{grid-template-columns:1fr; padding-bottom:40px;}
-    .hero h1{font-size:38px;}
-    .hero-art{height:220px; order:-1;}
-  }
+/* ── LISTINGS ── */
+.listings-section { padding: 96px 0 40px; }
+.listings-inner {
+  max-width: 1280px; margin: 0 auto; padding: 0 64px;
+}
+.section-header {
+  display: flex; justify-content: space-between; align-items: flex-end;
+  margin-bottom: 32px;
+}
+.section-title {
+  font-family: var(--serif); font-weight: 600;
+  font-size: clamp(28px, 3vw, 40px); line-height: 1.1; letter-spacing: -.6px;
+  margin: 0 0 8px; color: var(--ink);
+}
+.section-sub { margin: 0; font-size: 17px; color: var(--ink-mid); }
+.see-all {
+  display: inline-flex; align-items: center; gap: 6px;
+  height: 44px; font-size: 16px; font-weight: 600;
+  text-decoration: none; color: var(--green); white-space: nowrap;
+  transition: color .15s;
+}
+.see-all:hover { color: var(--green-dark); }
+.listings-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px;
+}
+/* Listing card */
+.listing-card {
+  display: flex; flex-direction: column;
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: 18px; overflow: hidden; transition: box-shadow .2s;
+}
+.listing-card:hover { box-shadow: 0 12px 32px rgba(23,34,29,.10); }
+.card-photo {
+  position: relative; height: 220px;
+  background: #DCD5C6;
+}
+.card-photo img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+}
+.card-badge-verified {
+  position: absolute; top: 12px; left: 12px;
+  display: inline-flex; align-items: center; gap: 5px;
+  height: 28px; padding: 0 10px; border-radius: 999px;
+  background: var(--white); color: var(--green-dark);
+  font-size: 13px; font-weight: 600;
+}
+.card-save {
+  position: absolute; top: 8px; right: 8px;
+  width: 44px; height: 44px; border-radius: 50%; border: none;
+  background: var(--white); color: var(--ink);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: color .15s;
+}
+.card-save:hover { color: #E85555; }
+.card-save.saved { color: #E85555; }
+.card-photos-count {
+  position: absolute; bottom: 12px; left: 12px;
+  height: 26px; padding: 0 10px; border-radius: 8px;
+  background: rgba(23,34,29,.78); color: #fff;
+  font-size: 12px; font-weight: 600;
+  display: inline-flex; align-items: center;
+}
+.card-body { padding: 16px 18px 20px; display: flex; flex-direction: column; gap: 6px; }
+.card-meta {
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 14px; color: var(--ink-soft);
+}
+.card-safety {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-weight: 600; color: var(--green-dark);
+}
+.card-title {
+  font-size: 18px; font-weight: 600; line-height: 1.3;
+  color: var(--ink); text-decoration: none; display: block;
+}
+.card-title:hover { color: var(--green); }
+.card-price { display: flex; align-items: baseline; gap: 6px; margin-top: 2px; }
+.card-price strong { font-size: 22px; font-weight: 700; color: var(--ink); }
+.card-price span { font-size: 14px; color: var(--ink-soft); }
+.card-avail { font-size: 14px; color: var(--ink-mid); }
+.card-avail .free { color: var(--green); font-weight: 600; }
+.card-tags { display: flex; flex-wrap: wrap; gap: 6px; padding-top: 6px; }
+.tag-chip {
+  height: 26px; padding: 0 10px; border-radius: 8px;
+  background: var(--chip-bg); font-size: 13px; font-weight: 500;
+  color: var(--ink-mid); display: inline-flex; align-items: center;
+}
 
-  /* SECTIONS */
-  section{padding:88px 0;}
-  .section-head{max-width:640px; margin-bottom:52px;}
-  .section-head h2{font-family:var(--serif); font-weight:500; font-size:38px; line-height:1.15; margin:0 0 14px; color:var(--slate);}
-  .section-head p{font-size:16.5px; color:var(--slate-soft); margin:0; line-height:1.7;}
+@media (max-width: 1100px) {
+  .listings-grid { grid-template-columns: repeat(2, 1fr); }
+  .listings-inner { padding: 0 24px; }
+  .section-header { flex-direction: column; align-items: flex-start; gap: 12px; }
+}
+@media (max-width: 600px) {
+  .listings-grid { grid-template-columns: 1fr; }
+  .listings-section { padding: 56px 0 24px; }
+}
 
-  /* PROBLEM */
-  .problem{background:var(--white); border-top:1px solid var(--border); border-bottom:1px solid var(--border);}
-  .problem-grid{display:grid; grid-template-columns:1fr 1fr; gap:72px; align-items:start;}
-  .problem-quote{font-family:var(--serif); font-style:italic; font-size:28px; line-height:1.45; color:var(--slate); margin:0; border-left:3px solid var(--wine); padding-left:24px;}
-  .problem-list{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:22px;}
-  .problem-list li{display:flex; gap:16px; padding-bottom:22px; border-bottom:1px solid var(--border);}
-  .problem-list li:last-child{border-bottom:none; padding-bottom:0;}
-  .problem-mark{font-family:var(--serif); font-style:italic; font-size:20px; color:var(--wine); flex-shrink:0; font-weight:600;}
-  .problem-list p{margin:0; font-size:15.5px; color:var(--slate-soft);}
-  .problem-list strong{color:var(--slate); font-weight:700;}
-  @media (max-width:820px){.problem-grid{grid-template-columns:1fr; gap:36px;}}
+/* ── BROWSE BY AREA ── */
+.areas-section { padding: 56px 0 96px; }
+.areas-inner { max-width: 1280px; margin: 0 auto; padding: 0 64px; }
+.areas-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-top: 28px; }
+.area-card {
+  display: flex; flex-direction: column; gap: 4px;
+  padding: 24px; background: var(--white); border: 1px solid var(--border);
+  border-radius: 18px; text-decoration: none; color: var(--ink);
+  transition: box-shadow .2s, border-color .2s;
+}
+.area-card:hover { box-shadow: 0 8px 24px rgba(23,34,29,.08); border-color: var(--green-mid); }
+.area-count {
+  font-family: var(--serif); font-size: 40px; font-weight: 600;
+  line-height: 1; color: var(--green);
+}
+.area-name { font-size: 20px; font-weight: 600; margin-top: 10px; }
+.area-sub { font-size: 15px; color: var(--ink-mid); }
+.coming-soon {
+  display: flex; align-items: center; justify-content: space-between; gap: 24px;
+  padding: 20px 24px; border: 1px dashed var(--border-light);
+  border-radius: 18px; margin-top: 20px; flex-wrap: wrap; gap: 12px;
+}
+.coming-soon-label { font-size: 15px; font-weight: 600; color: var(--ink); margin-right: 8px; }
+.coming-tags { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.coming-tag {
+  height: 32px; padding: 0 12px; border-radius: 999px;
+  background: var(--chip-bg); font-size: 14px; color: var(--ink-mid);
+  display: inline-flex; align-items: center;
+}
+.btn-whatsapp {
+  flex-shrink: 0; height: 44px; padding: 0 18px;
+  display: inline-flex; align-items: center; gap: 8px;
+  border-radius: 12px; border: 1px solid var(--border-light);
+  background: var(--white); font-size: 15px; font-weight: 600;
+  color: var(--ink); text-decoration: none; transition: border-color .15s;
+}
+.btn-whatsapp:hover { border-color: var(--green); color: var(--green); }
+@media (max-width: 900px) {
+  .areas-grid { grid-template-columns: repeat(2, 1fr); }
+  .areas-inner { padding: 0 24px; }
+}
+@media (max-width: 500px) {
+  .areas-grid { grid-template-columns: 1fr 1fr; }
+}
 
-  /* HOW IT WORKS */
-  .steps{display:grid; grid-template-columns:repeat(3,1fr); gap:2px; border:1px solid var(--border); border-radius:14px; overflow:hidden;}
-  .step{position:relative; padding:32px 28px; background:var(--white); transition:background .2s ease;}
-  .step:not(:last-child){border-right:1px solid var(--border);}
-  .step:hover{background:var(--bg);}
-  .step-num{font-family:var(--serif); font-style:italic; font-size:48px; color:var(--border); font-weight:400; margin:0 0 16px; line-height:1; display:block;}
-  .step h3{font-size:17px; margin:0 0 10px; color:var(--slate); font-weight:700;}
-  .step p{font-size:15px; color:var(--slate-soft); margin:0; line-height:1.65;}
-  @media (max-width:820px){.steps{grid-template-columns:1fr; border-radius:12px;} .step:not(:last-child){border-right:none; border-bottom:1px solid var(--border);}}
+/* ── HOW IT WORKS ── */
+.how-section {
+  background: var(--white); border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border); padding: 96px 0;
+}
+.how-inner { max-width: 1280px; margin: 0 auto; padding: 0 64px; }
+.how-lead { max-width: 640px; margin-bottom: 48px; }
+.how-lead h2 { margin: 0 0 14px; }
+.how-lead p { margin: 0; font-size: 17px; color: var(--ink-mid); }
+.how-steps {
+  list-style: none; margin: 0; padding: 0;
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px;
+}
+.how-step {
+  display: flex; flex-direction: column; gap: 12px;
+  padding-top: 20px; border-top: 2px solid var(--border-light);
+}
+.how-step.first { border-top-color: var(--green); }
+.how-num {
+  font-family: var(--serif); font-size: 28px; font-weight: 600; color: var(--green);
+}
+.how-step h3 { margin: 0; font-size: 19px; font-weight: 600; color: var(--ink); }
+.how-step p { margin: 0; font-size: 15px; color: var(--ink-mid); }
+@media (max-width: 900px) {
+  .how-steps { grid-template-columns: 1fr 1fr; }
+  .how-inner { padding: 0 24px; }
+}
+@media (max-width: 500px) { .how-steps { grid-template-columns: 1fr; } }
 
-  /* AUDIENCE */
-  .audience{background:var(--section-dark); color:#fff;}
-  .audience .section-head h2{color:#fff;}
-  .audience .section-head p{color:rgba(255,255,255,0.45);}
-  .audience .eyebrow{color:var(--green); --wine:var(--green);}
-  .audience .eyebrow::before,.audience .eyebrow::after{color:var(--green);}
-  .tag-cloud{display:flex; flex-wrap:wrap; gap:1px; border:1px solid rgba(255,255,255,0.07); border-radius:14px; overflow:hidden;}
-  .tag{border:none; border-right:1px solid rgba(255,255,255,0.07); border-bottom:1px solid rgba(255,255,255,0.07); padding:22px 24px; font-size:15px; font-weight:600; display:flex; flex-direction:column; gap:5px; background:rgba(255,255,255,0.02); transition:background .15s ease; min-width:180px; flex:1;}
-  .tag:hover{background:rgba(255,255,255,0.05);}
-  .tag b{font-size:15.5px; color:#fff; font-weight:700;}
-  .tag span{font-size:13px; font-weight:500; color:rgba(255,255,255,0.4);}
+/* ── PRICE TRANSPARENCY ── */
+.price-section { padding: 96px 0; }
+.price-inner {
+  max-width: 1280px; margin: 0 auto; padding: 0 64px;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
+}
+.price-copy h2 { margin: 0 0 20px; }
+.price-copy > p { margin: 0 0 24px; font-size: 17px; color: var(--ink-mid); }
+.price-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
+.price-list li { display: flex; gap: 10px; align-items: flex-start; font-size: 16px; color: var(--ink-mid); }
+.price-list li svg { flex-shrink: 0; margin-top: 2px; }
+.price-card {
+  background: var(--white); border: 1px solid var(--border); border-radius: 22px;
+  padding: 32px; display: flex; flex-direction: column; gap: 14px;
+  box-shadow: 0 16px 40px rgba(23,34,29,.06);
+}
+.price-card-row { display: flex; justify-content: space-between; align-items: baseline; }
+.price-card-row .label { font-size: 16px; color: var(--ink-mid); }
+.price-card-row .val { font-size: 16px; color: var(--ink); }
+.price-card-row.head .label { font-size: 20px; font-weight: 600; color: var(--ink); }
+.price-card-row.head .val { font-size: 14px; color: var(--ink-soft); }
+.price-card-row.total .label { font-size: 18px; font-weight: 600; }
+.price-card-row.total .val { font-size: 28px; font-weight: 700; }
+.price-highlight {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 12px 14px; border-radius: 12px; background: var(--green-light);
+  font-weight: 600; color: var(--green-dark);
+}
+@media (max-width: 900px) {
+  .price-inner { grid-template-columns: 1fr; gap: 40px; padding: 0 24px; }
+  .price-section { padding: 64px 0; }
+}
 
-  /* OWNERS */
-  .owners{background:var(--white); border-top:1px solid var(--border); border-bottom:1px solid var(--border);}
-  .owners-grid{display:grid; grid-template-columns:1fr 1fr; gap:72px; align-items:center;}
-  .owners-list{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:0;}
-  .owners-list li{display:flex; gap:14px; font-size:15.5px; color:var(--slate-soft); align-items:flex-start; padding:16px 0; border-bottom:1px solid var(--border);}
-  .owners-list li:first-child{border-top:1px solid var(--border);}
-  .owners-list li p{margin:0;}
-  .owners-list li b{color:var(--slate); font-weight:700;}
-  .owners-mark{color:var(--green); font-weight:800; flex-shrink:0; font-size:14px; line-height:1.8;}
-  .owners-cta{margin-top:28px;}
-  @media (max-width:820px){.owners-grid{grid-template-columns:1fr; gap:36px;}}
+/* ── OWNER CTA ── */
+.owner-section { padding: 0 0 96px; }
+.owner-inner { max-width: 1280px; margin: 0 auto; padding: 0 64px; }
+.owner-card {
+  background: var(--green-dark); border-radius: 28px; padding: 64px;
+  display: grid; grid-template-columns: 1fr 0.9fr; gap: 64px; align-items: center;
+  color: #fff;
+}
+.owner-card .eyebrow {
+  font-size: 14px; font-weight: 600; letter-spacing: .8px;
+  text-transform: uppercase; color: #A9D8BF; margin: 0 0 20px;
+}
+.owner-card h2 {
+  margin: 0 0 24px; font-family: var(--serif); font-weight: 600;
+  font-size: clamp(28px, 3vw, 44px); line-height: 1.08; letter-spacing: -.6px;
+}
+.owner-list {
+  list-style: none; margin: 0 0 32px; padding: 0;
+  display: flex; flex-direction: column; gap: 12px;
+  font-size: 17px; color: #E3F1E9;
+}
+.owner-list li { display: flex; gap: 10px; }
+.owner-list li svg { flex-shrink: 0; margin-top: 3px; }
+.owner-ctas { display: flex; gap: 12px; flex-wrap: wrap; }
+.btn-owner-primary {
+  height: 52px; padding: 0 24px; display: inline-flex; align-items: center;
+  border-radius: 12px; background: var(--white); color: var(--green-dark);
+  font-size: 17px; font-weight: 600; text-decoration: none; transition: opacity .15s;
+}
+.btn-owner-primary:hover { opacity: .9; }
+.btn-owner-ghost {
+  height: 52px; padding: 0 20px; display: inline-flex; align-items: center; gap: 8px;
+  border-radius: 12px; border: 1px solid rgba(255,255,255,.4); color: #fff;
+  font-size: 17px; font-weight: 600; text-decoration: none; transition: border-color .15s;
+}
+.btn-owner-ghost:hover { border-color: rgba(255,255,255,.8); }
+/* Dashboard preview inside owner section */
+.owner-dashboard {
+  background: var(--white); color: var(--ink); border-radius: 20px;
+  padding: 24px; display: flex; flex-direction: column; gap: 14px;
+}
+.dash-head { display: flex; justify-content: space-between; align-items: baseline; }
+.dash-head strong { font-size: 18px; font-weight: 600; }
+.dash-head span { font-size: 13px; color: var(--ink-soft); }
+.dash-item {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 14px; border-radius: 14px;
+}
+.dash-item.warn { background: #FFF4E5; }
+.dash-item.neutral { background: var(--chip-bg); }
+.dash-item-text strong { font-size: 15px; font-weight: 600; display: block; }
+.dash-item-text span { font-size: 14px; color: var(--ink-mid); }
+.dash-item.warn .dash-item-text strong { color: #8A4600; }
+.dash-btn {
+  flex-shrink: 0; height: 36px; padding: 0 12px; border-radius: 10px;
+  font-size: 14px; font-weight: 600; display: inline-flex; align-items: center;
+  cursor: pointer; border: 1px solid var(--border-light); background: var(--white);
+  color: var(--ink); transition: background .15s;
+}
+.dash-btn.primary { background: var(--green); color: #fff; border-color: var(--green); }
+.dash-btn.primary:hover { background: var(--green-dark); }
+.dash-btn:not(.primary):hover { background: var(--bg); }
+@media (max-width: 1000px) {
+  .owner-card { grid-template-columns: 1fr; padding: 40px; gap: 32px; }
+  .owner-inner { padding: 0 24px; }
+  .owner-section { padding: 0 0 64px; }
+}
 
-  /* PUNE */
-  .pune-visual{display:flex; flex-direction:column; gap:16px;}
-  .pune-photo{width:100%; height:220px; object-fit:cover; border-radius:12px; border:1px solid var(--border); display:block;}
-  .pune-grid{display:grid; grid-template-columns:0.9fr 1.1fr; gap:56px; align-items:center;}
-  .pune-map{background:var(--bg); border:1px solid var(--border); border-radius:12px; padding:24px; display:flex; flex-direction:column; justify-content:center; gap:12px;}
-  .pune-group-label{font-size:11px; font-weight:800; letter-spacing:0.4px; text-transform:uppercase; color:var(--green); margin:0;}
-  .pin-row{display:flex; align-items:center; gap:12px; font-size:15px; color:var(--slate-mid);}
-  .pin-dot{width:8px; height:8px; border-radius:50%; background:var(--orange); flex-shrink:0;}
-  .pune-copy p{font-size:16px; color:var(--slate-soft); margin:0 0 18px;}
-  .pune-badge{display:inline-block; background:var(--green-light); color:var(--green-dark); font-weight:800; font-size:12px; padding:5px 13px; border-radius:999px; margin-bottom:18px; letter-spacing:0.3px;}
-  @media (max-width:820px){.pune-grid{grid-template-columns:1fr; gap:32px;}}
+/* ── FAQ ── */
+.faq-section { padding: 0 0 96px; }
+.faq-inner {
+  max-width: 1280px; margin: 0 auto; padding: 0 64px;
+  display: grid; grid-template-columns: 0.7fr 1.3fr; gap: 64px;
+}
+.faq-copy h2 { margin: 0 0 14px; }
+.faq-copy p { margin: 0 0 20px; font-size: 17px; color: var(--ink-mid); }
+.btn-chat {
+  align-self: flex-start; height: 48px; padding: 0 20px;
+  display: inline-flex; align-items: center; gap: 8px;
+  border-radius: 12px; border: 1px solid var(--border-light);
+  background: var(--white); font-size: 16px; font-weight: 600;
+  color: var(--ink); text-decoration: none; transition: border-color .15s;
+}
+.btn-chat:hover { border-color: var(--green); color: var(--green); }
+.faq-list { border-top: 1px solid var(--border); }
+.faq-item { border-bottom: 1px solid var(--border); }
+.faq-item summary {
+  padding: 20px 0; font-size: 18px; font-weight: 600; color: var(--ink);
+  cursor: pointer; list-style: none;
+  display: flex; justify-content: space-between; align-items: center; gap: 16px;
+}
+.faq-item summary::-webkit-details-marker { display: none; }
+.faq-chevron { flex-shrink: 0; transition: transform .2s; }
+details[open] .faq-chevron { transform: rotate(180deg); }
+.faq-item p { margin: 0 0 20px; font-size: 16px; color: var(--ink-mid); max-width: 680px; line-height: 1.7; }
+@media (max-width: 900px) {
+  .faq-inner { grid-template-columns: 1fr; padding: 0 24px; }
+  .faq-section { padding: 0 0 64px; }
+}
 
-  /* TRUST */
-  .trust{background:var(--bg);}
-  .trust-rows{display:flex; flex-direction:column;}
-  .trust-row{display:grid; grid-template-columns:240px 1fr; gap:32px; padding:28px 0; border-top:1px solid var(--border);}
-  .trust-rows > .trust-row:last-child{border-bottom:1px solid var(--border);}
-  .trust-row h3{margin:0; font-size:18px; color:var(--slate); font-family:var(--serif); font-weight:500; font-style:italic;}
-  .trust-row p{margin:0; font-size:15.5px; color:var(--slate-soft); max-width:520px; line-height:1.7;}
-  @media (max-width:700px){.trust-row{grid-template-columns:1fr; gap:8px;}}
+/* ── FOOTER ── */
+footer {
+  background: #14201A; color: #B9C4BD; padding: 64px 0 40px;
+}
+.footer-inner {
+  max-width: 1280px; margin: 0 auto; padding: 0 64px;
+  display: flex; flex-direction: column; gap: 48px;
+}
+.footer-grid {
+  display: grid; grid-template-columns: 1.4fr repeat(3, 1fr); gap: 48px;
+}
+.footer-brand { display: flex; flex-direction: column; gap: 12px; }
+.footer-wordmark {
+  font-family: var(--serif); font-weight: 600; font-size: 24px; color: #fff;
+}
+.footer-brand p { margin: 0; font-size: 15px; max-width: 300px; line-height: 1.6; }
+.footer-col { display: flex; flex-direction: column; gap: 10px; }
+.footer-col-title {
+  font-size: 13px; font-weight: 600; letter-spacing: .8px;
+  text-transform: uppercase; color: #fff; margin-bottom: 2px;
+}
+.footer-col a {
+  color: #B9C4BD; text-decoration: none; font-size: 15px; transition: color .15s;
+}
+.footer-col a:hover { color: #fff; }
+.footer-bottom {
+  display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+  padding-top: 24px; border-top: 1px solid #2A3A32; font-size: 14px;
+}
+@media (max-width: 900px) {
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+  .footer-inner { padding: 0 24px; }
+}
+@media (max-width: 500px) {
+  .footer-grid { grid-template-columns: 1fr; }
+}
 
-  /* FOUNDER */
-  .founder{background:var(--section-dark); color:#fff; position:relative; overflow:hidden;}
-  .founder-bg{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center 40%; opacity:0.15; z-index:0;}
-  .founder-inner{position:relative; z-index:1;}
-  .founder-inner{max-width:680px;}
-  .founder p.quote{font-family:var(--serif); font-style:italic; font-size:24px; line-height:1.65; margin:0 0 20px; color:rgba(255,255,255,0.65); border-left:3px solid var(--wine); padding-left:28px;}
-  .founder-sign{font-size:13.5px; color:rgba(255,255,255,0.3); font-weight:600; letter-spacing:.5px; text-transform:uppercase;}
+/* ── SIGN-IN MODAL ── */
+.modal-overlay {
+  display: none; position: fixed; inset: 0; z-index: 200;
+  background: rgba(23,34,29,.55); backdrop-filter: blur(4px);
+  align-items: center; justify-content: center; padding: 24px;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: var(--white); border-radius: 24px;
+  width: 100%; max-width: 420px;
+  box-shadow: 0 24px 64px rgba(23,34,29,.2);
+  overflow: hidden; position: relative;
+}
+.modal-close {
+  position: absolute; top: 16px; right: 16px;
+  width: 36px; height: 36px; border-radius: 50%; border: none;
+  background: var(--bg); color: var(--ink); cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; transition: background .15s;
+}
+.modal-close:hover { background: var(--border); }
+.modal-step { display: none; padding: 36px; }
+.modal-step.active { display: block; }
+.modal-logo {
+  display: flex; align-items: center; gap: 9px; margin-bottom: 28px;
+}
+.modal-logo-icon {
+  width: 36px; height: 36px; border-radius: 10px;
+  background: var(--green); display: flex; align-items: center; justify-content: center; color: #fff;
+}
+.modal-logo span {
+  font-family: var(--serif); font-weight: 600; font-size: 20px; color: var(--ink);
+}
+.modal h2 { font-family: var(--serif); font-weight: 600; font-size: 26px; color: var(--ink); margin: 0 0 8px; }
+.modal .modal-sub { font-size: 15px; color: var(--ink-mid); margin: 0 0 28px; line-height: 1.5; }
+.modal-field { margin-bottom: 16px; }
+.modal-field label {
+  display: block; font-size: 12px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .5px;
+  color: var(--ink-soft); margin-bottom: 6px;
+}
+.modal-field input {
+  width: 100%; padding: 13px 16px; border: 1.5px solid var(--border);
+  border-radius: 12px; font-size: 16px; color: var(--ink); background: var(--white);
+  transition: border-color .15s; outline: none;
+}
+.modal-field input:focus { border-color: var(--green-focus); }
+.modal-field input.error { border-color: #D93025; }
+.modal-error { font-size: 13px; color: #D93025; margin-top: 4px; display: none; }
+.modal-error.show { display: block; }
+.btn-modal-primary {
+  width: 100%; height: 52px; border-radius: 12px; border: none;
+  background: var(--green); color: #fff; font-size: 17px; font-weight: 600;
+  cursor: pointer; transition: background .15s; margin-top: 8px;
+}
+.btn-modal-primary:hover { background: var(--green-dark); }
+.btn-modal-primary:disabled { opacity: .6; cursor: not-allowed; }
+.modal-note { font-size: 13px; color: var(--ink-soft); margin: 12px 0 0; text-align: center; }
+/* OTP boxes */
+.otp-row {
+  display: flex; gap: 12px; margin-bottom: 24px;
+}
+.otp-box {
+  flex: 1; height: 60px; border: 1.5px solid var(--border);
+  border-radius: 12px; text-align: center; font-size: 28px; font-weight: 700;
+  color: var(--ink); background: var(--white); outline: none;
+  transition: border-color .15s;
+}
+.otp-box:focus { border-color: var(--green-focus); }
+.otp-box.error { border-color: #D93025; }
+.otp-hint {
+  background: var(--green-light); border-radius: 10px; padding: 10px 14px;
+  font-size: 13px; color: var(--green-dark); margin-bottom: 16px; line-height: 1.4;
+}
+.modal-back {
+  background: none; border: none; cursor: pointer;
+  font-size: 14px; font-weight: 600; color: var(--green);
+  padding: 0; margin-top: 12px; display: block;
+}
+.modal-back:hover { color: var(--green-dark); text-decoration: underline; }
+/* Success step */
+.modal-success-icon {
+  width: 64px; height: 64px; border-radius: 50%;
+  background: var(--green-light); color: var(--green);
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 20px;
+}
+.modal-success-center { text-align: center; }
+.modal-success-center h2 { font-size: 24px; margin-bottom: 8px; }
+.modal-success-center p { color: var(--ink-mid); font-size: 15px; margin: 0 0 24px; }
 
-  /* FAQ */
-  .faq-list{display:flex; flex-direction:column; max-width:760px;}
-  .faq-item{border-top:1px solid var(--border);}
-  .faq-list > .faq-item:last-child{border-bottom:1px solid var(--border);}
-  .faq-item summary{padding:22px 0; font-size:16.5px; font-weight:700; color:var(--slate); cursor:pointer; list-style:none; display:flex; justify-content:space-between; align-items:center; gap:16px; font-family:var(--serif);}
-  .faq-item summary::-webkit-details-marker{display:none;}
-  .faq-item summary::after{content:'+'; font-size:22px; font-weight:400; color:var(--wine); flex-shrink:0; font-family:var(--sans);}
-  .faq-item[open] summary::after{content:'\2013';}
-  .faq-item p{margin:0 0 22px; font-size:15px; color:var(--slate-soft); max-width:640px; line-height:1.7;}
-
-  /* WAITLIST */
-  .waitlist{background:var(--bg); border-top:1px solid var(--border);}
-  .waitlist-grid{display:grid; grid-template-columns:1fr 1fr; gap:72px; align-items:start;}
-  .waitlist-copy h2{font-family:var(--serif); font-weight:500; font-size:38px; color:var(--slate); margin:0 0 16px; line-height:1.15;}
-  .waitlist-copy p{color:var(--slate-soft); font-size:16.5px; margin:0 0 28px; line-height:1.7;}
-  .waitlist-perks{display:flex; flex-direction:column; gap:14px;}
-  .waitlist-perk{display:flex; gap:13px; align-items:flex-start; font-size:15px; color:var(--slate-mid);}
-  .perk-icon{width:20px; height:20px; background:var(--green); border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:2px;}
-
-  .form-card{background:var(--white); border:1px solid var(--border); border-radius:14px; padding:36px; border-top:3px solid var(--wine);}
-  .field{margin-bottom:18px;}
-  .field label{display:block; font-size:12.5px; font-weight:700; color:var(--slate); margin-bottom:7px; letter-spacing:.3px; text-transform:uppercase;}
-  .field input, .field select{width:100%; padding:12px 14px; border-radius:8px; border:1.5px solid var(--border); background:var(--bg); font-family:var(--sans); font-size:15px; color:var(--slate); transition:border-color .15s ease;}
-  .field input:focus, .field select:focus{outline:none; border-color:var(--wine);}
-  .form-submit{width:100%; background:var(--slate); color:#fff; border:none; padding:16px; border-radius:8px; font-weight:800; font-size:15px; cursor:pointer; transition:background .15s ease; letter-spacing:.5px;}
-  .form-submit:hover{background:var(--green);}
-  .form-note{font-size:12.5px; color:var(--slate-soft); margin-top:12px; text-align:center; letter-spacing:.2px;}
-  .form-success{display:none; text-align:center; padding:32px 0;}
-  .form-success-icon{width:52px; height:52px; background:var(--green-light); border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 16px;}
-  .form-success h3{font-family:var(--serif); color:var(--slate); font-size:24px; margin:0 0 10px;}
-  .form-success p{color:var(--slate-soft); font-size:15.5px; margin:0;}
-  @media (max-width:820px){.waitlist-grid{grid-template-columns:1fr; gap:36px;}}
-
-  /* FORM MODE TOGGLE */
-  .form-toggle{display:flex; border:1.5px solid var(--border); border-radius:9px; padding:4px; margin-bottom:24px; background:var(--bg);}
-  .form-toggle button{flex:1; background:none; border:none; padding:10px; font-family:var(--sans); font-weight:700; font-size:13px; color:var(--slate-soft); border-radius:6px; cursor:pointer; transition:all .15s ease;}
-  .form-toggle button.active{background:var(--white); color:var(--wine); box-shadow:0 1px 4px rgba(28,22,17,0.08);}
-
-  /* FOOTER */
-  footer{background:var(--section-dark); color:rgba(255,255,255,0.3); padding:52px 0 32px;}
-  .footer-top{display:flex; justify-content:space-between; flex-wrap:wrap; gap:32px; padding-bottom:32px; border-bottom:1px solid rgba(255,255,255,0.06); margin-bottom:24px;}
-  .footer-logo{font-family:var(--sans); font-size:19px; font-weight:800; color:#fff; margin:0 0 10px; display:flex; align-items:center; gap:9px;}
-  .footer-logo-icon{width:28px; height:28px; background:var(--green); border-radius:7px; display:flex; align-items:center; justify-content:center; flex-shrink:0;}
-  .footer-tag{font-size:13.5px; max-width:280px; margin:0; line-height:1.6; color:rgba(255,255,255,0.3);}
-  .footer-cols{display:flex; gap:64px; flex-wrap:wrap;}
-  .footer-col h4{color:rgba(255,255,255,0.5); font-size:11px; margin:0 0 14px; font-weight:700; letter-spacing:2px; text-transform:uppercase;}
-  .footer-col ul{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:10px;}
-  .footer-col a{text-decoration:none; font-size:14px; color:rgba(255,255,255,0.3); transition:color .15s ease;}
-  .footer-col a:hover{color:#fff;}
-  .footer-bottom{display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px; font-size:12.5px; letter-spacing:.3px;}
-
-  .skyline{width:100%; height:100%;}
-  .theme-toggle{background:none; border:1.5px solid var(--border); border-radius:999px; padding:6px 12px; cursor:pointer; display:flex; align-items:center; gap:6px; font-size:13px; font-weight:600; color:var(--slate-soft); transition:all .15s ease; font-family:var(--sans);}
-  .theme-toggle:hover{border-color:var(--green); color:var(--green);}
-  .theme-toggle svg{width:15px; height:15px; flex-shrink:0;}
-
-  /* BUDGET CHIPS */
-  .budget-chips{display:flex; flex-wrap:wrap; gap:6px; padding:8px 6px 6px;}
-  .budget-chip{background:var(--white); border:1.5px solid var(--border); border-radius:999px; padding:6px 14px; font-family:var(--sans); font-size:13px; font-weight:700; color:var(--slate-soft); cursor:pointer; transition:all .15s ease;}
-  .budget-chip.active{background:var(--green); border-color:var(--green); color:#fff;}
-  .budget-chip:hover:not(.active){border-color:var(--green); color:var(--green);}
-
-  /* HOW WE'RE DIFFERENT */
-  .different{background:var(--bg); border-top:1px solid var(--border); border-bottom:1px solid var(--border);}
-  .diff-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:2px;}
-  .diff-card{padding:32px 28px; background:var(--white); border:1px solid var(--border); border-radius:0; position:relative;}
-  .diff-card:nth-child(1),.diff-card:nth-child(2){border-bottom:none;}
-  .diff-num{font-family:var(--serif); font-style:italic; font-size:13px; color:var(--wine); font-weight:600; letter-spacing:1px; margin:0 0 18px; display:flex; align-items:center; gap:6px;}
-  .diff-num::after{content:''; flex:1; height:1px; background:var(--border); max-width:32px;}
-  .diff-card h3{font-size:18px; font-weight:700; color:var(--slate); margin:0 0 10px; letter-spacing:-.2px;}
-  .diff-card p{font-size:14.5px; color:var(--slate-soft); margin:0; line-height:1.65;}
-  @media(max-width:820px){.diff-grid{grid-template-columns:1fr;} .diff-card:nth-child(1),.diff-card:nth-child(2){border-bottom:1px solid var(--border);} .diff-card:not(:last-child){border-bottom:none;}}
-  @media(max-width:480px){.diff-grid{gap:0;}}
-
-  /* OUTER PUNE OWNER */
-  .outer-owner{background:var(--green-light); border-top:1px solid var(--green-mid); border-bottom:1px solid var(--green-mid);}
-  .outer-owner-inner{display:grid; grid-template-columns:1fr auto; gap:32px; align-items:center;}
-  @media(max-width:700px){.outer-owner-inner{grid-template-columns:1fr;}}
-
-  /* APP FEATURES */
-  .app-features{padding:72px 0; background:var(--bg);}
-  .feat-toggle{display:flex; background:var(--white); border:1.5px solid var(--border); border-radius:11px; padding:4px; width:fit-content; margin:0 auto 40px; gap:4px;}
-  .feat-tab{background:none; border:none; padding:10px 30px; border-radius:8px; font-family:var(--sans); font-size:14.5px; font-weight:700; color:var(--slate-soft); cursor:pointer; transition:all .15s ease;}
-  .feat-tab.active[data-panel="seeker"]{background:var(--green); color:#fff;}
-  .feat-tab.active[data-panel="owner"]{background:var(--orange); color:#fff;}
-  .feat-tab:not(.active):hover{color:var(--slate);}
-  .feat-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:16px;}
-  .feat-card{background:var(--white); border:1px solid var(--border); border-radius:14px; padding:22px 20px;}
-  .feat-icon{width:40px; height:40px; border-radius:10px; display:flex; align-items:center; justify-content:center; margin-bottom:12px;}
-  .feat-icon svg{width:19px; height:19px; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round;}
-  .feat-icon--green{background:var(--green-light);}
-  .feat-icon--green svg{stroke:var(--green);}
-  .feat-icon--orange{background:var(--orange-light);}
-  .feat-icon--orange svg{stroke:var(--orange);}
-  .feat-card h3{font-size:15px; font-weight:700; color:var(--slate); margin:0 0 6px;}
-  .feat-card p{font-size:14px; color:var(--slate-soft); margin:0; line-height:1.55;}
-  .feat-panel{display:none;}
-  .feat-panel.active{display:block;}
-  @media(max-width:820px){.feat-grid{grid-template-columns:1fr 1fr;}}
-  @media(max-width:480px){.feat-grid{grid-template-columns:1fr;}}
+/* Signout dropdown */
+.nav-user-menu {
+  position: absolute; top: calc(100% + 8px); right: 0;
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: 14px; padding: 8px;
+  box-shadow: 0 8px 24px rgba(23,34,29,.12);
+  min-width: 180px; z-index: 110;
+  display: none;
+}
+.nav-user-menu.open { display: block; }
+.nav-user-wrapper { position: relative; }
+.menu-item {
+  display: block; width: 100%; text-align: left; padding: 10px 14px;
+  font-size: 15px; font-weight: 500; color: var(--ink); background: none;
+  border: none; cursor: pointer; border-radius: 8px; transition: background .15s;
+}
+.menu-item:hover { background: var(--bg); }
+.menu-item.danger { color: #C0392B; }
+.menu-divider { height: 1px; background: var(--border); margin: 4px 0; }
 </style>
 </head>
 <body>
 
-<div class="announce-bar">
-  <div class="announce-inner">
-    <span><b>Zero brokerage</b> · browse every listing free</span>
-    <span><b>Verified in person</b> · our team visits first</span>
-    <span><b>Pune pilot</b> · live now</span>
+<!-- ── SIGN-IN MODAL ── -->
+<div class="modal-overlay" id="signinModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal">
+    <button class="modal-close" id="modalClose" aria-label="Close">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+        <path d="M1 1l12 12M13 1L1 13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </button>
+
+    <!-- Step 1: Phone -->
+    <div class="modal-step active" id="step1">
+      <div class="modal-logo">
+        <div class="modal-logo-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>
+        </div>
+        <span>MakanMate</span>
+      </div>
+      <h2 id="modalTitle">Sign in to your account</h2>
+      <p class="modal-sub">Enter your mobile number. We'll send you a one-time code.</p>
+      <div class="modal-field">
+        <label for="phoneInput">Mobile number</label>
+        <input type="tel" id="phoneInput" placeholder="+91 98765 43210" autocomplete="tel">
+        <div class="modal-error" id="phoneError">Please enter a valid 10-digit mobile number.</div>
+      </div>
+      <div class="modal-field">
+        <label for="nameInput">Your name</label>
+        <input type="text" id="nameInput" placeholder="Full name" autocomplete="name">
+        <div class="modal-error" id="nameError">Please enter your name.</div>
+      </div>
+      <button class="btn-modal-primary" id="sendOtpBtn">Get OTP</button>
+      <p class="modal-note">By continuing you agree to our Terms &amp; Privacy Policy.</p>
+    </div>
+
+    <!-- Step 2: OTP -->
+    <div class="modal-step" id="step2">
+      <div class="modal-logo">
+        <div class="modal-logo-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>
+        </div>
+        <span>MakanMate</span>
+      </div>
+      <h2>Enter OTP</h2>
+      <p class="modal-sub" id="otpSubText">We sent a 4-digit code to your number.</p>
+      <div class="otp-hint" id="otpHint">
+        For this demo the OTP is <strong>1234</strong> — in production this would come via SMS.
+      </div>
+      <div class="otp-row">
+        <input class="otp-box" type="text" maxlength="1" inputmode="numeric" id="otp0" aria-label="OTP digit 1">
+        <input class="otp-box" type="text" maxlength="1" inputmode="numeric" id="otp1" aria-label="OTP digit 2">
+        <input class="otp-box" type="text" maxlength="1" inputmode="numeric" id="otp2" aria-label="OTP digit 3">
+        <input class="otp-box" type="text" maxlength="1" inputmode="numeric" id="otp3" aria-label="OTP digit 4">
+      </div>
+      <div class="modal-error" id="otpError" style="margin-bottom:12px;">Incorrect OTP. Try again (hint: 1234)</div>
+      <button class="btn-modal-primary" id="verifyOtpBtn">Verify &amp; sign in</button>
+      <button class="modal-back" id="backToStep1">← Change number</button>
+    </div>
+
+    <!-- Step 3: Success -->
+    <div class="modal-step" id="step3" style="padding-top:48px; padding-bottom:48px;">
+      <div class="modal-success-icon">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+      </div>
+      <div class="modal-success-center">
+        <h2 id="welcomeName">Welcome!</h2>
+        <p>You're signed in. Browse listings, save favourites, and book visits — all for free.</p>
+        <button class="btn-modal-primary" id="closeSuccessBtn" style="max-width:200px; margin:0 auto;">Start browsing</button>
+      </div>
+    </div>
   </div>
 </div>
 
-<nav class="nav">
-  <div class="nav-row">
-    <a href="#top" class="logo">
-      <span class="logo-icon">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M3 11L12 4L21 11V21H15V15H9V21H3V11Z" fill="white"/>
-        </svg>
-      </span>
-      MakanMate
+<!-- ── HEADER ── -->
+<header class="site-header">
+  <div class="header-inner">
+    <a href="index.html" class="logo">
+      <div class="logo-icon">
+        <svg aria-hidden="true" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>
+      </div>
+      <span class="logo-name">MakanMate</span>
     </a>
-    <ul class="nav-links" id="navLinks">
-      <li><a href="#different">Why MakanMate</a></li>
-      <li><a href="#app">App features</a></li>
-      <li><a href="#how">How it works</a></li>
-      <li><a href="#owners">For owners</a></li>
-      <li><a href="pune.html">Pune guide</a></li>
-      <li><a href="#faq">FAQ</a></li>
-    </ul>
-    <a href="owner.html" class="nav-owner-link">List Property Free</a>
-    <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme">
-      <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
-      </svg>
-    </button>
-    <a href="#waitlist" class="nav-cta">Join waitlist</a>
-    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
-  </div>
-</nav>
 
-<header class="hero" id="top">
-  <div class="hero-grid">
-    <div>
-      <p class="hero-eyebrow fade-in">Pune Pilot · Live Now</p>
-      <h1 class="fade-in d2">Find your place<br>in Pune.<br><em>Zero brokerage.</em></h1>
-      <p class="lede fade-in d3">Browse every verified listing free — no contact fee, no unlock, no broker sitting between you and a good room. Our team visits every property before it goes live. What you see is what you get.</p>
-      <div class="hero-search fade-in d3">
-        <div class="search-tabs" role="tablist">
-          <button type="button" class="search-tab active" data-mode="pg">PG &amp; Flatmates</button>
-          <button type="button" class="search-tab" data-mode="rent">Rent a Flat</button>
-        </div>
-        <div class="budget-chips fade-in d3">
-          <button type="button" class="budget-chip active" data-budget="all">All budgets</button>
-          <button type="button" class="budget-chip" data-budget="5k">Under ₹5k</button>
-          <button type="button" class="budget-chip" data-budget="5-8k">₹5k–8k</button>
-          <button type="button" class="budget-chip" data-budget="8-12k">₹8k–12k</button>
-          <button type="button" class="budget-chip" data-budget="12k">₹12k+</button>
-        </div>
-        <div class="search-bar">
-          <select id="heroCity" aria-label="Choose your area or institution">
-            <optgroup label="Near college / university">
-              <option>Near — MIT Pune (Kothrud)</option>
-              <option>Near — COEP (Shivajinagar)</option>
-              <option>Near — Symbiosis (Viman Nagar)</option>
-              <option>Near — Pune University (Aundh)</option>
-            </optgroup>
-            <optgroup label="Near IT park">
-              <option>Near — Hinjewadi Phase 1</option>
-              <option>Near — Hinjewadi Phase 2 &amp; 3</option>
-              <option>Near — Kharadi EON IT Park</option>
-              <option>Near — Magarpatta Cybercity</option>
-            </optgroup>
-            <optgroup label="By neighbourhood">
-              <option>Pune — Kothrud</option>
-              <option>Pune — Karve Nagar / Katraj</option>
-              <option>Pune — Deccan / FC Road</option>
-              <option>Pune — Wakad</option>
-              <option>Pune — Baner / Aundh</option>
-              <option>Pune — Viman Nagar</option>
-            </optgroup>
-            <option>Pune — Other area</option>
-          </select>
-          <button type="button" class="search-go" id="heroSearchBtn" onclick="location.href='explore.html'">Browse listings</button>
+    <nav aria-label="Main">
+      <ul class="main-nav">
+        <li><a href="explore.html">Browse PGs</a></li>
+        <li><a href="#how">How it works</a></li>
+        <li><a href="#areas">Pune guide</a></li>
+        <li><a href="#faq">Help</a></li>
+      </ul>
+    </nav>
+
+    <div class="header-actions">
+      <a href="owner.html" class="btn-owner">List your property</a>
+
+      <!-- shown when NOT signed in -->
+      <button class="btn-signin" id="openSigninBtn" aria-haspopup="dialog">Sign in</button>
+
+      <!-- shown when signed in -->
+      <div class="nav-user-wrapper">
+        <button class="nav-user" id="navUserBtn" aria-haspopup="true" aria-expanded="false">
+          <div class="nav-avatar" id="navAvatar">?</div>
+          <span id="navUserName">You</span>
+        </button>
+        <div class="nav-user-menu" id="navUserMenu" role="menu">
+          <button class="menu-item" id="menuProfile">My profile</button>
+          <button class="menu-item" id="menuSaved">Saved listings</button>
+          <div class="menu-divider"></div>
+          <button class="menu-item danger" id="menuSignout">Sign out</button>
         </div>
       </div>
-      <p class="hero-owner-note fade-in d3">Have a property? <a href="owner.html">List it free</a> &nbsp;·&nbsp; <a href="explore.html" style="color:var(--green); font-weight:700;">Browse all listings →</a></p>
-      <div class="hero-trust fade-in d3">
-        <span><b>No</b> contact fees</span>
-        <span><b>Verified</b> in person</span>
-        <span><b>Total cost</b> shown upfront</span>
-      </div>
-    </div>
 
-    <div class="hero-art fade-in d3">
-      <img src="images/hero-illustration.png" alt="Person arriving in a new city with suitcase and phone" style="width:100%; height:100%; object-fit:contain; object-position:center bottom;">
+      <button class="nav-hamburger" id="mobileMenuBtn" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </div>
 </header>
 
-<section class="problem">
-  <div class="wrap problem-grid">
-    <p class="problem-quote">"I landed in Pune with two bags, a job start date, and absolutely no idea where I'd sleep that week."</p>
-    <ul class="problem-list">
-      <li><span class="problem-mark">1</span><p><strong>Brokers eat a month's rent</strong> before you've even seen the place properly.</p></li>
-      <li><span class="problem-mark">2</span><p><strong>Listings lie.</strong> The photos are old, the "5 min from station" is a 25-minute auto ride.</p></li>
-      <li><span class="problem-mark">3</span><p><strong>You move in alone.</strong> No one to ask where the good chai stall is, or who to call when the geyser breaks.</p></li>
-    </ul>
-  </div>
-</section>
+<!-- Mobile nav -->
+<nav class="mobile-nav" id="mobileNav" aria-label="Mobile navigation">
+  <a href="explore.html">Browse PGs</a>
+  <a href="#how">How it works</a>
+  <a href="#areas">Pune guide</a>
+  <a href="owner.html">List your property</a>
+  <a href="#faq">Help</a>
+</nav>
 
-<section class="different" id="different">
-  <div class="wrap">
-    <div class="section-head">
-      <p class="eyebrow">Honest by design</p>
-      <h2>Beautiful. Useful.<br><em>Honest.</em></h2>
-      <p>Every other platform charges to see a phone number or lists properties nobody has checked. We do neither.</p>
-    </div>
-    <div class="diff-grid">
-      <div class="diff-card">
-        <p class="diff-num">01</p>
-        <h3>No contact fees. Ever.</h3>
-        <p>Browse every listing and message any owner for free. No unlock fee, no subscription, no ₹599 surprise before you can see a number.</p>
-      </div>
-      <div class="diff-card">
-        <p class="diff-num">02</p>
-        <h3>Verified in person, always.</h3>
-        <p>Our team visits the property before it goes live — photos, rent and walk times match what you find on move-in day. No exceptions.</p>
-      </div>
-      <div class="diff-card">
-        <p class="diff-num">03</p>
-        <h3>Total cost shown upfront.</h3>
-        <p>Rent, deposit and maintenance shown together from the first card. You know the full number before you book a visit.</p>
-      </div>
-      <div class="diff-card">
-        <p class="diff-num">04</p>
-        <h3>Browse first, sign in later.</h3>
-        <p>See every listing — photos, safety score, distances — without creating an account. Sign in only when you're ready to chat or book.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="app-features" id="app">
-  <div class="wrap">
-    <div class="section-head">
-      <h2>Everything in the app</h2>
-      <p>Two apps, one purpose — MakanMate for people finding a place, MakanMate Owner for people listing one.</p>
-    </div>
-
-    <div class="feat-toggle">
-      <button type="button" class="feat-tab active" data-panel="seeker">For Seekers</button>
-      <button type="button" class="feat-tab" data-panel="owner">For Owners</button>
-    </div>
-
-    <!-- SEEKER PANEL -->
-    <div class="feat-panel active" id="panel-seeker">
-      <div class="feat-grid">
-
-        <div class="feat-card">
-          <div class="feat-icon feat-icon--green">
-            <svg viewBox="0 0 24 24"><path d="M3 11L12 4L21 11V21H15V15H9V21H3V11Z"/></svg>
-          </div>
-          <h3>Browse free, no sign-in</h3>
-          <p>See every verified listing — photos, rent, safety score, distances — without creating an account. Sign in only when you want to chat or book.</p>
-        </div>
-
-        <div class="feat-card">
-          <div class="feat-icon feat-icon--green">
-            <svg viewBox="0 0 24 24"><line x1="4" x2="4" y1="21" y2="14"/><line x1="4" x2="4" y1="10" y2="3"/><line x1="12" x2="12" y1="21" y2="12"/><line x1="12" x2="12" y1="8" y2="3"/><line x1="20" x2="20" y1="21" y2="16"/><line x1="20" x2="20" y1="12" y2="3"/><line x1="1" x2="7" y1="14" y2="14"/><line x1="9" x2="15" y1="8" y2="8"/><line x1="17" x2="23" y1="16" y2="16"/></svg>
-          </div>
-          <h3>Budget and location filters</h3>
-          <p>Filter by budget (Under ₹5k / ₹5–8k / ₹8–12k / ₹12k+), near college or IT park, room type, food included, couple-friendly, and more.</p>
-        </div>
-
-        <div class="feat-card">
-          <div class="feat-icon feat-icon--green">
-            <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-          </div>
-          <h3>Full listing detail</h3>
-          <p>Photos, all room options with per-person rent, safety score breakdown, walk times to metro/college/grocery, and a 360° tour — all in one screen.</p>
-        </div>
-
-        <div class="feat-card">
-          <div class="feat-icon feat-icon--green">
-            <svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
-          </div>
-          <h3>Save and compare</h3>
-          <p>Shortlist rooms with one tap. Compare any two side by side on rent, safety score, distance to your office or college, and total move-in cost.</p>
-        </div>
-
-        <div class="feat-card">
-          <div class="feat-icon feat-icon--green">
-            <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-          </div>
-          <h3>Book a visit</h3>
-          <p>Pick a date and time slot. The owner confirms in the app. Reschedule or cancel anytime — no awkward phone calls needed.</p>
-        </div>
-
-        <div class="feat-card">
-          <div class="feat-icon feat-icon--green">
-            <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-          </div>
-          <h3>Reserve a room</h3>
-          <p>Pay a ₹500 token to hold your chosen room for 48 hours while you sort travel and paperwork. Refundable if you decide not to move in.</p>
-        </div>
-
-        <div class="feat-card">
-          <div class="feat-icon feat-icon--green">
-            <svg viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
-          </div>
-          <h3>Pay rent in-app</h3>
-          <p>Track due dates, pay rent directly, and get a digital receipt. No running to the bank or hunting for the owner's UPI ID each month.</p>
-        </div>
-
-        <div class="feat-card">
-          <div class="feat-icon feat-icon--green">
-            <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-          </div>
-          <h3>Paperwork, all digital</h3>
-          <p>Maharashtra registered leave and licence, police verification, ID via DigiLocker, and e-sign — all completed in the app. Government fees shown upfront.</p>
-        </div>
-
-        <div class="feat-card">
-          <div class="feat-icon feat-icon--green">
-            <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-          </div>
-          <h3>Safety score and SOS</h3>
-          <p>Every listing shows a 0–10 safety score: street lighting, police proximity, CCTV, women safety reports, fire safety. One-tap SOS calls your emergency contacts.</p>
-        </div>
-
-      </div>
-    </div>
-
-    <!-- OWNER PANEL -->
-    <div class="feat-panel" id="panel-owner">
-      <div class="feat-grid">
-
-        <div class="feat-card">
-          <div class="feat-icon feat-icon--orange">
-            <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
-          </div>
-          <h3>Add a property in 5 steps</h3>
-          <p>Basics, rooms, features, location, photos. Done in under 10 minutes. Send photos by WhatsApp if you'd rather not type — we handle the listing.</p>
-        </div>
-
-        <div class="feat-card">
-          <div class="feat-icon feat-icon--orange">
-            <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-          </div>
-          <h3>Manage visits</h3>
-          <p>New, upcoming and done tabs. Accept or decline visit requests, see who's coming, reschedule with one tap. No missed call confusion.</p>
-        </div>
-
-        <div class="feat-card">
-          <div class="feat-icon feat-icon--orange">
-            <svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-          </div>
-          <h3>Rent and reminders</h3>
-          <p>See who's paid and who's overdue at a glance. Send a WhatsApp payment reminder with one tap. Track rent history and deposits per tenant.</p>
-        </div>
-
-        <div class="feat-card">
-          <div class="feat-icon feat-icon--orange">
-            <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-          </div>
-          <h3>Bed map</h3>
-          <p>Visual map of every bed and room. See which are occupied, note move-out dates, mark a bed as available the moment it frees up.</p>
-        </div>
-
-        <div class="feat-card">
-          <div class="feat-icon feat-icon--orange">
-            <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-          </div>
-          <h3>Analytics dashboard</h3>
-          <p>Views, enquiries, visit conversions and average days-to-fill over 7 / 30 / 90 days. See why your listing ranks where it does and what improves it.</p>
-        </div>
-
-        <div class="feat-card">
-          <div class="feat-icon feat-icon--orange">
-            <svg viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="14" y2="17"/></svg>
-          </div>
-          <h3>Tenant paperwork</h3>
-          <p>Send ID check via DigiLocker, police verification link and leave and licence e-sign — all from the app on WhatsApp. Track which step each tenant is on.</p>
-        </div>
-
-        <div class="feat-card">
-          <div class="feat-icon feat-icon--orange">
-            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          </div>
-          <h3>Subscription plans</h3>
-          <p>Free lists the property. Verified (₹299/mo) adds a trust badge and faster responses. Pro (₹799/mo) adds priority ranking and dedicated support.</p>
-        </div>
-
-        <div class="feat-card">
-          <div class="feat-icon feat-icon--orange">
-            <svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-.29-6.96L23 10"/></svg>
-          </div>
-          <h3>360° VR tour</h3>
-          <p>Walk slowly through the property with any phone. Stitched into a shareable 360° tour — send it on WhatsApp so tenants tour without travelling first.</p>
-        </div>
-
-        <div class="feat-card">
-          <div class="feat-icon feat-icon--orange">
-            <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-          </div>
-          <h3>WhatsApp assistant</h3>
-          <p>Handle new enquiries, send rent reminders and update your listing entirely from WhatsApp — tap buttons and voice notes, no app needed for daily tasks.</p>
-        </div>
-
-      </div>
-    </div>
-
-  </div>
-</section>
-
-<section id="how">
-  <div class="wrap">
-    <div class="section-head">
-      <p class="eyebrow">How it works</p>
-      <h2>Three steps,<br>not three weeks.</h2>
-      <p>Moving cities is stressful enough. MakanMate compresses the housing hunt from weeks of uncertainty into a few clear steps.</p>
-    </div>
-    <div class="steps">
-      <div class="step"><span class="step-num">01</span><h3>Browse without signing in</h3><p>See every verified listing — photos, safety score, rent, commute times — the moment you land. No account, no phone number, no friction.</p></div>
-      <div class="step"><span class="step-num">02</span><h3>Visit only the right ones</h3><p>Filter by budget, location and type. Every listing is checked in person by our Pune team — real photos, real rent, real distances.</p></div>
-      <div class="step"><span class="step-num">03</span><h3>Move in. We handle the rest.</h3><p>Book a visit, reserve with ₹500, sign paperwork digitally. We introduce you to others who moved to the same area.</p></div>
-    </div>
-  </div>
-</section>
-
-<section class="audience" id="audience">
-  <div class="wrap">
-    <div class="section-head">
-      <p class="eyebrow">Who it's for</p>
-      <h2>Built for everyone<br>who just landed.</h2>
-      <p>Whether you're starting a job, a degree, or a new chapter — MakanMate is the first call you make, not the last resort.</p>
-    </div>
-    <div class="tag-cloud">
-      <div class="tag"><b>Students</b><span>Near campus, PG-friendly, mess included</span></div>
-      <div class="tag"><b>Job seekers</b><span>Short lease while you find your feet</span></div>
-      <div class="tag"><b>Bachelors</b><span>Shared flats, split bills, sorted</span></div>
-      <div class="tag"><b>Couples</b><span>Couple-friendly listings, clearly marked</span></div>
-      <div class="tag"><b>Remote workers</b><span>Wi-fi first, quiet hours respected</span></div>
-      <div class="tag"><b>New to Pune</b><span>Zero local contacts required</span></div>
-    </div>
-  </div>
-</section>
-
-<section class="owners" id="owners">
-  <div class="wrap owners-grid">
+<!-- ── HERO ── -->
+<section class="hero-section">
+  <div class="hero-grid">
     <div>
-      <span class="pune-badge">FOR PROPERTY OWNERS</span>
-      <h2 style="font-family:var(--serif); font-weight:500; font-size:30px; color:var(--slate); margin:16px 0;">List with us before we open your area to seekers.</h2>
-      <p style="font-size:16px; color:var(--slate-soft); margin:0 0 20px;">We're onboarding a limited number of verified owners per neighbourhood first — so every listing a seeker sees is one we've actually checked ourselves.</p>
-      <ul class="owners-list">
-        <li><span class="owners-mark">✓</span><p><b>No listing fee</b> during the Pune pilot.</p></li>
-        <li><span class="owners-mark">✓</span><p><b>We handle verification visits</b> — one visit, done, no repeat paperwork.</p></li>
-        <li><span class="owners-mark">✓</span><p><b>Direct contact with tenants</b> — no broker sitting between you and your rent.</p></li>
-      </ul>
-      <div class="owners-cta"><a href="#waitlist" class="btn-primary" id="ownerCtaBtn">List your property</a></div>
-    </div>
-    <div class="pune-map">
-      <div class="pin-row"><span class="pin-dot"></span>PG owners — Kothrud, Karve Nagar, Katraj</div>
-      <div class="pin-row"><span class="pin-dot"></span>Flat owners — Baner, Viman Nagar, Wakad</div>
-      <div class="pin-row"><span class="pin-dot"></span>Shared flats — near IT parks (Hinjewadi, Kharadi, Magarpatta)</div>
-      <div class="pin-row"><span class="pin-dot"></span>Currently onboarding 7 neighbourhoods</div>
-    </div>
-  </div>
-</section>
-
-<section class="outer-owner">
-  <div class="wrap">
-    <div class="outer-owner-inner">
-      <div>
-        <span class="pune-badge">FOR OWNERS IN OUTER PUNE &amp; SMALL TOWNS</span>
-        <h2 style="font-family:var(--serif); font-weight:500; font-size:28px; color:var(--slate); margin:14px 0 10px;">Got an empty house or room sitting idle for months?</h2>
-        <p style="font-size:15.5px; color:var(--slate-soft); margin:0 0 14px; max-width:560px;">Properties in Pimpri-Chinchwad, Talegaon, Chakan, Nigdi and outer Pune are hard to find even on Google Maps. Listing on MakanMate is free and doesn't stop you listing anywhere else.</p>
-        <ul style="list-style:none; padding:0; margin:0 0 20px; display:flex; flex-direction:column; gap:8px;">
-          <li style="font-size:15px; color:var(--slate-soft);"><strong style="color:var(--slate);">Free forever</strong> — no listing fee, no commission taken upfront.</li>
-          <li style="font-size:15px; color:var(--slate-soft);"><strong style="color:var(--slate);">Also listed elsewhere?</strong> That's fine — we don't ask for exclusivity.</li>
-          <li style="font-size:15px; color:var(--slate-soft);"><strong style="color:var(--slate);">List by WhatsApp</strong> — send photos and your address; we handle the rest.</li>
-        </ul>
-        <a href="https://wa.me/919000012345?text=I+want+to+list+my+property+on+MakanMate" class="btn-primary" style="display:inline-block; background:var(--green);">List your property on WhatsApp</a>
+      <div class="hero-badge">
+        <span class="hero-dot"></span>
+        Live in Pune · 15 verified PGs
       </div>
-      <div style="background:var(--white); border:1px solid var(--green-mid); border-radius:14px; padding:22px; min-width:220px;">
-        <p style="font-size:13px; font-weight:800; letter-spacing:0.4px; text-transform:uppercase; color:var(--green); margin:0 0 12px;">Areas we're adding next</p>
-        <div style="display:flex; flex-direction:column; gap:8px;">
-          <span style="font-size:14.5px; color:var(--slate-mid);">Pimpri-Chinchwad</span>
-          <span style="font-size:14.5px; color:var(--slate-mid);">Talegaon &amp; Chakan</span>
-          <span style="font-size:14.5px; color:var(--slate-mid);">Nigdi &amp; Akurdi</span>
-          <span style="font-size:14.5px; color:var(--slate-mid);">Sinhagad Road</span>
-          <span style="font-size:14.5px; color:var(--slate-mid);">Kondhwa &amp; NIBM</span>
+      <h1 class="hero-h1">Find a verified PG<br>in Pune.<br><span>Pay zero brokerage.</span></h1>
+      <p class="hero-lede">Our team visits every place before it goes live. Browse without signing up, see the full move-in cost upfront, and chat with owners without paying to unlock a number.</p>
+
+      <form class="search-card" id="heroSearchForm" onsubmit="return false;">
+        <div class="search-tabs" role="tablist">
+          <button type="button" class="search-tab-btn active" data-tab="pg" role="tab" aria-selected="true">PGs &amp; hostels</button>
+          <button type="button" class="search-tab-btn" data-tab="shared" role="tab" aria-selected="false">Shared flats</button>
+          <button type="button" class="search-tab-btn" data-tab="whole" role="tab" aria-selected="false">Whole flats</button>
         </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="pune">
-  <div class="wrap pune-grid">
-    <div class="pune-visual">
-      <img src="images/pune-junction.jpg" alt="Pune Junction railway station" class="pune-photo">
-      <div class="pune-map">
-        <p class="pune-group-label">Student hubs</p>
-        <div class="pin-row"><span class="pin-dot"></span>Kothrud — colleges, budget PGs</div>
-        <div class="pin-row"><span class="pin-dot"></span>Karve Nagar &amp; Katraj — hostels, mess-included PGs</div>
-        <div class="pin-row"><span class="pin-dot"></span>Deccan / FC Road — walk-to-college, café culture</div>
-        <p class="pune-group-label" style="margin-top:14px;">Young professional &amp; IT hubs</p>
-        <div class="pin-row"><span class="pin-dot"></span>Hinjewadi &amp; Wakad — IT crowd, shared flats</div>
-        <div class="pin-row"><span class="pin-dot"></span>Kharadi &amp; Magarpatta — IT park adjacent</div>
-        <div class="pin-row"><span class="pin-dot"></span>Baner, Aundh &amp; Viman Nagar — newer builds, couples</div>
-      </div>
-    </div>
-    <div class="pune-copy">
-      <span class="pune-badge">PILOT CITY</span>
-      <h2 style="font-family:var(--serif); font-weight:500; font-size:30px; color:var(--slate); margin:0 0 16px;">We're starting exactly where the problem is worst.</h2>
-      <p>Pune pulls in more students and first-job movers every year than almost any other Indian city — and has some of the messiest, most broker-heavy rental hunting to go with it.</p>
-      <p>We're not spreading across five cities at once. Every neighbourhood we add gets the same in-person verification before a single listing goes live — depth first, breadth later.</p>
-      <a href="pune.html" style="display:inline-block; margin-top:8px; font-weight:700; font-size:14px; color:var(--green); text-decoration:none;">Explore all Pune neighbourhoods →</a>
-    </div>
-  </div>
-</section>
-
-<section id="trust" class="trust">
-  <div class="wrap">
-    <div class="section-head">
-      <p class="eyebrow">Our promise</p>
-      <h2>Trust, before<br>anything else.</h2>
-      <p>You're making a decision about where you'll live, sleep and feel safe. We take that seriously.</p>
-    </div>
-    <div class="trust-rows">
-      <div class="trust-row"><h3>Verified, always.</h3><p>Every listing is physically visited by someone on our Pune team before it's published. What you see when browsing is what you'll find on move-in day — not a version from three years ago.</p></div>
-      <div class="trust-row"><h3>Zero brokerage.</h3><p>You deal with the owner or us directly. No middleman taking a cut, no ₹599 contact-unlock fee. The money you save on brokerage is yours to spend on your first month.</p></div>
-      <div class="trust-row"><h3>Nothing hidden in the price.</h3><p>Rent, deposit, maintenance — every recurring charge shown together from the first card. You know the full move-in number before you set foot in the property.</p></div>
-      <div class="trust-row"><h3>A community, not just a contract.</h3><p>We connect new arrivals in the same neighbourhood so your first week isn't spent eating alone and wondering if you made the right call.</p></div>
-    </div>
-  </div>
-</section>
-
-<section class="founder">
-  <img src="images/pune-night.jpg" alt="" class="founder-bg" aria-hidden="true">
-  <div class="wrap founder-inner">
-    <p class="quote">"We built MakanMate because we've both been the person standing outside a PG with two bags, a landlord who wouldn't answer calls, and a broker who'd already been paid. Pune is where we're fixing that first — properly, before we go anywhere else."</p>
-    <p class="founder-sign">— The MakanMate founding team</p>
-  </div>
-</section>
-
-<section id="faq">
-  <div class="wrap">
-    <div class="section-head">
-      <p class="eyebrow">FAQ</p>
-      <h2>Questions we get asked.</h2>
-      <p>If yours isn't here, email <a href="mailto:contact@makanmate.in" style="color:var(--wine); font-weight:700;">contact@makanmate.in</a> — we read every message during the pilot.</p>
-    </div>
-    <div class="faq-list">
-      <details class="faq-item">
-        <summary>Is MakanMate free to use?</summary>
-        <p>Yes, for seekers it's free during the Pune pilot. There's no brokerage fee, and no charge to browse or join the waitlist.</p>
-      </details>
-      <details class="faq-item">
-        <summary>How do you actually verify listings?</summary>
-        <p>Someone from our Pune team visits the property in person before it's published — checking the photos, the rent, and the distance claims match reality.</p>
-      </details>
-      <details class="faq-item">
-        <summary>When will my area or city open up?</summary>
-        <p>We're onboarding Pune neighbourhood by neighbourhood to keep verification tight, then expanding to other cities. Join the waitlist and we'll email you the moment your area's live.</p>
-      </details>
-      <details class="faq-item">
-        <summary>I own a property — how do I list it?</summary>
-        <p>Use the "List your property" option in the waitlist form below. We're onboarding a limited number of verified owners per neighbourhood first.</p>
-      </details>
-      <details class="faq-item">
-        <summary>Do you only do PGs, or full flats too?</summary>
-        <p>Both — PGs, shared flats, and independent 1BHK/2BHK rentals, depending on what's available and verified in your chosen area.</p>
-      </details>
-    </div>
-  </div>
-</section>
-
-<section class="waitlist" id="waitlist">
-  <div class="wrap waitlist-grid">
-    <div class="waitlist-copy">
-      <p class="eyebrow">Get early access</p>
-      <h2>Be first in when<br>your area opens.</h2>
-      <p>We onboard Pune neighbourhoods gradually to keep every listing verified before a single person sees it. Join the list and we'll reach out the moment your area goes live.</p>
-      <div class="waitlist-perks">
-        <div class="waitlist-perk">
-          <div class="perk-icon">
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </div>
-          <span>Zero brokerage, always free for seekers</span>
-        </div>
-        <div class="waitlist-perk">
-          <div class="perk-icon">
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </div>
-          <span>Only verified listings — no fake photos</span>
-        </div>
-        <div class="waitlist-perk">
-          <div class="perk-icon">
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </div>
-          <span>Priority access when your area opens</span>
-        </div>
-      </div>
-    </div>
-    <div class="form-card">
-      <div class="form-toggle">
-        <button type="button" id="toggleSeeker" class="active">I'm looking for a place</button>
-        <button type="button" id="toggleOwner">I have a property to list</button>
-      </div>
-      <form id="waitlistForm">
-        <input type="hidden" id="formTypeHidden" value="seeker">
-        <div id="formFields">
-          <div class="field"><label for="name">Full name</label><input type="text" id="name" name="name" required placeholder="Your name"></div>
-          <div class="field"><label for="phone">Phone number</label><input type="tel" id="phone" name="phone" required placeholder="+91 98765 43210"></div>
-          <div class="field"><label for="email">Email <span style="font-weight:500; color:var(--slate-soft);">(optional)</span></label><input type="email" id="email" name="email" placeholder="you@email.com"></div>
-          <div class="field">
-            <label for="city" id="cityLabel">Looking for a place in</label>
-            <select id="city" name="area">
-              <optgroup label="Student hubs">
-                <option>Pune — Kothrud</option>
-                <option>Pune — Karve Nagar</option>
-                <option>Pune — Deccan / FC Road</option>
-                <option>Pune — Katraj</option>
-              </optgroup>
-              <optgroup label="Young professional & IT hubs">
-                <option>Pune — Hinjewadi</option>
-                <option>Pune — Wakad</option>
-                <option>Pune — Baner</option>
-                <option>Pune — Viman Nagar</option>
-                <option>Pune — Kharadi</option>
-                <option>Pune — Magarpatta / Hadapsar</option>
-                <option>Pune — Aundh</option>
-              </optgroup>
-              <option>Pune — Other area</option>
+        <div class="search-inputs">
+          <label class="search-field">
+            <span class="search-label">Near</span>
+            <input type="text" id="heroNear" placeholder="College, company or area">
+          </label>
+          <label class="search-field">
+            <span class="search-label">Budget</span>
+            <select id="heroBudget">
+              <option value="">Any budget</option>
+              <option value="9000">Up to ₹9,000</option>
+              <option value="10500">Up to ₹10,500</option>
+              <option value="12000">Up to ₹12,000</option>
             </select>
-          </div>
-          <div class="field" id="propertyTypeField" style="display:none;">
-            <label for="propertyType">Property type</label>
-            <select id="propertyType" name="property_type">
-              <option>PG</option>
-              <option>Shared flat</option>
-              <option>1 BHK</option>
-              <option>2 BHK or larger</option>
+          </label>
+          <label class="search-field" style="border-right:none">
+            <span class="search-label">For</span>
+            <select id="heroFor">
+              <option value="">Anyone</option>
+              <option value="women">Women</option>
+              <option value="men">Men</option>
             </select>
-          </div>
-          <button type="submit" class="form-submit" id="formSubmitBtn">Join the waitlist</button>
-          <p class="form-note" id="formNote">No spam. Just one email when your area opens.</p>
-        </div>
-        <div class="form-success" id="formSuccess">
-          <div class="form-success-icon">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="#2563EB" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </div>
-          <h3>You're on the list.</h3>
-          <p id="formSuccessText">We'll email you the moment listings open in your area.</p>
+          </label>
+          <button type="submit" class="search-btn" id="heroSearchBtn" onclick="doHeroSearch()">
+            <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+            Search
+          </button>
         </div>
       </form>
+
+      <div class="popular-pills">
+        <span class="popular-label">Popular:</span>
+        <a href="explore.html?budget=9000" class="pill">Under ₹9,000</a>
+        <a href="explore.html?for=women" class="pill">Women only</a>
+        <a href="explore.html?near=hinjewadi" class="pill">Near Hinjewadi IT Park</a>
+        <a href="explore.html?meals=1" class="pill">Meals included</a>
+      </div>
+    </div>
+
+    <!-- Hero visual -->
+    <div class="hero-visual" aria-hidden="true">
+      <div class="hero-photo-frame">
+        <img src="images/pg_sadguru_1.jpg" alt="Sri Lakshmi PG, Pashan — common area">
+      </div>
+      <div class="hero-card-verified">
+        <div class="card-icon-green">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+        </div>
+        <div>
+          <strong>Verified in person</strong>
+          <span>Photos, rent and rules checked by our Pune team</span>
+        </div>
+      </div>
+      <div class="hero-tag-bus">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#17744C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="15" rx="3"/><path d="M4 11h16M8 18v3M16 18v3"/></svg>
+        15 min by bus to Hinjewadi IT Park
+      </div>
+      <div class="hero-cost-card">
+        <div class="cost-row head">
+          <span>Move-in cost</span><span style="font-size:13px;color:var(--ink-soft);font-weight:400">Hometown Premium PG</span>
+        </div>
+        <div class="cost-row"><span>First month rent</span><span>₹11,000</span></div>
+        <div class="cost-row"><span>Deposit</span><span>₹22,000</span></div>
+        <div class="cost-row"><span>Brokerage</span><span class="zero">₹0</span></div>
+        <div class="cost-divider"></div>
+        <div class="cost-row total"><span>Total</span><span>₹33,000</span></div>
+      </div>
     </div>
   </div>
 </section>
 
-<footer>
-  <div class="wrap">
-    <div class="footer-top">
-      <div>
-        <p class="footer-logo">
-          <span class="footer-logo-icon">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M3 11L12 4L21 11V21H15V15H9V21H3V11Z" fill="white"/></svg>
-          </span>
-          MakanMate
-        </p>
-        <p class="footer-tag">Verified PGs in Pune. Zero brokerage. No contact fees.</p>
+<!-- ── TRUST STRIP ── -->
+<div class="trust-strip">
+  <div class="trust-grid">
+    <div class="trust-item">
+      <div class="trust-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
       </div>
-      <div class="footer-cols">
-        <div class="footer-col">
-          <h4>Find a place</h4>
-          <ul>
-            <li><a href="#different">Why MakanMate</a></li>
-            <li><a href="#how">How it works</a></li>
-            <li><a href="#audience">Who it's for</a></li>
-            <li><a href="pune.html">Pune guide</a></li>
-          </ul>
+      <h3>Verified in person</h3>
+      <p>Our team visits every property before it's listed, and re-checks it every month.</p>
+    </div>
+    <div class="trust-item">
+      <div class="trust-icon">₹0</div>
+      <h3>No brokerage, no contact fees</h3>
+      <p>Browse, chat and book visits for free. Nobody charges you to see a phone number.</p>
+    </div>
+    <div class="trust-item">
+      <div class="trust-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h12v20l-3-2-3 2-3-2-3 2z"/><path d="M9 7h6M9 11h6M9 15h4"/></svg>
+      </div>
+      <h3>Full move-in cost upfront</h3>
+      <p>Rent, deposit, maintenance and paperwork fees on one line, before you visit.</p>
+    </div>
+    <div class="trust-item">
+      <div class="trust-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+      </div>
+      <h3>Refundable token</h3>
+      <p>Hold a place with ₹5,000, kept by MakanMate and refunded if the place doesn't match.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ── LISTINGS ── -->
+<section class="listings-section" id="listings">
+  <div class="listings-inner">
+    <div class="section-header">
+      <div>
+        <h2 class="section-title">Move in this month</h2>
+        <p class="section-sub">Verified PGs available now in Baner, Balewadi, Pashan and Hinjewadi.</p>
+      </div>
+      <a href="explore.html" class="see-all">
+        See all 15 PGs
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+    </div>
+
+    <div class="listings-grid" id="listingsGrid">
+      <!-- Cards rendered by JS -->
+    </div>
+  </div>
+</section>
+
+<!-- ── BROWSE BY AREA ── -->
+<section class="areas-section" id="areas">
+  <div class="areas-inner">
+    <h2 class="section-title" style="margin:0">Browse by area</h2>
+    <div class="areas-grid">
+      <a href="explore.html?area=baner" class="area-card">
+        <span class="area-count">12</span>
+        <span class="area-name">Baner</span>
+        <span class="area-sub">PGs from ₹8,500 · near Balewadi High Street</span>
+      </a>
+      <a href="explore.html?area=hinjewadi" class="area-card">
+        <span class="area-count">1</span>
+        <span class="area-name">Hinjewadi</span>
+        <span class="area-sub">From ₹11,000 · walk to the IT park</span>
+      </a>
+      <a href="explore.html?area=balewadi" class="area-card">
+        <span class="area-count">1</span>
+        <span class="area-name">Balewadi</span>
+        <span class="area-sub">From ₹10,000 · between Baner and Hinjewadi</span>
+      </a>
+      <a href="explore.html?area=pashan" class="area-card">
+        <span class="area-count">1</span>
+        <span class="area-name">Pashan</span>
+        <span class="area-sub">From ₹12,000 · quiet, near Pashan Lake</span>
+      </a>
+    </div>
+    <div class="coming-soon">
+      <div>
+        <span class="coming-soon-label">Opening next:</span>
+        <span class="coming-tags">
+          <span class="coming-tag">Kothrud</span>
+          <span class="coming-tag">Wakad</span>
+          <span class="coming-tag">Karve Nagar</span>
+          <span class="coming-tag">Kharadi</span>
+          <span class="coming-tag">Viman Nagar</span>
+        </span>
+      </div>
+      <a href="https://wa.me/919000012345?text=Alert+me+when+my+area+opens+on+MakanMate" class="btn-whatsapp" target="_blank" rel="noopener">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1FAF5A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21l1.7-5A9 9 0 1 1 8 19.3z"/></svg>
+        Get a WhatsApp alert
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ── HOW IT WORKS ── -->
+<section class="how-section" id="how">
+  <div class="how-inner">
+    <div class="how-lead">
+      <h2 class="section-title">From first search to move-in, in days</h2>
+      <p>You only sign in when you want to chat, book or reserve.</p>
+    </div>
+    <ol class="how-steps">
+      <li class="how-step first">
+        <span class="how-num">01</span>
+        <h3>Browse freely</h3>
+        <p>Filter by budget, commute and who you're living with. No sign-up needed to look.</p>
+      </li>
+      <li class="how-step">
+        <span class="how-num">02</span>
+        <h3>Visit or video tour</h3>
+        <p>Book a free visit, or a live WhatsApp video tour from home. Share the details with family in one tap.</p>
+      </li>
+      <li class="how-step">
+        <span class="how-num">03</span>
+        <h3>Reserve with ₹5,000</h3>
+        <p>Held by MakanMate and adjusted in your deposit. Full refund if the place doesn't match.</p>
+      </li>
+      <li class="how-step">
+        <span class="how-num">04</span>
+        <h3>Move in, paperwork done</h3>
+        <p>ID via DigiLocker, e-signed agreement and police verification in about ten minutes.</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- ── PRICE TRANSPARENCY ── -->
+<section class="price-section" id="price">
+  <div class="price-inner">
+    <div class="price-copy">
+      <h2 class="section-title">The price you see is the price you pay</h2>
+      <p>Every listing shows the full amount you need on move-in day. No surprise "charges" after you've travelled to see the place.</p>
+      <ul class="price-list">
+        <li>
+          <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#17744C" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+          Deposit months and notice period stated upfront
+        </li>
+        <li>
+          <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#17744C" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+          Agreement and stamp duty shown before you pay
+        </li>
+        <li>
+          <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#17744C" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+          Money moves through MakanMate, with receipts
+        </li>
+      </ul>
+    </div>
+    <div class="price-card">
+      <div class="price-card-row head">
+        <span class="label">Move-in cost</span>
+        <span class="val">7 Hills PG, Baner</span>
+      </div>
+      <div class="price-card-row">
+        <span class="label">First month rent</span>
+        <span class="val">₹8,500</span>
+      </div>
+      <div class="price-card-row">
+        <span class="label">Security deposit · 2 months, refundable</span>
+        <span class="val">₹17,000</span>
+      </div>
+      <div class="price-card-row">
+        <span class="label">Maintenance</span>
+        <span class="val">Included</span>
+      </div>
+      <div class="price-card-row">
+        <span class="label">Agreement &amp; stamp duty</span>
+        <span class="val" style="color:var(--ink-soft)">Shown before you pay</span>
+      </div>
+      <div class="price-highlight">
+        <span>Brokerage · usually one month's rent</span>
+        <span>₹0</span>
+      </div>
+      <div style="height:1px; background:var(--border);"></div>
+      <div class="price-card-row total">
+        <span class="label">Total on move-in</span>
+        <span class="val">₹25,500</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── OWNER CTA ── -->
+<section class="owner-section">
+  <div class="owner-inner">
+    <div class="owner-card">
+      <div>
+        <p class="eyebrow">For PG and flat owners</p>
+        <h2>Fill empty beds<br>without a broker.</h2>
+        <ul class="owner-list">
+          <li>
+            <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#A9D8BF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+            Free to list, and you can list on other apps too
+          </li>
+          <li>
+            <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#A9D8BF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+            Our team verifies and photographs your place
+          </li>
+          <li>
+            <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#A9D8BF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+            Enquiries, visits and rent reminders on WhatsApp
+          </li>
+        </ul>
+        <div class="owner-ctas">
+          <a href="owner.html" class="btn-owner-primary">List your property free</a>
+          <a href="https://wa.me/919000012345?text=I+want+to+list+my+property+on+MakanMate" class="btn-owner-ghost" target="_blank" rel="noopener">
+            <svg aria-hidden="true" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21l1.7-5A9 9 0 1 1 8 19.3z"/></svg>
+            List on WhatsApp
+          </a>
         </div>
-        <div class="footer-col">
-          <h4>Owners</h4>
-          <ul>
-            <li><a href="#owners">List your property</a></li>
-            <li><a href="#trust">Trust &amp; safety</a></li>
-            <li><a href="#faq">FAQ</a></li>
-          </ul>
+      </div>
+      <div class="owner-dashboard">
+        <div class="dash-head">
+          <strong>Needs you today</strong>
+          <span>Owner dashboard</span>
         </div>
-        <div class="footer-col">
-          <h4>Community</h4>
-          <ul>
-            <li><a href="https://t.me/makanmate" target="_blank" rel="noopener">Telegram group</a></li>
-            <li><a href="https://instagram.com/makanmate.in" target="_blank" rel="noopener">Instagram</a></li>
-            <li><a href="mailto:contact@makanmate.in">contact@makanmate.in</a></li>
-          </ul>
+        <div class="dash-item warn">
+          <div class="dash-item-text">
+            <strong>Rent 5 days late</strong>
+            <span>Room 3, bed B · ₹9,000</span>
+          </div>
+          <button class="dash-btn">Remind</button>
         </div>
+        <div class="dash-item neutral">
+          <div class="dash-item-text">
+            <strong>Visit at 11:30 am</strong>
+            <span>Verified tenant · in person</span>
+          </div>
+          <button class="dash-btn primary">Accept</button>
+        </div>
+        <div class="dash-item neutral">
+          <div class="dash-item-text">
+            <strong>Geyser repair</strong>
+            <span>Room 2 · reported today</span>
+          </div>
+          <button class="dash-btn">Send helper</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FAQ ── -->
+<section class="faq-section" id="faq">
+  <div class="faq-inner">
+    <div class="faq-copy">
+      <h2 class="section-title">Questions,<br>answered</h2>
+      <p>Still stuck? Our Pune team replies on WhatsApp, 9 am to 9 pm, in English, हिंदी and मराठी.</p>
+      <a href="https://wa.me/919000012345?text=Hi+MakanMate,+I+have+a+question" class="btn-chat" target="_blank" rel="noopener">
+        <svg aria-hidden="true" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#1FAF5A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21l1.7-5A9 9 0 1 1 8 19.3z"/></svg>
+        Chat with us
+      </a>
+    </div>
+    <div class="faq-list">
+      <details class="faq-item" open>
+        <summary>
+          Is MakanMate really free for tenants?
+          <svg class="faq-chevron" aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </summary>
+        <p>Yes. Browsing, chatting with owners and booking visits are free. There's no brokerage and no fee to see contact details.</p>
+      </details>
+      <details class="faq-item">
+        <summary>
+          How do you verify a PG?
+          <svg class="faq-chevron" aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </summary>
+        <p>Someone from our Pune team visits in person and checks photos, rent and house rules. Each listing shows the date it was last verified.</p>
+      </details>
+      <details class="faq-item">
+        <summary>
+          What happens to the ₹5,000 token?
+          <svg class="faq-chevron" aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </summary>
+        <p>MakanMate holds it. It's adjusted in your deposit when you move in, and refunded in full if the owner cancels, the place doesn't match, or you cancel within 48 hours.</p>
+      </details>
+      <details class="faq-item">
+        <summary>
+          Can I see a place before I travel to Pune?
+          <svg class="faq-chevron" aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </summary>
+        <p>Yes. Book a live video tour on WhatsApp with the owner, and share the visit details with your family.</p>
+      </details>
+      <details class="faq-item">
+        <summary>
+          Why is the owner's number hidden?
+          <svg class="faq-chevron" aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </summary>
+        <p>Chats run through MakanMate so your number stays private too, and every conversation is on record if something goes wrong.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <span class="footer-wordmark">MakanMate</span>
+        <p>A home away from home in a new city. Verified PGs in Pune, zero brokerage.</p>
+      </div>
+      <div class="footer-col">
+        <span class="footer-col-title">Tenants</span>
+        <a href="explore.html">Browse PGs</a>
+        <a href="#how">How it works</a>
+        <a href="#areas">Pune starter guide</a>
+        <a href="#faq">Help &amp; safety</a>
+      </div>
+      <div class="footer-col">
+        <span class="footer-col-title">Owners</span>
+        <a href="owner.html">List your property</a>
+        <a href="owner.html">Owner dashboard</a>
+        <a href="owner.html#plans">Plans</a>
+      </div>
+      <div class="footer-col">
+        <span class="footer-col-title">Contact</span>
+        <a href="mailto:contact@makanmate.in">contact@makanmate.in</a>
+        <a href="https://instagram.com/makanmate.in" target="_blank" rel="noopener">Instagram</a>
+        <a href="https://t.me/makanmate" target="_blank" rel="noopener">Telegram community</a>
       </div>
     </div>
     <div class="footer-bottom">
-      <span>© 2026 MakanMate. All rights reserved.</span>
-      <span>contact@makanmate.in · Pune, India</span>
+      <span>© 2026 MakanMate · Pune, India</span>
+      <span>Privacy · Terms · Report a listing</span>
     </div>
   </div>
 </footer>
 
 <script>
-  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
-  window.scrollTo(0, 0);
-
-  // Theme toggle
-  (function(){
-    const saved = localStorage.getItem('mm-theme') || 'light';
-    document.documentElement.setAttribute('data-theme', saved);
-  })();
-  document.getElementById('themeToggle').addEventListener('click', function(){
-    const html = document.documentElement;
-    const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-    html.setAttribute('data-theme', next);
-    localStorage.setItem('mm-theme', next);
-    updateThemeIcon(next);
-  });
-  function updateThemeIcon(theme){
-    const icon = document.getElementById('themeIcon');
-    if(theme === 'dark'){
-      icon.innerHTML = '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>';
-    } else {
-      icon.innerHTML = '<path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>';
-    }
+// ── LISTINGS DATA ──
+const LISTINGS = [
+  {
+    id: 'hp', title: 'Hometown Premium PG 5', area: 'Hinjewadi', type: 'PG',
+    rent: 11000, deposit: 22000, safety: '8.9', photos: 10,
+    gender: 'Women only', bus: 15, meals: true,
+    img: 'images/pg_hometown_1.jpg', cover: 'Common area',
+    href: 'listing.html?id=hp'
+  },
+  {
+    id: '7h', title: '7 Hills PG', area: 'Baner', type: 'PG',
+    rent: 8500, deposit: 17000, safety: '8.4', photos: 7,
+    gender: 'Men only', bus: 35, meals: false,
+    img: 'images/pg_7hills_1.jpg', cover: 'Entrance',
+    href: 'listing.html?id=7h'
+  },
+  {
+    id: 'sl', title: 'Sri Lakshmi Luxury PG', area: 'Pashan', type: 'PG',
+    rent: 12000, deposit: 24000, safety: '9.0', photos: 14,
+    gender: 'Open to all', bus: 28, meals: true,
+    img: 'images/pg_srilakshmi_1.jpg', cover: 'Lobby',
+    href: 'listing.html?id=sl'
+  },
+  {
+    id: 'kp', title: 'Krishna PG Service', area: 'Baner', type: 'PG',
+    rent: 9000, deposit: 18000, safety: '8.6', photos: 10,
+    gender: 'Open to all', bus: 35, meals: false,
+    img: 'images/pg_krishna_1.jpg', cover: 'Entrance',
+    href: 'listing.html?id=kp'
   }
-  updateThemeIcon(document.documentElement.getAttribute('data-theme'));
+];
 
-  const navToggle = document.getElementById('navToggle');
-  const navLinks = document.getElementById('navLinks');
-  navToggle.addEventListener('click', () => navLinks.classList.toggle('open'));
-  navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
+function fmt(n) { return '₹' + n.toLocaleString('en-IN'); }
 
-  // App feature tabs (seeker / owner)
-  const featTabs = document.querySelectorAll('.feat-tab');
-  featTabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      const panel = tab.dataset.panel;
-      featTabs.forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
-      document.querySelectorAll('.feat-panel').forEach(p => p.classList.remove('active'));
-      document.getElementById('panel-' + panel).classList.add('active');
+function renderListings() {
+  const grid = document.getElementById('listingsGrid');
+  const saved = JSON.parse(localStorage.getItem('mm_saved') || '[]');
+  grid.innerHTML = LISTINGS.map(l => `
+    <article class="listing-card">
+      <div class="card-photo">
+        <img src="${l.img}" alt="${l.title} — ${l.cover}" loading="lazy">
+        <span class="card-badge-verified">
+          <svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+          Verified
+        </span>
+        <button type="button" class="card-save ${saved.includes(l.id) ? 'saved' : ''}" data-id="${l.id}" aria-label="Save to shortlist" title="Save to shortlist">
+          <svg aria-hidden="true" width="19" height="19" viewBox="0 0 24 24" fill="${saved.includes(l.id) ? '#E85555' : 'none'}" stroke="${saved.includes(l.id) ? '#E85555' : 'currentColor'}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1.1L12 21l7.8-7.5 1-1.1a5.5 5.5 0 0 0 0-7.8z"/></svg>
+        </button>
+        <span class="card-photos-count">${l.photos} photos</span>
+      </div>
+      <div class="card-body">
+        <div class="card-meta">
+          <span>${l.area} · ${l.type}</span>
+          <span class="card-safety">
+            <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            Safety ${l.safety}
+          </span>
+        </div>
+        <a href="${l.href}" class="card-title">${l.title}</a>
+        <div class="card-price">
+          <strong>${fmt(l.rent)}</strong>
+          <span>/ bed / month</span>
+        </div>
+        <div class="card-avail">Move in now · <span class="free">₹0 brokerage</span></div>
+        <div class="card-tags">
+          <span class="tag-chip">${l.gender}</span>
+          <span class="tag-chip">${l.bus} min by bus</span>
+          ${l.meals ? '<span class="tag-chip">Meals</span>' : ''}
+        </div>
+      </div>
+    </article>
+  `).join('');
+
+  // Save/unsave
+  grid.querySelectorAll('.card-save').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      const id = this.dataset.id;
+      let saved = JSON.parse(localStorage.getItem('mm_saved') || '[]');
+      if (saved.includes(id)) {
+        saved = saved.filter(x => x !== id);
+        this.classList.remove('saved');
+        this.querySelector('svg').setAttribute('fill', 'none');
+        this.querySelector('svg').setAttribute('stroke', 'currentColor');
+      } else {
+        saved.push(id);
+        this.classList.add('saved');
+        this.querySelector('svg').setAttribute('fill', '#E85555');
+        this.querySelector('svg').setAttribute('stroke', '#E85555');
+      }
+      localStorage.setItem('mm_saved', JSON.stringify(saved));
     });
   });
+}
+renderListings();
 
-  // Budget chips
-  const budgetChips = document.querySelectorAll('.budget-chip');
-  budgetChips.forEach(chip => {
-    chip.addEventListener('click', () => {
-      budgetChips.forEach(c => c.classList.remove('active'));
-      chip.classList.add('active');
+// ── HERO SEARCH TABS ──
+document.querySelectorAll('.search-tab-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.search-tab-btn').forEach(b => {
+      b.classList.remove('active'); b.setAttribute('aria-selected', 'false');
     });
+    this.classList.add('active');
+    this.setAttribute('aria-selected', 'true');
   });
+});
 
-  // Hero search widget
-  const searchTabs = document.querySelectorAll('.search-tab:not(.disabled)');
-  searchTabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      searchTabs.forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
-    });
+function doHeroSearch() {
+  const near = document.getElementById('heroNear').value.trim();
+  const budget = document.getElementById('heroBudget').value;
+  const forVal = document.getElementById('heroFor').value;
+  const activeTab = document.querySelector('.search-tab-btn.active').dataset.tab;
+  const params = new URLSearchParams();
+  if (near) params.set('near', near);
+  if (budget) params.set('budget', budget);
+  if (forVal) params.set('for', forVal);
+  if (activeTab !== 'pg') params.set('type', activeTab);
+  window.location.href = 'explore.html' + (params.toString() ? '?' + params.toString() : '');
+}
+
+// ── MOBILE NAV ──
+const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+const mobileNav = document.getElementById('mobileNav');
+mobileMenuBtn.addEventListener('click', function() {
+  const open = mobileNav.classList.toggle('open');
+  this.setAttribute('aria-expanded', open);
+});
+mobileNav.querySelectorAll('a').forEach(a => {
+  a.addEventListener('click', () => mobileNav.classList.remove('open'));
+});
+
+// ── SIGN-IN MODAL ──
+const modal = document.getElementById('signinModal');
+const openBtn = document.getElementById('openSigninBtn');
+const closeBtn = document.getElementById('modalClose');
+const closeSuccess = document.getElementById('closeSuccessBtn');
+
+function showStep(n) {
+  ['step1','step2','step3'].forEach((id, i) => {
+    document.getElementById(id).classList.toggle('active', i + 1 === n);
   });
-  document.getElementById('heroSearchBtn').addEventListener('click', () => {
-    const chosenCity = document.getElementById('heroCity').value;
-    document.getElementById('city').value = chosenCity;
-    setFormMode('seeker');
-    document.getElementById('waitlist').scrollIntoView({behavior:'smooth'});
-  });
+}
+function openModal() {
+  modal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  showStep(1);
+  document.getElementById('phoneInput').focus();
+}
+function closeModal() {
+  modal.classList.remove('open');
+  document.body.style.overflow = '';
+}
+openBtn.addEventListener('click', openModal);
+closeBtn.addEventListener('click', closeModal);
+closeSuccess.addEventListener('click', closeModal);
+modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && modal.classList.contains('open')) closeModal(); });
 
-  const toggleSeeker = document.getElementById('toggleSeeker');
-  const toggleOwner = document.getElementById('toggleOwner');
-  const cityLabel = document.getElementById('cityLabel');
-  const propertyTypeField = document.getElementById('propertyTypeField');
-  const formSubmitBtn = document.getElementById('formSubmitBtn');
-  const formNote = document.getElementById('formNote');
-  const formSuccessText = document.getElementById('formSuccessText');
+// Step 1 → Step 2
+document.getElementById('sendOtpBtn').addEventListener('click', function() {
+  const phone = document.getElementById('phoneInput').value.trim();
+  const name = document.getElementById('nameInput').value.trim();
+  let ok = true;
+  const phoneErr = document.getElementById('phoneError');
+  const nameErr = document.getElementById('nameError');
+  const phoneField = document.getElementById('phoneInput');
+  const nameField = document.getElementById('nameInput');
 
-  function setFormMode(mode){
-    if(mode === 'owner'){
-      toggleOwner.classList.add('active');
-      toggleSeeker.classList.remove('active');
-      cityLabel.textContent = 'Property location';
-      propertyTypeField.style.display = 'block';
-      formSubmitBtn.textContent = 'List your property';
-      formNote.textContent = 'No listing fee during the Pune pilot.';
-      formSuccessText.textContent = "We'll reach out to schedule a verification visit.";
-      document.getElementById('formTypeHidden').value = 'owner';
-    } else {
-      toggleSeeker.classList.add('active');
-      toggleOwner.classList.remove('active');
-      cityLabel.textContent = 'Looking for a place in';
-      propertyTypeField.style.display = 'none';
-      formSubmitBtn.textContent = 'Join the waitlist';
-      formNote.textContent = 'No spam. Just one email when your area opens.';
-      formSuccessText.textContent = "We'll email you the moment listings open in your area.";
-      document.getElementById('formTypeHidden').value = 'seeker';
-    }
+  // Validate phone (10+ digits)
+  const digits = phone.replace(/\D/g, '');
+  if (digits.length < 10) {
+    phoneField.classList.add('error');
+    phoneErr.classList.add('show');
+    ok = false;
+  } else {
+    phoneField.classList.remove('error');
+    phoneErr.classList.remove('show');
   }
-  toggleSeeker.addEventListener('click', () => setFormMode('seeker'));
-  toggleOwner.addEventListener('click', () => setFormMode('owner'));
-  document.getElementById('ownerCtaBtn').addEventListener('click', () => setFormMode('owner'));
+  if (!name) {
+    nameField.classList.add('error');
+    nameErr.classList.add('show');
+    ok = false;
+  } else {
+    nameField.classList.remove('error');
+    nameErr.classList.remove('show');
+  }
+  if (!ok) return;
 
-  const form = document.getElementById('waitlistForm');
-  form.addEventListener('submit', async function(e){
+  const displayPhone = phone.length > 6 ? phone.slice(0, -4) + '••••' : phone;
+  document.getElementById('otpSubText').textContent = 'We sent a 4-digit code to ' + displayPhone;
+  showStep(2);
+  document.getElementById('otp0').focus();
+});
+
+// OTP box navigation
+const otpBoxes = [0,1,2,3].map(i => document.getElementById('otp' + i));
+otpBoxes.forEach((box, i) => {
+  box.addEventListener('input', function() {
+    this.value = this.value.replace(/\D/g, '').slice(-1);
+    otpBoxes.forEach(b => b.classList.remove('error'));
+    document.getElementById('otpError').classList.remove('show');
+    if (this.value && i < 3) otpBoxes[i + 1].focus();
+  });
+  box.addEventListener('keydown', function(e) {
+    if (e.key === 'Backspace' && !this.value && i > 0) otpBoxes[i - 1].focus();
+  });
+  box.addEventListener('paste', function(e) {
     e.preventDefault();
-    const btn = document.getElementById('formSubmitBtn');
-    btn.disabled = true;
-    btn.textContent = 'Sending…';
-    const data = {
-      name:          form.querySelector('#name').value,
-      phone:         form.querySelector('#phone').value,
-      email:         form.querySelector('#email').value,
-      area:          form.querySelector('#city').value,
-      form_type:     form.querySelector('#formTypeHidden').value,
-      property_type: form.querySelector('#propertyType').value || '',
-    };
-    try {
-      await fetch('https://script.google.com/macros/s/AKfycbygMC2ZbCnibqkcUaoTBVkhC09uCup2KMqj6MapPLOXtsym6gb0TgHHhLh35Klm4brEwA/exec', {
-        method: 'POST',
-        body: JSON.stringify(data),
-        mode: 'no-cors'
-      });
-    } catch(err) {}
-    document.getElementById('formFields').style.display = 'none';
-    document.getElementById('formSuccess').style.display = 'block';
+    const text = (e.clipboardData || window.clipboardData).getData('text').replace(/\D/g, '').slice(0, 4);
+    text.split('').forEach((ch, j) => { if (otpBoxes[j]) otpBoxes[j].value = ch; });
+    const next = Math.min(text.length, 3);
+    otpBoxes[next].focus();
   });
+});
+
+// Verify OTP
+document.getElementById('verifyOtpBtn').addEventListener('click', function() {
+  const entered = otpBoxes.map(b => b.value).join('');
+  const otpErr = document.getElementById('otpError');
+  if (entered !== '1234') {
+    otpErr.classList.add('show');
+    otpBoxes.forEach(b => b.classList.add('error'));
+    return;
+  }
+  otpErr.classList.remove('show');
+  const name = document.getElementById('nameInput').value.trim();
+  const phone = document.getElementById('phoneInput').value.trim();
+  const user = { name, phone };
+  localStorage.setItem('mm_user', JSON.stringify(user));
+  document.getElementById('welcomeName').textContent = 'Welcome, ' + name.split(' ')[0] + '!';
+  showStep(3);
+  updateNavAuth(user);
+});
+
+document.getElementById('backToStep1').addEventListener('click', function() {
+  otpBoxes.forEach(b => { b.value = ''; b.classList.remove('error'); });
+  document.getElementById('otpError').classList.remove('show');
+  showStep(1);
+});
+
+// ── AUTH STATE ──
+function updateNavAuth(user) {
+  const signinBtn = document.getElementById('openSigninBtn');
+  const navUser = document.getElementById('navUserBtn');
+  const navAvatar = document.getElementById('navAvatar');
+  const navUserName = document.getElementById('navUserName');
+
+  if (user) {
+    signinBtn.style.display = 'none';
+    navUser.classList.add('visible');
+    const initials = user.name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
+    navAvatar.textContent = initials;
+    navUserName.textContent = user.name.split(' ')[0];
+  } else {
+    signinBtn.style.display = '';
+    navUser.classList.remove('visible');
+  }
+}
+
+// Load saved auth on page load
+const savedUser = JSON.parse(localStorage.getItem('mm_user') || 'null');
+updateNavAuth(savedUser);
+
+// User menu toggle
+const navUserBtn = document.getElementById('navUserBtn');
+const navUserMenu = document.getElementById('navUserMenu');
+navUserBtn.addEventListener('click', function() {
+  const open = navUserMenu.classList.toggle('open');
+  this.setAttribute('aria-expanded', open);
+});
+document.addEventListener('click', e => {
+  if (!navUserBtn.contains(e.target) && !navUserMenu.contains(e.target)) {
+    navUserMenu.classList.remove('open');
+    navUserBtn.setAttribute('aria-expanded', 'false');
+  }
+});
+
+document.getElementById('menuSignout').addEventListener('click', function() {
+  localStorage.removeItem('mm_user');
+  navUserMenu.classList.remove('open');
+  updateNavAuth(null);
+});
+document.getElementById('menuProfile').addEventListener('click', function() {
+  navUserMenu.classList.remove('open');
+  openModal();
+});
+document.getElementById('menuSaved').addEventListener('click', function() {
+  navUserMenu.classList.remove('open');
+  window.location.href = 'explore.html?saved=1';
+});
 </script>
 
 </body>
