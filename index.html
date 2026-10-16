@@ -10,7 +10,8 @@
 <meta name="description" content="Browse verified, brokerage-free PGs in Pune. Our team visits every place before it goes live. See the full move-in cost upfront, chat with owners for free.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Mukta:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Mukta:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="glyph-portal.css">
 <style>
 :root {
   --green:       #17744C;
@@ -26,8 +27,9 @@
   --border:      #E6E1D6;
   --border-light:#D9D3C6;
   --chip-bg:     #F1EEE7;
-  --serif:       'Fraunces', serif;
-  --sans:        'Mukta', system-ui, sans-serif;
+  /* One family for headings and body. Mukta stays in the stack for Hindi and Marathi (Devanagari). */
+  --serif:       'Plus Jakarta Sans', 'Mukta', system-ui, sans-serif;
+  --sans:        'Plus Jakarta Sans', 'Mukta', system-ui, sans-serif;
 }
 *, *::before, *::after { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
@@ -56,15 +58,22 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
   position: sticky; top: 0; z-index: 100;
   height: 72px;
   background: var(--white);
-  border-bottom: 1px solid var(--border);
-  display: flex; align-items: center;
-  box-shadow: 0 1px 4px rgba(23,34,29,.04);
+  display: flex; align-items: center;   /* no divider line or shadow under the navigation */
 }
+/* Three zones: logo on the left, navigation in the middle, actions on the right.
+   The navigation is centred in the space between the logo and the buttons, so the gap on both sides is equal. */
 .header-inner {
   max-width: 1280px; margin: 0 auto; padding: 0 64px;
   width: 100%;
-  display: flex; align-items: center; justify-content: space-between;
+  display: grid; grid-template-columns: auto 1fr auto;
+  align-items: center; column-gap: 24px;
 }
+.header-inner .logo { justify-self: start; }
+.header-inner nav[aria-label="Main"] { justify-self: center; }
+.header-inner .header-actions { justify-self: end; }
+/* The page opens straight onto the full-screen "ZERO BROKERAGE" frame. It is pulled up under the sticky
+   header (72px), so the frame is exactly one screen tall from the very top, with nothing cut off. */
+#how { margin-top: -72px; }
 .logo {
   display: flex; align-items: center; gap: 10px;
   text-decoration: none; color: var(--ink); flex-shrink: 0;
@@ -77,19 +86,31 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 .logo-name {
   font-family: var(--serif); font-weight: 600; font-size: 23px; letter-spacing: -.3px;
 }
-.main-nav { display: flex; gap: 30px; list-style: none; margin: 0; padding: 0; }
+.main-nav { display: flex; gap: 26px; list-style: none; margin: 0; padding: 0; }
 .main-nav a {
   text-decoration: none; font-size: 16px; font-weight: 500; color: var(--ink-mid);
   transition: color .15s;
 }
 .main-nav a:hover { color: var(--ink); }
-.header-actions { display: flex; align-items: center; gap: 12px; }
-.btn-owner {
-  height: 44px; padding: 0 14px; display: inline-flex; align-items: center;
-  font-size: 16px; font-weight: 600; color: var(--green); text-decoration: none;
-  transition: color .15s;
+.header-actions { display: flex; align-items: center; gap: 10px; }
+/* "Download app": the apps are not published yet, so clicking it says "Coming soon" (see the script at the end) */
+.btn-download {
+  height: 44px; padding: 0 14px; display: inline-flex; align-items: center; gap: 8px;
+  border: 0; border-radius: 12px; background: transparent; cursor: pointer;
+  font: inherit; font-size: 16px; font-weight: 600; color: var(--ink);
+  transition: background .15s, color .15s;
 }
-.btn-owner:hover { color: var(--green-dark); }
+.btn-download svg { flex: none; width: 18px; height: 18px; }
+.btn-download:hover { background: #EEF2FF; color: #1E3A8A; }
+.btn-download.soon { background: #DBE4FF; color: #172554; }
+/* "List your property": navy blue (white text on it 10.4:1) */
+.btn-owner {
+  height: 44px; padding: 0 18px; display: inline-flex; align-items: center;
+  border-radius: 12px; background: #1E3A8A; color: #fff;
+  font-size: 16px; font-weight: 600; text-decoration: none;
+  transition: background .15s;
+}
+.btn-owner:hover { background: #172554; color: #fff; }
 .btn-signin {
   height: 44px; padding: 0 18px; display: inline-flex; align-items: center;
   border-radius: 12px; border: 1px solid var(--border-light);
@@ -97,7 +118,8 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
   color: var(--ink); cursor: pointer; transition: border-color .15s;
   text-decoration: none;
 }
-.btn-signin:hover { border-color: var(--green); }
+.btn-signin:hover { border-color: #1E3A8A; }
+.btn-download:focus-visible, .btn-owner:focus-visible, .btn-signin:focus-visible { outline: 3px solid #1E40AF; outline-offset: 2px; }
 
 /* User avatar in nav (shown when signed in) */
 .nav-user {
@@ -108,6 +130,8 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
   font-size: 15px; font-weight: 600; color: var(--ink);
 }
 .nav-user.visible { display: flex; }
+/* The account container is empty until someone signs in; without this its flex gap pushes Sign in 10px off the edge */
+.nav-user-wrapper:not(:has(.nav-user.visible)) { display: none; }
 .nav-avatar {
   width: 30px; height: 30px; border-radius: 50%;
   background: var(--green); color: #fff;
@@ -121,11 +145,15 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 .nav-hamburger span {
   display: block; width: 22px; height: 2px; background: var(--ink); border-radius: 1px;
 }
+/* Not enough width for navigation plus three actions: logo and Sign in stay, the rest moves into the menu */
+@media (max-width: 1180px) {
+  .header-inner { display: flex; justify-content: space-between; column-gap: 0; }
+  .main-nav { display: none; }
+  .btn-owner, .btn-download { display: none; }
+  .nav-hamburger { display: flex; }
+}
 @media (max-width: 900px) {
   .header-inner { padding: 0 24px; }
-  .main-nav { display: none; }
-  .btn-owner { display: none; }
-  .nav-hamburger { display: flex; }
 }
 .mobile-nav {
   display: none; position: fixed; top: 72px; left: 0; right: 0; z-index: 99;
@@ -138,34 +166,54 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
   color: var(--ink-mid); text-decoration: none; border-bottom: 1px solid var(--border);
 }
 .mobile-nav a:last-child { border-bottom: none; }
+.mobile-nav button {
+  display: block; width: 100%; padding: 12px 0; border: 0; border-bottom: 1px solid var(--border);
+  background: none; cursor: pointer; text-align: left; font: inherit; font-size: 16px; font-weight: 500; color: var(--ink-mid);
+}
+.mobile-nav button.soon { color: #172554; font-weight: 700; }
+.mobile-nav a.mobile-owner { color: #1E3A8A; font-weight: 700; }
 
 /* ── HERO ── */
 .hero-section {
+  /* White ground, black text, blue buttons. Every pairing below measures at least 7:1 (WCAG AAA). */
+  --hero-ink: #000000;      /* all text: 21:1 on white */
+  --hero-muted: #000000;    /* labels and small text are black too */
+  --hero-button: #1E40AF;       /* blue; white text on it 8.7:1 */
+  --hero-button-hover: #1E3A8A; /* darker blue; white text on it 10.4:1 */
+  /* No overflow clip here: the dropdown must be free to extend past the hero.
+     The grid layer clips itself, and z-index keeps the dropdown above the next section. */
+  position: relative; z-index: 2; isolation: isolate;
+  background: #FFFFFF; color: var(--hero-ink);
   padding: 72px 0 96px;
 }
 .hero-grid {
+  position: relative; z-index: 1;
   max-width: 1280px; margin: 0 auto; padding: 0 64px;
-  display: grid; grid-template-columns: 1.08fr 0.92fr;
-  gap: 64px; align-items: center;
+  display: grid; grid-template-columns: 1.2fr 0.8fr; /* wider left side, so the search card has room */
+  gap: 56px; align-items: center;
 }
 .hero-badge {
   align-self: flex-start; display: inline-flex; align-items: center; gap: 8px;
   height: 32px; padding: 0 14px; border-radius: 999px;
-  background: var(--green-light); color: var(--green-dark);
+  background: #EEF2FF; color: var(--hero-ink);
   font-size: 14px; font-weight: 600; margin-bottom: 28px;
 }
 .hero-dot {
-  width: 8px; height: 8px; border-radius: 50%; background: var(--green-focus);
+  width: 8px; height: 8px; border-radius: 50%; background: var(--hero-button);
 }
 .hero-h1 {
-  margin: 0 0 28px; font-family: var(--serif); font-weight: 600;
-  font-size: clamp(44px, 4.5vw, 64px); line-height: 1.04; letter-spacing: -1.4px;
-  color: var(--ink);
+  margin: 0 0 24px; font-family: var(--serif); font-weight: 700;
+  font-size: clamp(40px, 4.2vw, 58px); line-height: 1.08; letter-spacing: -0.025em;
+  color: var(--hero-ink);
 }
-.hero-h1 span { color: var(--green); }
+.hero-h1 span { color: var(--hero-ink); }
 .hero-lede {
-  margin: 0 0 28px; font-size: 19px; line-height: 1.55;
-  color: var(--ink-mid); max-width: 560px;
+  margin: 0 0 28px; font-size: 18px; line-height: 1.6;
+  color: var(--hero-ink); max-width: 540px;
+}
+/* A white halo behind the words, so lit grid cells never crowd the letters */
+.hero-h1, .hero-lede {
+  text-shadow: 0 0 6px #fff, 0 0 14px #fff, 0 0 30px #fff, 0 0 52px #fff;
 }
 /* Search form */
 .search-card {
@@ -174,52 +222,106 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
   box-shadow: 0 16px 40px rgba(23,34,29,.08);
   display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px;
 }
-.search-tabs { display: flex; gap: 4px; padding: 2px; }
+.search-tabs { display: flex; flex-wrap: wrap; gap: 4px; padding: 2px; }
 .search-tab-btn {
-  height: 38px; padding: 0 16px; border-radius: 10px; border: none;
+  height: 38px; padding: 0 16px; border-radius: 10px; border: none; white-space: nowrap;
   font-size: 15px; font-weight: 600; cursor: pointer; transition: all .15s;
 }
-.search-tab-btn.active { background: var(--ink); color: #fff; }
-.search-tab-btn:not(.active) { background: transparent; color: var(--ink-mid); }
-.search-tab-btn:not(.active):hover { background: var(--bg); }
+.search-tab-btn.active { background: var(--hero-button); color: #fff; }
+.search-tab-btn:not(.active) { background: transparent; color: var(--hero-ink); }
+.search-tab-btn:not(.active):hover { background: #DBE4FF; color: #172554; }  /* clear blue on hover; navy text 11:1 */
 .search-inputs {
   display: grid;
-  grid-template-columns: minmax(0,1.5fr) minmax(0,1fr) minmax(0,.85fr) auto;
+  grid-template-columns: minmax(0,1.15fr) minmax(0,1.15fr) minmax(0,.9fr) auto;
   align-items: stretch; border: 1px solid var(--border);
   border-radius: 14px; padding: 6px;
 }
 .search-field {
-  display: flex; flex-direction: column; gap: 2px; padding: 6px 14px;
+  display: flex; flex-direction: column; gap: 2px; padding: 6px 12px;
   border-right: 1px solid var(--border);
 }
-.search-field:last-of-type { border-right: none; }
+.search-field.last { border-right: none; }
 .search-label {
-  font-size: 12px; font-weight: 600; color: var(--ink-soft);
+  font-size: 13px; font-weight: 600; color: var(--hero-muted);
   text-transform: uppercase; letter-spacing: .6px;
 }
 .search-field input, .search-field select {
   border: none; outline: none; padding: 0;
-  font-size: 16px; color: var(--ink); background: transparent;
+  font-size: 16px; color: var(--hero-ink); background: transparent;
 }
+.search-field input::placeholder { color: #4A524D; opacity: 1; } /* 8.1:1 on white */
+
+/* Rotating trust card over the hero photo (hero-facts.js): fades in, holds, fades out, 1 s pause, next */
+.hero-facts { position: absolute; top: 28px; left: 0; width: 270px; height: 120px; z-index: 2; }
+.hero-fact {
+  position: absolute; inset: 0; display: flex; gap: 12px; align-items: center;
+  padding: 16px 18px; background: var(--white); border: 1px solid var(--border);
+  border-radius: 16px; box-shadow: 0 12px 32px rgba(23,34,29,.10);
+  opacity: 0; transform: translateY(14px) scale(.97); pointer-events: none;
+  transition: opacity .6s ease, transform .7s cubic-bezier(.22, 1, .36, 1);
+  will-change: opacity, transform;
+}
+.hero-fact.show { opacity: 1; transform: none; }
+.hero-fact.leave { opacity: 0; transform: translateY(-10px) scale(.98); }
+.hero-fact strong { display: block; font-size: 16px; font-weight: 600; line-height: 1.25; color: var(--hero-ink); }
+.hero-fact div > span { display: block; margin-top: 2px; font-size: 14px; line-height: 1.4; color: var(--hero-muted); }  /* direct child only, so the typing spans inside it stay inline */
+.card-icon-blue {
+  width: 40px; height: 40px; flex-shrink: 0; border-radius: 12px;
+  background: #EEF2FF; color: var(--hero-button);
+  display: flex; align-items: center; justify-content: center;
+}
+.card-icon-blue b { font-size: 15px; font-weight: 700; }
+@media (prefers-reduced-motion: reduce) { .hero-fact { transition: none; } }
+
+/* Dropdown menu (select-menu.js). The real <select> stays in the page, hidden, and keeps the value. */
+.menu { position: relative; }
+.menu-native { position: absolute; width: 1px; height: 1px; opacity: 0; overflow: hidden; pointer-events: none; }
+.menu-btn {
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  width: 100%; padding: 0; border: 0; background: transparent; cursor: pointer;
+  font: inherit; font-size: 16px; color: var(--hero-ink); text-align: left;
+}
+.menu-btn svg { flex: none; width: 16px; height: 16px; transition: transform .15s; }
+.menu-btn[aria-expanded="true"] svg { transform: rotate(180deg); }
+.menu-btn:focus-visible { outline: 2px solid var(--hero-button); outline-offset: 4px; border-radius: 6px; }
+.menu-list {
+  display: none; position: absolute; z-index: 30; top: calc(100% + 14px); left: -12px;
+  min-width: 220px; max-width: calc(100vw - 48px); margin: 0; padding: 6px; list-style: none;
+  background: #fff; border: 1px solid var(--border); border-radius: 14px;
+  box-shadow: 0 18px 44px rgba(0, 0, 0, .16); outline: none;
+  box-sizing: border-box; overflow-y: auto; overscroll-behavior: contain;
+}
+.menu-list.open { display: block; }
+.menu-list.up { top: auto; bottom: calc(100% + 14px); }   /* opens upward when there is no room below */
+.menu-list.end { left: auto; right: -12px; }               /* aligns to the right edge when it would leave the screen */
+.menu-opt {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 10px 12px; border-radius: 9px; font-size: 15px; color: var(--hero-ink); cursor: pointer;
+}
+.menu-opt.active { background: #DBE4FF; }
+.menu-opt[aria-selected="true"] { font-weight: 600; }
+.menu-opt svg { flex: none; width: 16px; height: 16px; color: var(--hero-button); visibility: hidden; }
+.menu-opt[aria-selected="true"] svg { visibility: visible; }
 .search-btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-  min-height: 52px; padding: 0 24px; border-radius: 10px; border: none;
-  background: var(--green); color: #fff;
+  min-height: 52px; padding: 0 20px; border-radius: 10px; border: none;
+  background: var(--hero-button); color: #fff;
   font-size: 17px; font-weight: 600; cursor: pointer;
   text-decoration: none; transition: background .15s; white-space: nowrap;
 }
-.search-btn:hover { background: var(--green-dark); }
+.search-btn:hover { background: var(--hero-button-hover); }
+.search-btn:focus-visible { outline: 3px solid var(--hero-ink); outline-offset: 2px; }
 .popular-pills {
   display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 14px;
 }
-.popular-label { color: var(--ink-soft); font-weight: 500; margin-right: 4px; }
+.popular-label { color: var(--hero-muted); font-weight: 500; margin-right: 4px; }
 .pill {
-  height: 34px; padding: 0 14px; display: inline-flex; align-items: center;
+  height: 34px; padding: 0 14px; font-size: 14px; display: inline-flex; align-items: center;
   border-radius: 999px; border: 1px solid var(--border-light);
-  background: var(--white); color: var(--ink); text-decoration: none;
+  background: var(--white); color: var(--hero-ink); text-decoration: none;
   font-weight: 500; transition: border-color .15s;
 }
-.pill:hover { border-color: var(--green); color: var(--green); }
+.pill:hover { border-color: var(--hero-button); color: var(--hero-ink); }
 
 /* Hero right: floating card arrangement */
 .hero-visual {
@@ -233,8 +335,8 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
   width: 100%; height: 100%; object-fit: cover;
 }
 .hero-card-verified {
-  position: absolute; top: 44px; left: 0;
-  width: 290px; padding: 16px 18px;
+  position: absolute; top: 28px; left: 0;
+  width: 270px; padding: 16px 18px;
   background: var(--white); border: 1px solid var(--border);
   border-radius: 16px; box-shadow: 0 12px 32px rgba(23,34,29,.10);
   display: flex; gap: 12px; align-items: flex-start;
@@ -245,14 +347,14 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
   color: var(--green); display: flex; align-items: center; justify-content: center;
 }
 .hero-card-verified strong { font-size: 16px; font-weight: 600; display: block; }
-.hero-card-verified span { font-size: 14px; color: var(--ink-soft); line-height: 1.4; }
+.hero-card-verified span { font-size: 14px; color: var(--hero-muted); line-height: 1.4; }
 .hero-tag-bus {
   position: absolute; top: 290px; left: 0;
   display: inline-flex; align-items: center; gap: 8px;
   height: 44px; padding: 0 16px;
   background: var(--white); border: 1px solid var(--border);
   border-radius: 999px; box-shadow: 0 8px 24px rgba(23,34,29,.08);
-  font-size: 15px; font-weight: 500; color: var(--ink);
+  font-size: 15px; font-weight: 500; color: var(--hero-ink);
 }
 .hero-cost-card {
   position: absolute; bottom: 0; right: 32px;
@@ -261,10 +363,10 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
   border-radius: 18px; box-shadow: 0 16px 40px rgba(23,34,29,.12);
   display: flex; flex-direction: column; gap: 10px;
 }
-.cost-row { display: flex; justify-content: space-between; font-size: 15px; color: var(--ink-mid); }
-.cost-row.head { font-size: 16px; font-weight: 600; color: var(--ink); }
-.cost-row.total { font-size: 18px; font-weight: 700; color: var(--ink); }
-.cost-row .zero { color: var(--green); font-weight: 600; }
+.cost-row { display: flex; justify-content: space-between; font-size: 15px; color: var(--hero-ink); }
+.cost-row.head { font-size: 16px; font-weight: 600; color: var(--hero-ink); }
+.cost-row.total { font-size: 18px; font-weight: 700; color: var(--hero-ink); }
+.cost-row .zero { color: var(--hero-ink); font-weight: 600; }
 .cost-divider { height: 1px; background: var(--border); }
 
 @media (max-width: 1100px) {
@@ -274,11 +376,12 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 }
 @media (max-width: 600px) {
   .hero-section { padding: 48px 0 64px; }
+  .search-tab-btn { padding: 0 10px; font-size: 13px; }
   .hero-h1 { font-size: 36px; }
   .hero-lede { font-size: 17px; }
   .search-inputs { grid-template-columns: 1fr; }
   .search-field { border-right: none; border-bottom: 1px solid var(--border); }
-  .search-field:last-of-type { border-bottom: none; }
+  .search-field.last { border-bottom: none; }
 }
 
 /* ── TRUST STRIP ── */
@@ -802,13 +905,17 @@ footer {
     <nav aria-label="Main">
       <ul class="main-nav">
         <li><a href="explore.html">Browse PGs</a></li>
-        <li><a href="#how">How it works</a></li>
+        <li><a href="#how-content">How it works</a></li>
         <li><a href="#areas">Pune guide</a></li>
         <li><a href="#faq">Help</a></li>
       </ul>
     </nav>
 
     <div class="header-actions">
+      <button type="button" class="btn-download" data-coming-soon>
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0 5-5m-5 5-5-5M4 21h16"/></svg>
+        <span class="cs-label" aria-live="polite">Download app</span>
+      </button>
       <a href="owner.html" class="btn-owner">List your property</a>
 
       <!-- shown when NOT signed in -->
@@ -838,24 +945,47 @@ footer {
 <!-- Mobile nav -->
 <nav class="mobile-nav" id="mobileNav" aria-label="Mobile navigation">
   <a href="explore.html">Browse PGs</a>
-  <a href="#how">How it works</a>
+  <a href="#how-content">How it works</a>
   <a href="#areas">Pune guide</a>
-  <a href="owner.html">List your property</a>
+  <button type="button" data-coming-soon><span class="cs-label" aria-live="polite">Download app</span></button>
+  <a href="owner.html" class="mobile-owner">List your property</a>
   <a href="#faq">Help</a>
 </nav>
 
-<!-- ── HERO ── -->
-<section class="hero-section">
-  <div class="hero-grid">
-    <div>
-      <div class="hero-badge">
-        <span class="hero-dot"></span>
-        Live in Pune · 15 verified PGs
+<h1 class="sr-only">Find a verified PG in Pune. Pay zero brokerage.</h1>
+<!-- ── HOW IT WORKS (glyph portal): scroll zooms into a letter of the word and opens onto the four steps ── -->
+<section class="gp-section" id="how" data-glyph-portal
+         data-word="ZERO BROKERAGE" data-font-family='"Plus Jakarta Sans", Arial, sans-serif' data-font-weight="800"
+         data-scroll-length="1.5" data-enter-label="See how it works">
+  <template data-gp-front>
+    <div class="gp-topline">
+      <p class="gp-headline" aria-hidden="true">Find a verified PG in Pune.<br>Pay</p>
+      <!-- Slider card: text only, three cards (no brokerage is already the big word below) -->
+      <div class="hero-facts gp-facts" data-mode="type">
+        <div class="hero-fact">
+          <div>
+            <strong>Verified in person</strong>
+            <span>Our team visits every property before it's listed.</span>
+          </div>
+        </div>
+        <div class="hero-fact">
+          <div>
+            <strong>Full move-in cost upfront</strong>
+            <span>Rent, deposit and fees on one line, before you visit.</span>
+          </div>
+        </div>
+        <div class="hero-fact">
+          <div>
+            <strong>Refundable token</strong>
+            <span>Hold a place with ₹5,000. Refunded if it doesn't match.</span>
+          </div>
+        </div>
       </div>
-      <h1 class="hero-h1">Find a verified PG<br>in Pune.<br><span>Pay zero brokerage.</span></h1>
-      <p class="hero-lede">Our team visits every place before it goes live. Browse without signing up, see the full move-in cost upfront, and chat with owners without paying to unlock a number.</p>
-
-      <form class="search-card" id="heroSearchForm" onsubmit="return false;">
+    </div>
+    <p class="gp-support">We visit every PG in person. See the full move-in cost upfront and chat with owners free. No sign-up to browse.</p>
+    <!-- Same search as the hero, shown under the button (budget and gender filters are hidden on phones) -->
+    <div class="gp-search">
+      <form class="search-card" id="gpSearchForm">
         <div class="search-tabs" role="tablist">
           <button type="button" class="search-tab-btn active" data-tab="pg" role="tab" aria-selected="true">PGs &amp; hostels</button>
           <button type="button" class="search-tab-btn" data-tab="shared" role="tab" aria-selected="false">Shared flats</button>
@@ -864,32 +994,31 @@ footer {
         <div class="search-inputs">
           <label class="search-field">
             <span class="search-label">Near</span>
-            <input type="text" id="heroNear" placeholder="College, company or area">
+            <input type="text" id="gpNear" data-field="near" placeholder="College or area">
           </label>
-          <label class="search-field">
-            <span class="search-label">Budget</span>
-            <select id="heroBudget">
+          <div class="search-field">
+            <span class="search-label" id="gpBudgetLabel">Budget</span>
+            <select id="gpBudget" data-field="budget" data-menu data-no-scroll aria-labelledby="gpBudgetLabel">
               <option value="">Any budget</option>
               <option value="9000">Up to ₹9,000</option>
               <option value="10500">Up to ₹10,500</option>
               <option value="12000">Up to ₹12,000</option>
             </select>
-          </label>
-          <label class="search-field" style="border-right:none">
-            <span class="search-label">For</span>
-            <select id="heroFor">
+          </div>
+          <div class="search-field last">
+            <span class="search-label" id="gpForLabel">For</span>
+            <select id="gpFor" data-field="for" data-menu data-no-scroll aria-labelledby="gpForLabel">
               <option value="">Anyone</option>
               <option value="women">Women</option>
               <option value="men">Men</option>
             </select>
-          </label>
-          <button type="submit" class="search-btn" id="heroSearchBtn" onclick="doHeroSearch()">
+          </div>
+          <button type="submit" class="search-btn" id="gpSearchBtn">
             <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
             Search
           </button>
         </div>
       </form>
-
       <div class="popular-pills">
         <span class="popular-label">Popular:</span>
         <a href="explore.html?budget=9000" class="pill">Under ₹9,000</a>
@@ -898,70 +1027,36 @@ footer {
         <a href="explore.html?meals=1" class="pill">Meals included</a>
       </div>
     </div>
-
-    <!-- Hero visual -->
-    <div class="hero-visual" aria-hidden="true">
-      <div class="hero-photo-frame">
-        <img src="images/pg_sadguru_1.jpg" alt="Sri Lakshmi PG, Pashan — common area">
-      </div>
-      <div class="hero-card-verified">
-        <div class="card-icon-green">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
-        </div>
-        <div>
-          <strong>Verified in person</strong>
-          <span>Photos, rent and rules checked by our Pune team</span>
-        </div>
-      </div>
-      <div class="hero-tag-bus">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#17744C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="15" rx="3"/><path d="M4 11h16M8 18v3M16 18v3"/></svg>
-        15 min by bus to Hinjewadi IT Park
-      </div>
-      <div class="hero-cost-card">
-        <div class="cost-row head">
-          <span>Move-in cost</span><span style="font-size:13px;color:var(--ink-soft);font-weight:400">Hometown Premium PG</span>
-        </div>
-        <div class="cost-row"><span>First month rent</span><span>₹11,000</span></div>
-        <div class="cost-row"><span>Deposit</span><span>₹22,000</span></div>
-        <div class="cost-row"><span>Brokerage</span><span class="zero">₹0</span></div>
-        <div class="cost-divider"></div>
-        <div class="cost-row total"><span>Total</span><span>₹33,000</span></div>
-      </div>
+  </template>
+  <div class="gp-reveal">
+    <div class="gp-intro">
+      <h2>From first search to move-in, in days</h2>
+      <p class="gp-lede">You only sign in when you want to chat, book or reserve.</p>
     </div>
+    <ol class="gp-steps">
+      <li class="gp-step">
+        <span class="gp-no">01</span>
+        <h3>Browse freely</h3>
+        <p>Filter by budget, commute and who you're living with. No sign-up needed to look.</p>
+      </li>
+      <li class="gp-step">
+        <span class="gp-no">02</span>
+        <h3>Visit or video tour</h3>
+        <p>Book a free visit, or a live WhatsApp video tour from home. Share the details with family in one tap.</p>
+      </li>
+      <li class="gp-step">
+        <span class="gp-no">03</span>
+        <h3>Reserve with ₹5,000</h3>
+        <p>Held by MakanMate and adjusted in your deposit. Full refund if the place doesn't match.</p>
+      </li>
+      <li class="gp-step">
+        <span class="gp-no">04</span>
+        <h3>Move in, paperwork done</h3>
+        <p>ID via DigiLocker, e-signed agreement and police verification in about ten minutes.</p>
+      </li>
+    </ol>
   </div>
 </section>
-
-<!-- ── TRUST STRIP ── -->
-<div class="trust-strip">
-  <div class="trust-grid">
-    <div class="trust-item">
-      <div class="trust-icon">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
-      </div>
-      <h3>Verified in person</h3>
-      <p>Our team visits every property before it's listed, and re-checks it every month.</p>
-    </div>
-    <div class="trust-item">
-      <div class="trust-icon">₹0</div>
-      <h3>No brokerage, no contact fees</h3>
-      <p>Browse, chat and book visits for free. Nobody charges you to see a phone number.</p>
-    </div>
-    <div class="trust-item">
-      <div class="trust-icon">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h12v20l-3-2-3 2-3-2-3 2z"/><path d="M9 7h6M9 11h6M9 15h4"/></svg>
-      </div>
-      <h3>Full move-in cost upfront</h3>
-      <p>Rent, deposit, maintenance and paperwork fees on one line, before you visit.</p>
-    </div>
-    <div class="trust-item">
-      <div class="trust-icon">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
-      </div>
-      <h3>Refundable token</h3>
-      <p>Hold a place with ₹5,000, kept by MakanMate and refunded if the place doesn't match.</p>
-    </div>
-  </div>
-</div>
 
 <!-- ── LISTINGS ── -->
 <section class="listings-section" id="listings">
@@ -1025,38 +1120,6 @@ footer {
         Get a WhatsApp alert
       </a>
     </div>
-  </div>
-</section>
-
-<!-- ── HOW IT WORKS ── -->
-<section class="how-section" id="how">
-  <div class="how-inner">
-    <div class="how-lead">
-      <h2 class="section-title">From first search to move-in, in days</h2>
-      <p>You only sign in when you want to chat, book or reserve.</p>
-    </div>
-    <ol class="how-steps">
-      <li class="how-step first">
-        <span class="how-num">01</span>
-        <h3>Browse freely</h3>
-        <p>Filter by budget, commute and who you're living with. No sign-up needed to look.</p>
-      </li>
-      <li class="how-step">
-        <span class="how-num">02</span>
-        <h3>Visit or video tour</h3>
-        <p>Book a free visit, or a live WhatsApp video tour from home. Share the details with family in one tap.</p>
-      </li>
-      <li class="how-step">
-        <span class="how-num">03</span>
-        <h3>Reserve with ₹5,000</h3>
-        <p>Held by MakanMate and adjusted in your deposit. Full refund if the place doesn't match.</p>
-      </li>
-      <li class="how-step">
-        <span class="how-num">04</span>
-        <h3>Move in, paperwork done</h3>
-        <p>ID via DigiLocker, e-signed agreement and police verification in about ten minutes.</p>
-      </li>
-    </ol>
   </div>
 </section>
 
@@ -1237,7 +1300,7 @@ footer {
       <div class="footer-col">
         <span class="footer-col-title">Tenants</span>
         <a href="explore.html">Browse PGs</a>
-        <a href="#how">How it works</a>
+        <a href="#how-content">How it works</a>
         <a href="#areas">Pune starter guide</a>
         <a href="#faq">Help &amp; safety</a>
       </div>
@@ -1358,22 +1421,23 @@ function renderListings() {
 }
 renderListings();
 
-// ── HERO SEARCH TABS ──
-document.querySelectorAll('.search-tab-btn').forEach(btn => {
-  btn.addEventListener('click', function() {
-    document.querySelectorAll('.search-tab-btn').forEach(b => {
-      b.classList.remove('active'); b.setAttribute('aria-selected', 'false');
-    });
-    this.classList.add('active');
-    this.setAttribute('aria-selected', 'true');
+// ── SEARCH CARDS: the hero and the opening frame below it share this code ──
+// Tabs only affect their own card. Listeners sit on the document, so cards added later work too.
+document.addEventListener('click', function (e) {
+  const btn = e.target.closest('.search-tab-btn');
+  if (!btn) return;
+  btn.closest('.search-tabs').querySelectorAll('.search-tab-btn').forEach(b => {
+    b.classList.remove('active'); b.setAttribute('aria-selected', 'false');
   });
+  btn.classList.add('active');
+  btn.setAttribute('aria-selected', 'true');
 });
 
-function doHeroSearch() {
-  const near = document.getElementById('heroNear').value.trim();
-  const budget = document.getElementById('heroBudget').value;
-  const forVal = document.getElementById('heroFor').value;
-  const activeTab = document.querySelector('.search-tab-btn.active').dataset.tab;
+function searchFrom(form) {
+  const near = form.querySelector('[data-field="near"]').value.trim();
+  const budget = form.querySelector('[data-field="budget"]').value;
+  const forVal = form.querySelector('[data-field="for"]').value;
+  const activeTab = form.querySelector('.search-tab-btn.active').dataset.tab;
   const params = new URLSearchParams();
   if (near) params.set('near', near);
   if (budget) params.set('budget', budget);
@@ -1381,6 +1445,31 @@ function doHeroSearch() {
   if (activeTab !== 'pg') params.set('type', activeTab);
   window.location.href = 'explore.html' + (params.toString() ? '?' + params.toString() : '');
 }
+document.addEventListener('submit', function (e) {
+  const form = e.target.closest('form.search-card');
+  if (!form) return;
+  e.preventDefault();
+  searchFrom(form);
+});
+function doHeroSearch() { searchFrom(document.getElementById('heroSearchForm')); }
+
+// ── "Download app": the apps are not published yet, so it says "Coming soon" for a moment ──
+document.querySelectorAll('[data-coming-soon]').forEach(btn => {
+  const label = btn.querySelector('.cs-label');
+  const original = label.textContent;
+  let timer = 0;
+  btn.addEventListener('click', () => {
+    clearTimeout(timer);
+    btn.style.minWidth = btn.offsetWidth + 'px';   // keep the width, so nothing in the header shifts
+    label.textContent = 'Coming soon';
+    btn.classList.add('soon');
+    timer = setTimeout(() => {
+      label.textContent = original;
+      btn.classList.remove('soon');
+      btn.style.minWidth = '';
+    }, 2200);
+  });
+});
 
 // ── MOBILE NAV ──
 const mobileMenuBtn = document.getElementById('mobileMenuBtn');
@@ -1503,5 +1592,8 @@ document.getElementById('menuSaved').addEventListener('click', function() {
 });
 </script>
 
+<script src="select-menu.js" defer></script>
+<script src="hero-facts.js" defer></script>
+<script src="glyph-portal.js" defer></script>
 </body>
 </html>
