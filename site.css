@@ -1,0 +1,256 @@
+/*
+ * site.css: the shared look for the explore, listing, Pune and owner pages.
+ * Palette: white and blue only. Text is black, with dark blue for secondary text.
+ * The old per-page variable names (--green, --orange, --slate ...) are kept and now point at the blue
+ * palette, so each page's own styles pick up the new colours without being rewritten.
+ * Dark theme: navy surfaces with white text (used by the theme toggle on explore, listing and owner).
+ */
+:root {
+  /* white and blue */
+  --blue: #1E40AF; --blue-dark: #1E3A8A; --navy: #172554;
+  --blue-50: #F4F7FF; --blue-100: #E8EEFF; --blue-200: #C9D6FF;
+  /* what the old per-page names now mean */
+  --green: #1E40AF; --green-dark: #1E3A8A; --green-light: #EEF2FF; --green-mid: #C9D6FF;
+  --orange: #1E40AF; --orange-dark: #1E3A8A; --orange-light: #EEF2FF; --orange-mid: #C9D6FF;
+  --wine: #172554; --wine-light: #EEF2FF;
+  --slate: #000000; --slate-mid: #1F2A55; --slate-soft: #33407A;
+  --border: #D5DDF5; --bg: #F4F7FF; --white: #FFFFFF;
+  /* names the home page uses, so the shared header matches it exactly */
+  --ink: #000000; --ink-mid: #1F2A55; --ink-soft: #33407A; --border-light: #B9C6EE; --chip-bg: #F4F7FF;
+  --fill: #1E40AF; --fill-hover: #1E3A8A;       /* filled buttons and active chips: white text on them 8.7:1 */
+  --logo-bg: #17744C;                            /* the logo mark, unchanged from the home page */
+  --nav-bg: rgba(255,255,255,.97);
+  --gutter: 64px; --section-y: clamp(56px,7vw,96px);   /* page side padding (same as the header) and section spacing */
+  --sans: 'Plus Jakarta Sans', 'Mukta', system-ui, sans-serif;
+  --serif: 'Plus Jakarta Sans', 'Mukta', system-ui, sans-serif;
+}
+[data-theme="dark"] {
+  --blue: #A9BCFF; --blue-dark: #C9D6FF;
+  --green: #A9BCFF; --green-dark: #C9D6FF; --green-light: #16225C; --green-mid: #2A3A82;
+  --orange: #A9BCFF; --orange-dark: #C9D6FF; --orange-light: #16225C; --orange-mid: #2A3A82;
+  --wine: #C9D6FF; --wine-light: #16225C;
+  --slate: #FFFFFF; --slate-mid: #E4EAFF; --slate-soft: #B4C2F5;
+  --border: #2A3874; --bg: #0E1840; --white: #0B1332;
+  --ink: #FFFFFF; --ink-mid: #E4EAFF; --ink-soft: #B4C2F5; --border-light: #3A4A8F; --chip-bg: #16225C;
+  --fill: #2C47C5; --fill-hover: #3A57DD;       /* white text on them 7.4:1 and 6.2:1 */
+  --nav-bg: rgba(11,19,50,.97);
+}
+
+/* ── BASE ── */
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; font-family: var(--sans); font-size: 16px; line-height: 1.6; color: var(--slate-mid); background: var(--white); -webkit-font-smoothing: antialiased; }
+img, svg { max-width: 100%; }
+img { display: block; }
+a { color: inherit; text-decoration: none; }
+h1, h2, h3, h4 { font-family: var(--serif); color: var(--slate); letter-spacing: -.015em; line-height: 1.2; }
+button, input, select, textarea { font-family: inherit; }
+:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.skip-link { position: absolute; left: 12px; top: -60px; z-index: 300; background: var(--fill); color: #fff; padding: 10px 16px; border-radius: 10px; font-weight: 700; }
+.skip-link:focus { top: 12px; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; } }
+
+/* ── HEADER ── */
+.site-header {
+  position: sticky; top: 0; z-index: 100;
+  height: 72px;
+  background: var(--white);
+  display: flex; align-items: center;   /* no divider line or shadow under the navigation */
+}
+/* Three zones: logo on the left, navigation in the middle, actions on the right.
+   The navigation is centred in the space between the logo and the buttons, so the gap on both sides is equal. */
+.header-inner {
+  max-width: 1280px; margin: 0 auto; padding: 0 64px;
+  width: 100%;
+  display: grid; grid-template-columns: auto 1fr auto;
+  align-items: center; column-gap: 24px;
+}
+.header-inner .logo { justify-self: start; }
+.header-inner nav[aria-label="Main"] { justify-self: center; }
+.header-inner .header-actions { justify-self: end; }
+/* The page opens straight onto the full-screen "ZERO BROKERAGE" frame. It is pulled up under the sticky
+   header (72px), so the frame is exactly one screen tall from the very top, with nothing cut off. */
+#how { margin-top: -72px; }
+.logo {
+  display: flex; align-items: center; gap: 10px;
+  text-decoration: none; color: var(--ink); flex-shrink: 0;
+}
+.logo-icon {
+  width: 36px; height: 36px; border-radius: 10px;
+  background: var(--logo-bg); display: flex; align-items: center; justify-content: center;
+  color: #fff; flex-shrink: 0;
+}
+.logo-name {
+  font-family: var(--serif); font-weight: 600; font-size: 23px; letter-spacing: -.3px;
+}
+.main-nav { display: flex; gap: 26px; list-style: none; margin: 0; padding: 0; }
+.main-nav a {
+  text-decoration: none; font-size: 16px; font-weight: 500; color: var(--ink-mid);
+  transition: color .15s;
+}
+.main-nav a:hover { color: var(--ink); }
+.header-actions { display: flex; align-items: center; gap: 10px; }
+/* "Download app": the apps are not published yet, so clicking it says "Coming soon" (see the script at the end) */
+.btn-download {
+  height: 44px; padding: 0 14px; display: inline-flex; align-items: center; gap: 8px;
+  border: 0; border-radius: 12px; background: transparent; cursor: pointer;
+  font: inherit; font-size: 16px; font-weight: 600; color: var(--ink);
+  transition: background .15s, color .15s;
+}
+.btn-download svg { flex: none; width: 18px; height: 18px; }
+.btn-download:hover { background: #EEF2FF; color: #1E3A8A; }
+.btn-download.soon { background: #DBE4FF; color: #172554; }
+/* "List your property": navy blue (white text on it 10.4:1) */
+.btn-owner {
+  height: 44px; padding: 0 18px; display: inline-flex; align-items: center;
+  border-radius: 12px; background: #1E3A8A; color: #fff;
+  font-size: 16px; font-weight: 600; text-decoration: none;
+  transition: background .15s;
+}
+.btn-owner:hover { background: #172554; color: #fff; }
+.btn-signin {
+  height: 44px; padding: 0 18px; display: inline-flex; align-items: center;
+  border-radius: 12px; border: 1px solid var(--border-light);
+  background: var(--white); font-size: 16px; font-weight: 600;
+  color: var(--ink); cursor: pointer; transition: border-color .15s;
+  text-decoration: none;
+}
+.btn-signin:hover { border-color: #1E3A8A; }
+.btn-download:focus-visible, .btn-owner:focus-visible, .btn-signin:focus-visible { outline: 3px solid #1E40AF; outline-offset: 2px; }
+
+/* User avatar in nav (shown when signed in) */
+.nav-user {
+  display: none; align-items: center; gap: 8px;
+  height: 44px; padding: 0 14px 0 8px;
+  border-radius: 12px; border: 1px solid var(--border-light);
+  background: var(--white); cursor: pointer;
+  font-size: 15px; font-weight: 600; color: var(--ink);
+}
+.nav-user.visible { display: flex; }
+/* The account container is empty until someone signs in; without this its flex gap pushes Sign in 10px off the edge */
+.nav-user-wrapper:not(:has(.nav-user.visible)) { display: none; }
+.nav-avatar {
+  width: 30px; height: 30px; border-radius: 50%;
+  background: var(--blue); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700; flex-shrink: 0;
+}
+.nav-hamburger {
+  display: none; background: none; border: none; cursor: pointer;
+  padding: 6px; flex-direction: column; gap: 5px;
+}
+.nav-hamburger span {
+  display: block; width: 22px; height: 2px; background: var(--ink); border-radius: 1px;
+}
+/* Not enough width for navigation plus three actions: logo and Sign in stay, the rest moves into the menu */
+@media (max-width: 1180px) {
+  .header-inner { display: flex; justify-content: space-between; column-gap: 0; }
+  .main-nav { display: none; }
+  .btn-owner, .btn-download { display: none; }
+  .nav-hamburger { display: flex; }
+}
+@media (max-width: 900px) {
+  :root { --gutter: 24px; }
+  .header-inner { padding: 0 24px; }
+}
+/* small phones: the theme button, Sign in and the menu button have to fit next to the logo */
+@media (max-width: 420px) {
+  :root { --gutter: 16px; }
+  .header-inner { padding: 0 16px; }
+  .logo { gap: 8px; }
+  .logo-name { font-size: 20px; }
+  .header-inner .header-actions { gap: 4px; }
+  .header-inner .header-actions .theme-toggle { width: 40px; }
+  .btn-signin { padding: 0 12px; font-size: 15px; }
+}
+@media (max-width: 340px) {
+  .header-inner .header-actions .theme-toggle { display: none; }
+}
+.mobile-nav {
+  display: none; position: fixed; top: 72px; left: 0; right: 0; z-index: 99;
+  background: var(--white); border-bottom: 1px solid var(--border);
+  padding: 16px 24px 24px; flex-direction: column; gap: 4px;
+}
+.mobile-nav.open { display: flex; }
+.mobile-nav a {
+  display: block; padding: 12px 0; font-size: 16px; font-weight: 500;
+  color: var(--ink-mid); text-decoration: none; border-bottom: 1px solid var(--border);
+}
+.mobile-nav a:last-child { border-bottom: none; }
+.mobile-nav button {
+  display: block; width: 100%; padding: 12px 0; border: 0; border-bottom: 1px solid var(--border);
+  background: none; cursor: pointer; text-align: left; font: inherit; font-size: 16px; font-weight: 500; color: var(--ink-mid);
+}
+.mobile-nav button.soon { color: #172554; font-weight: 700; }
+.mobile-nav a.mobile-owner { color: #1E3A8A; font-weight: 700; }
+
+
+/* theme button, current page, and dark-theme header */
+.header-inner .header-actions .theme-toggle { width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center; border: 0; border-radius: 12px; background: transparent; color: var(--ink); cursor: pointer; transition: background .15s; }
+.header-inner .header-actions .theme-toggle:hover { background: var(--blue-100); }
+.header-inner .header-actions .theme-toggle svg { width: 20px; height: 20px; }
+.main-nav a[aria-current="page"] { color: var(--blue); font-weight: 700; }
+[data-theme="dark"] .site-header { background: var(--nav-bg); }
+[data-theme="dark"] .btn-owner { background: var(--fill); }
+[data-theme="dark"] .btn-owner:hover { background: var(--fill-hover); }
+[data-theme="dark"] .btn-download:hover { background: var(--green-light); color: #fff; }
+[data-theme="dark"] .btn-signin { background: transparent; color: #fff; border-color: var(--border-light); }
+[data-theme="dark"] .btn-signin:hover { border-color: var(--blue); }
+[data-theme="dark"] .mobile-nav { background: var(--white); }
+[data-theme="dark"] .main-nav a:hover { color: #fff; }
+.btn-signin { font-family: inherit; }
+/* ── FOOTER ── */
+footer {
+  background: var(--navy); color: #DCE4FF; padding: 64px 0 40px;
+}
+.footer-inner {
+  max-width: 1280px; margin: 0 auto; padding: 0 64px;
+  display: flex; flex-direction: column; gap: 48px;
+}
+.footer-grid {
+  display: grid; grid-template-columns: 1.4fr repeat(3, 1fr); gap: 48px;
+}
+.footer-brand { display: flex; flex-direction: column; gap: 12px; }
+.footer-wordmark {
+  font-family: var(--serif); font-weight: 600; font-size: 24px; color: #fff;
+}
+.footer-brand p { margin: 0; font-size: 15px; max-width: 300px; line-height: 1.6; }
+.footer-col { display: flex; flex-direction: column; gap: 10px; }
+.footer-col-title {
+  font-size: 13px; font-weight: 600; letter-spacing: .8px;
+  text-transform: uppercase; color: #fff; margin-bottom: 2px;
+}
+.footer-col a {
+  color: #DCE4FF; text-decoration: none; font-size: 15px; transition: color .15s;
+}
+.footer-col a:hover { color: #fff; }
+.footer-bottom {
+  display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+  padding-top: 24px; border-top: 1px solid rgba(255,255,255,.2); font-size: 14px;
+}
+@media (max-width: 900px) {
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+  .footer-inner { padding: 0 24px; }
+}
+@media (max-width: 500px) {
+  .footer-grid { grid-template-columns: 1fr; }
+}
+
+
+[data-theme="dark"] footer { background: #070D26; }
+
+/* ── SHARED COMPONENT FIXES (colours the pages set directly) ── */
+/* WhatsApp buttons use the site blue; the WhatsApp glyph stays recognisable */
+.btn-whatsapp, .btn-mgmt-wa, .btn-success-wa { background: var(--fill) !important; border-color: var(--fill) !important; color: #fff !important; }
+.btn-whatsapp:hover, .btn-mgmt-wa:hover, .btn-success-wa:hover { background: var(--fill-hover) !important; border-color: var(--fill-hover) !important; }
+/* saved hearts: blue */
+.save-btn.saved { border-color: var(--blue) !important; color: var(--blue) !important; }
+.save-btn.saved svg { fill: var(--blue) !important; stroke: var(--blue) !important; }
+.card-save.saved svg { stroke: var(--blue) !important; fill: var(--blue) !important; }
+/* photo overlays and the gallery frame: navy, not black or slate */
+.gallery { background: var(--navy) !important; }
+.thumbs { background: #0F1A4A !important; }
+.gallery-counter, .gallery-tour-badge, .badge-tour { background: rgba(23,37,84,.82) !important; }
+.photo-label { background: linear-gradient(to top, rgba(23,37,84,.9), transparent) !important; }
+.modal-overlay { background: rgba(23,37,84,.55) !important; }

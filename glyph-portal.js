@@ -15,7 +15,7 @@
  *   </section>
  *
  * Options (data attributes): data-word, data-focus-char, data-interactive ("false" to
- * turn letter choosing off), data-scroll-length (1 to 8 screens), data-font-family,
+ * turn letter choosing off), data-scroll-length (0.5 to 8 screens; smaller is faster), data-font-family,
  * data-font-weight, data-annotations, data-enter-label.
  * Events: the section dispatches "gp:progress" with detail { progress } on each frame.
  */
@@ -101,7 +101,7 @@
     var annotations = data.annotations === "true";
     var fontFamily = data.fontFamily || DEFAULT_FONT;
     var enterLabel = data.enterLabel || "Enter section";
-    var length = isFinite(parseFloat(data.scrollLength)) ? clamp(parseFloat(data.scrollLength), 1, 8) : 2.4;
+    var length = isFinite(parseFloat(data.scrollLength)) ? clamp(parseFloat(data.scrollLength), 0.5, 8) : 2.4;
     var weight = isFinite(parseFloat(data.fontWeight)) ? clamp(parseFloat(data.fontWeight), 1, 1000) : 900;
 
     var characters = [];

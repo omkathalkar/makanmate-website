@@ -115,18 +115,18 @@
 .gp-section [data-gp-select] { border-color: #000; border-radius: 8px; font-size: 14px; color: #000; }
 
 /* text drawn over the opening frame */
-/* One row above the word: the rotating trust card on the left, the headline on the right.
+/* One row above the word: the headline on the left, the sliding text on the right.
    Its edges line up with the left and right edges of the word. */
 .gp-topline {
   position: absolute; left: var(--gp-word-left, 8%); right: var(--gp-word-left, 8%);
   bottom: calc(100% - var(--gp-word-top, 35%) + 24px);
   display: flex; justify-content: space-between; align-items: flex-end; gap: 24px;
 }
-/* the slider card: no icon, large type */
-.gp-topline .gp-facts { position: relative; top: auto; left: auto; flex: none; width: min(480px, 50%); height: 144px; }
-.gp-topline .hero-fact { padding: 22px 28px; border-radius: 20px; align-items: center; }
-.gp-topline .hero-fact strong { font-size: clamp(19px, 1.7vw, 25px); line-height: 1.2; }
-.gp-topline .hero-fact div > span { margin-top: 6px; font-size: clamp(15px, 1.2vw, 18px); line-height: 1.45; }
+/* the sliding text: no card box and no icon, just a small heading and a typed line, at the right edge of the word */
+.gp-topline .gp-facts { position: relative; top: auto; left: auto; flex: none; width: min(380px, 42%); height: 84px; }
+.gp-topline .hero-fact { padding: 0; border: 0; border-radius: 0; background: transparent; box-shadow: none; align-items: flex-end; }
+.gp-topline .hero-fact strong { font-size: clamp(16px, 1.25vw, 19px); line-height: 1.25; }
+.gp-topline .hero-fact div > span { margin-top: 4px; font-size: clamp(13px, 1vw, 15px); line-height: 1.45; }
 
 /* Typing mode (data-mode="type" in hero-facts.js): the heading is shown, the line under it types out.
    The not-yet-typed text stays in the layout (invisible), so the lines never re-wrap while typing. */
@@ -146,13 +146,12 @@
 @media (max-width: 900px) {
   /* not enough width for two columns: slider card on top, headline under it, both at the word's edges */
   .gp-topline { flex-direction: column-reverse; align-items: stretch; gap: 14px; }
-  .gp-topline .gp-facts { width: 100%; height: 108px; }
-  .gp-topline .hero-fact { padding: 14px 20px; border-radius: 16px; }
-  .gp-topline .hero-fact strong { font-size: 17px; }
-  .gp-topline .hero-fact div > span { margin-top: 4px; font-size: 14px; line-height: 1.4; }
+  .gp-topline .gp-facts { width: 100%; height: 66px; }
+  .gp-topline .hero-fact strong { font-size: 15px; }
+  .gp-topline .hero-fact div > span { margin-top: 3px; font-size: 13px; line-height: 1.4; }
 }
 /* very short screens: keep the headline, drop the card so nothing runs under the header */
-@container (max-height: 699px) { .gp-topline .gp-facts { display: none; } }
+@container (max-height: 619px) { .gp-topline .gp-facts { display: none; } }
 .gp-support {
   position: absolute; top: calc(var(--gp-word-bottom, 50%) + 28px); left: 50%; transform: translateX(-50%);
   width: min(660px, calc(100% - 48px)); margin: 0;
