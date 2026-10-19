@@ -1,0 +1,227 @@
+/*
+ * Glyph Portal styles. Component rules © 2026 Christian Katzmann, MIT (see glyph-portal.js).
+ * The site theme (white page, black type, blue field) is set in the variables and
+ * the ".gp-section" block at the bottom.
+ */
+
+/* ---- before the script runs (or without it): the promises are a plain blue panel ---- */
+.gp-section:not(.gp) {
+  background: #1E3A8A; color: #fff; padding: 72px clamp(24px, 6vw, 96px);
+}
+
+/* ---- component ---- */
+:where(.gp) {
+  --gp-paper: #fff; --gp-ink: #000; --gp-field: #1E3A8A; --gp-foreground: #fff;
+  position: relative; isolation: isolate; background: var(--gp-paper); color: var(--gp-ink);
+}
+:where(.gp) > [data-gp-viewport] {
+  position: absolute; inset: 0 auto auto 0; height: 100vh; height: 100svh; width: 0;
+  pointer-events: none; visibility: hidden;
+}
+:where(.gp) [data-gp-pin] {
+  position: relative; height: var(--gp-height, 100svh); overflow: clip; isolation: isolate; container-type: size;
+}
+:where(.gp) [data-gp-field] { position: absolute; inset: 0; background: var(--gp-field); opacity: 0; pointer-events: none; }
+:where(.gp)[data-gp-ready] [data-gp-field] { opacity: 1; }
+:where(.gp) [data-gp-art] { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+:where(.gp) [data-gp-marks] { fill: none; stroke: var(--gp-ink); opacity: .6; }
+:where(.gp) [data-gp-choices] { position: absolute; inset: 0; visibility: hidden; pointer-events: none; }
+:where(.gp)[data-gp-choosing=true] [data-gp-choices] { visibility: visible; }
+:where(.gp) [data-gp-letter] {
+  box-sizing: border-box; position: absolute; border: 0; padding: 0; margin: 0;
+  background: transparent; cursor: pointer; pointer-events: auto; touch-action: pan-y;
+}
+:where(.gp) [data-gp-letter]:disabled { pointer-events: none; }
+:where(.gp) [data-gp-letter]:focus-visible { outline: 2px solid var(--gp-field); outline-offset: 5px; }
+:where(.gp) [data-gp-touch-picker] {
+  display: none; position: absolute; top: calc(var(--gp-word-bottom, 50%) + 42px); left: 50%;
+  transform: translateX(-50%); font: 12px/1.4 inherit; align-items: center; gap: 12px; visibility: hidden;
+}
+:where(.gp)[data-gp-choosing=true] [data-gp-touch-picker] { visibility: visible; }
+:where(.gp) [data-gp-select] {
+  min-height: 44px; min-width: 90px; border: 1px solid #d8deda; border-radius: 4px;
+  background: var(--gp-paper); color: var(--gp-ink); padding: 0 10px; font: inherit;
+}
+:where(.gp) [data-gp-select]:focus-visible { outline: 2px solid var(--gp-field); outline-offset: 4px; }
+@media (any-pointer: coarse) { :where(.gp) [data-gp-touch-picker] { display: flex; } }
+:where(.gp) [data-gp-fallback] {
+  position: absolute; inset: 0; display: none; place-items: center;
+  font-size: min(calc(100cqw / var(--gp-characters)), 38cqh); line-height: 1; color: var(--gp-field);
+}
+:where(.gp)[data-gp-ready] [data-gp-fallback] { visibility: hidden; }
+:where(.gp) [data-gp-caption] {
+  position: absolute; inset: auto 8% 9%; display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  font: 12px/1.4 inherit; opacity: var(--gp-caption, 1); pointer-events: var(--gp-caption-hit, auto);
+}
+:where(.gp) [data-gp-front] { position: absolute; inset: 0; z-index: 2; opacity: var(--gp-caption, 1); pointer-events: none; }  /* above the button, so an open dropdown is never covered by it */
+:where(.gp) [data-gp-front] a, :where(.gp) [data-gp-front] button { pointer-events: var(--gp-caption-hit, auto); }
+:where(.gp) [data-gp-front]:focus-within { opacity: 1; }
+:where(.gp) [data-gp-hint] { max-width: 30ch; color: var(--gp-ink); }
+:where(.gp) [data-gp-enter] {
+  display: inline-flex; align-items: center; gap: 16px; min-height: 44px; color: inherit;
+  font: inherit; text-decoration: none; letter-spacing: inherit;
+}
+:where(.gp) [data-gp-enter]:focus-visible { outline: 2px solid currentColor; outline-offset: 5px; }
+:where(.gp) [data-gp-caption]:focus-within { opacity: 1; pointer-events: auto; }
+:where(.gp) [data-gp-enter]:focus-visible { background: var(--gp-paper); color: var(--gp-ink); padding: 0 12px; margin: 0 -12px; }
+:where(.gp) [data-gp-content] {
+  box-sizing: border-box; position: relative; min-height: var(--gp-height, 100svh);
+  padding: clamp(32px, 7%, 100px); display: grid; align-content: center;
+  color: var(--gp-foreground); background: var(--gp-field); overflow-wrap: anywhere;
+}
+:where(.gp)[data-gp-motion=on] [data-gp-pin] { position: sticky; top: 0; }
+:where(.gp)[data-gp-motion=off] [data-gp-hint] { display: none; }
+:where(.gp)[data-gp-motion=on] [data-gp-content] {
+  margin-top: calc((var(--gp-length) - 1) * var(--gp-height)); background: transparent;
+  opacity: var(--gp-reveal, 0); pointer-events: none;
+}
+:where(.gp)[data-gp-motion=on][data-gp-entered=true] [data-gp-content] { pointer-events: auto; }
+:where(.gp)[data-gp-motion=on]:has([data-gp-content]:focus-within) [data-gp-field] { clip-path: none !important; }
+:where(.gp)[data-gp-motion=on] [data-gp-content]:focus-within { opacity: 1; pointer-events: auto; }
+:where(.gp):has([data-gp-content]:focus-within) [data-gp-caption],
+:where(.gp):has([data-gp-content]:focus-within) [data-gp-marks] { opacity: 0; }
+@media (prefers-reduced-motion: reduce) {
+  :where(.gp) [data-gp-pin] { position: relative !important; }
+  :where(.gp) [data-gp-content] { margin-top: 0 !important; opacity: 1 !important; background: var(--gp-field) !important; min-height: 0; padding-block: 64px; }
+  :where(.gp) [data-gp-caption] { opacity: 1 !important; }
+  :where(.gp) [data-gp-hint] { display: none; }
+}
+
+/* ---- MakanMate theme ---- */
+.gp-section [data-gp-default-field] {
+  position: absolute; inset: 0; transform: scale(var(--gp-field-scale, 1));
+  /* Navy to blue; every point stays at least 8.7:1 against white text */
+  background: linear-gradient(135deg, #1E3A8A 0%, #1E40AF 52%, #172554 100%);
+}
+.gp-section {
+  font-family: inherit;
+  /* the same colour tokens the hero defines, so the search card shown here is blue too */
+  --hero-ink: #000000; --hero-muted: #000000;
+  --hero-button: #1E40AF;       /* Search button and selected tab; white text on it 8.7:1 */
+  --hero-button-hover: #1E3A8A; /* 10.4:1 */
+}
+/* The "See how it works" button is no longer shown. It stays in the page for keyboard users: invisible until
+   it gets focus (press Tab), then it appears at the bottom as the blue button. */
+.gp-section [data-gp-caption] { position: absolute; inset: auto; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; font-family: inherit; }
+.gp-section [data-gp-caption]:focus-within { inset: auto 24px 22px; width: auto; height: auto; overflow: visible; clip: auto; justify-content: center; z-index: 5; }
+.gp-section [data-gp-hint] { display: none; }
+.gp-section [data-gp-enter] {
+  min-height: 48px; padding: 0 22px; gap: 18px; background: #1E40AF; border: 1px solid #1E40AF;
+  border-radius: 10px; color: #fff; font-size: 15px; font-weight: 600; transition: background .15s;
+}
+.gp-section [data-gp-enter]:hover { background: #1E3A8A; }
+.gp-section [data-gp-enter]:focus-visible { outline: 3px solid #000; outline-offset: 3px; background: #1E3A8A; color: #fff; padding: 0 22px; margin: 0; }
+.gp-section [data-gp-touch-picker] { top: auto; bottom: 18px; left: 50%; }
+.gp-section [data-gp-select] { border-color: #000; border-radius: 8px; font-size: 14px; color: #000; }
+
+/* text drawn over the opening frame */
+/* One row above the word: the headline on the left, the sliding text on the right.
+   Its edges line up with the left and right edges of the word. */
+.gp-topline {
+  position: absolute; left: var(--gp-word-left, 8%); right: var(--gp-word-left, 8%);
+  bottom: calc(100% - var(--gp-word-top, 35%) + 24px);
+  display: flex; justify-content: space-between; align-items: flex-end; gap: 24px;
+}
+/* the sliding text: no card box and no icon, just a small heading and a typed line, at the right edge of the word */
+.gp-topline .gp-facts { position: relative; top: auto; left: auto; flex: none; width: min(380px, 42%); height: 84px; }
+.gp-topline .hero-fact { padding: 0; border: 0; border-radius: 0; background: transparent; box-shadow: none; align-items: flex-end; }
+.gp-topline .hero-fact strong { font-size: clamp(16px, 1.25vw, 19px); line-height: 1.25; }
+.gp-topline .hero-fact div > span { margin-top: 4px; font-size: clamp(13px, 1vw, 15px); line-height: 1.45; }
+
+/* Typing mode (data-mode="type" in hero-facts.js): the heading is shown, the line under it types out.
+   The not-yet-typed text stays in the layout (invisible), so the lines never re-wrap while typing. */
+.tw-rest { visibility: hidden; }
+.tw-caret { position: relative; display: inline-block; width: 0; height: 1em; vertical-align: text-bottom; }  /* zero width: no layout effect */
+.tw-caret::after { content: ""; position: absolute; left: 1px; top: .1em; width: 2px; height: 1.05em; background: currentColor; animation: tw-blink 1s steps(1) infinite; }
+.hero-fact:not(.typing) .tw-caret { display: none; }
+@keyframes tw-blink { 50% { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .tw-caret::after { animation: none; } }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.gp-headline {
+  flex: 1 1 0; min-width: 0; margin: 0; text-align: left;
+  font-family: var(--serif); font-weight: 700; color: #000; text-wrap: balance;
+  /* scales with the screen's width and height, so it never runs under the header or into the word */
+  font-size: clamp(22px, min(3.4vw, 4.6svh), 46px); line-height: 1.12; letter-spacing: -0.02em;
+}
+@media (max-width: 900px) {
+  /* not enough width for two columns: slider card on top, headline under it, both at the word's edges */
+  .gp-topline { flex-direction: column-reverse; align-items: stretch; gap: 14px; }
+  .gp-topline .gp-facts { width: 100%; height: 66px; }
+  .gp-topline .hero-fact strong { font-size: 15px; }
+  .gp-topline .hero-fact div > span { margin-top: 3px; font-size: 13px; line-height: 1.4; }
+}
+/* very short screens: keep the headline, drop the card so nothing runs under the header */
+@container (max-height: 619px) { .gp-topline .gp-facts { display: none; } }
+.gp-support {
+  position: absolute; top: calc(var(--gp-word-bottom, 50%) + 28px); left: 50%; transform: translateX(-50%);
+  width: min(660px, calc(100% - 48px)); margin: 0;
+  text-align: center; font-size: 17px; line-height: 1.5; color: #000; text-wrap: balance;
+}
+/* The search section under the supporting text (same search as the hero): wide, with room to breathe.
+   Four columns: Near is the widest, then Budget and For, then the Search button. */
+.gp-search {
+  position: absolute; top: calc(var(--gp-word-bottom, 50%) + 102px); left: 50%; transform: translateX(-50%);
+  width: min(920px, calc(100% - 48px));
+  pointer-events: var(--gp-caption-hit, auto);  /* clickable while the opening frame is showing, inert once you zoom in */
+}
+.gp-search .search-card { margin: 0 0 16px; padding: 14px; gap: 12px; border-radius: 22px; box-shadow: 0 20px 50px rgba(0, 0, 0, .10); }
+.gp-search .search-tabs { padding: 0; gap: 6px; }
+.gp-search .search-tab-btn { height: 40px; padding: 0 18px; font-size: 15px; }
+.gp-search .search-inputs { grid-template-columns: minmax(0, 1.7fr) minmax(0, 1.1fr) minmax(0, 1fr) auto; padding: 8px; border-radius: 16px; }
+.gp-search .search-field { padding: 8px 22px; }
+.gp-search .search-field input, .gp-search .menu-btn { font-size: 17px; }
+.gp-search .search-btn { min-height: 56px; min-width: 156px; padding: 0 26px; border-radius: 12px; font-size: 17px; }
+.gp-search .popular-pills { justify-content: flex-start; padding-left: 4px; gap: 8px; }
+
+/* the revealed section */
+/* "From first search to move-in, in days": a heading and four numbered steps.
+   Sizes grow smoothly from phone to desktop. White on the blue field measures 8.7:1 or better. */
+.gp-section [data-gp-content] { font-family: inherit; padding: clamp(4.5rem, 9vw, 7rem) clamp(1.25rem, 5vw, 5rem) clamp(4rem, 8vw, 6.5rem); }
+.gp-reveal { display: flex; width: min(100%, 80rem); margin: auto; flex-direction: column; align-items: flex-start; gap: clamp(2.25rem, 5vw, 4rem); }
+.gp-intro { max-width: 46rem; }
+.gp-reveal h2 {
+  margin: 0; color: inherit; font-family: var(--serif);
+  font-size: clamp(2rem, 1.1rem + 2.8vw, 3.25rem); font-weight: 700; line-height: 1.1; letter-spacing: -0.025em; text-wrap: balance;
+}
+.gp-lede { margin: 1rem 0 0; max-width: 40rem; color: #fff; font-size: clamp(1.0625rem, 1rem + .3vw, 1.3125rem); line-height: 1.55; }
+.gp-steps { list-style: none; margin: 0; padding: 0; display: grid; width: 100%; grid-template-columns: 1fr; gap: 0; }
+.gp-step { border-top: 1px solid rgba(255, 255, 255, .5); padding: 1.4rem 0 1.5rem; }
+.gp-no { display: block; margin: 0 0 .85rem; color: #fff; font: 700 .95rem/1 var(--sans); letter-spacing: .12em; font-variant-numeric: tabular-nums; }
+.gp-step h3 { margin: 0; color: inherit; font-size: clamp(1.25rem, 1.1rem + .6vw, 1.625rem); font-weight: 700; line-height: 1.2; letter-spacing: -0.01em; text-wrap: balance; }
+.gp-step p { margin: .65rem 0 0; max-width: 38ch; color: #fff; font-size: clamp(1rem, .95rem + .25vw, 1.1875rem); line-height: 1.6; }
+@media (min-width: 640px) { .gp-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 2.5rem; } }
+@media (min-width: 1100px) { .gp-steps { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0 2.5rem; } }
+@media (max-width: 450px) {
+  .gp-support { font-size: 15px; }
+}
+/* Making room as the screen gets shorter (the pinned frame is exactly one screen tall). The word itself
+   also moves up (see anchorY in glyph-portal.js), so everything fits at 100% zoom on a laptop:
+   under 860px tall: tighter gaps, everything still shown (the "Popular" pills included);
+   under 700px: the slider card steps aside; under 600px: the pills; under 520px: the search section. */
+@container (max-height: 859px) and (min-width: 601px) {
+  .gp-support { top: calc(var(--gp-word-bottom, 50%) + 14px); }
+  .gp-search { top: calc(var(--gp-word-bottom, 50%) + 82px); }
+  .gp-search .search-card { margin-bottom: 12px; }
+}
+@container (max-height: 599px) and (min-width: 601px) { .gp-search .popular-pills { display: none; } }
+@container (max-height: 519px) { .gp-search { display: none; } }
+/* Narrow screens (phones and small tablets): the card stacks into rows: tabs, Near, Budget | For, Search.
+   Every filter stays available here too. */
+@media (max-width: 760px) {
+  .gp-search .search-card { padding: 10px; gap: 10px; border-radius: 18px; }
+  .gp-search .search-tabs { flex-wrap: nowrap; gap: 4px; }
+  .gp-search .search-tab-btn { height: 36px; padding: 0 10px; font-size: 13px; }  /* three tabs stay on one line even at 360px */
+  .gp-search .search-inputs { grid-template-columns: 1fr 1fr; padding: 6px; }
+  .gp-search .search-field { padding: 8px 14px; border-bottom: 0; border-right: 0; }
+  .gp-search .search-field:first-child { grid-column: 1 / -1; border-bottom: 1px solid var(--border); }
+  .gp-search .search-field:nth-child(2) { border-right: 1px solid var(--border); }
+  .gp-search .search-field input, .gp-search .menu-btn { font-size: 16px; }
+  .gp-search .search-btn { grid-column: 1 / -1; margin-top: 8px; min-height: 50px; min-width: 0; }
+}
+@media (max-width: 600px) {
+  .gp-search { top: calc(var(--gp-word-bottom, 50%) + 118px); }  /* the supporting text wraps to three lines here */
+  .gp-search .popular-pills { display: none; }
+  .gp-search .search-card { margin: 0; }
+}
+/* Touch screens also show the "Choose a letter" picker at the bottom: hide the search card where they would meet */
+@media (any-pointer: coarse) { @container (max-height: 779px) { .gp-search { display: none; } } }

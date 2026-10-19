@@ -9,104 +9,69 @@
 <title>Owner Dashboard — MakanMate</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Mukta:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --green:#1F8A5B; --green-dark:#166644; --green-light:#EBF5F0; --green-mid:#C0DDD0;
-    --orange:#C45E1A; --orange-dark:#A84D14; --orange-light:#FBF1E8; --orange-mid:#F0C9A0;
-    --wine:#7C1D35; --wine-light:#F5E8EB;
-    --slate:#1C1611; --slate-mid:#4A3F35; --slate-soft:#7A6E65;
-    --border:#DDD4C8; --bg:#F7F3EE; --white:#FFFDF9;
-    --sans:'Manrope',sans-serif; --serif:'Newsreader',serif;
-  }
-  [data-theme="dark"]{
-    --bg:#110D09; --white:#1A1410; --slate:#F0EBE4; --slate-mid:#D4C8BC; --slate-soft:#9C8E84;
-    --border:#2D2420; --nav-bg:rgba(17,13,9,0.97); --green-light:#091A10; --green-mid:#0F2A1C; --orange-light:#1F1208; --wine-light:#1F0A10; --orange-mid:#3D1F00;
-  }
-  [data-theme="dark"] footer{background:#0A0705;}
-  *{box-sizing:border-box;} html{scroll-behavior:smooth;}
-  body{margin:0; font-family:var(--sans); color:var(--slate-mid); background:var(--bg); line-height:1.6;}
-  img{max-width:100%; display:block;} a{color:inherit; text-decoration:none;}
-  h2{font-family:var(--serif); font-weight:500; font-size:22px; color:var(--slate); margin:0 0 16px;}
   h3{font-size:16px; font-weight:700; color:var(--slate); margin:0 0 10px;}
 
-  /* NAV */
-  .nav{position:sticky; top:0; z-index:50; background:var(--nav-bg,rgba(255,255,255,0.96)); backdrop-filter:blur(8px); border-bottom:1px solid var(--border);}
-  .nav-row{display:flex; align-items:center; justify-content:space-between; padding:14px 28px; max-width:1120px; margin:0 auto;}
-  .logo{font-family:var(--sans); font-weight:800; font-size:20px; letter-spacing:-0.3px; color:var(--slate); display:flex; align-items:center; gap:9px;}
-  .logo-icon{width:32px; height:32px; background:var(--orange); border-radius:8px; display:flex; align-items:center; justify-content:center;}
-  .logo-tag{font-size:11px; font-weight:700; background:var(--orange-light); color:var(--orange-dark); padding:2px 8px; border-radius:999px; border:1px solid var(--orange-mid);}
-  .nav-links{display:flex; gap:28px; list-style:none; margin:0; padding:0;}
-  .nav-links a{font-weight:600; font-size:14.5px; color:var(--slate-soft); transition:color .15s;}
-  .nav-links a:hover,.nav-links a.active{color:var(--orange);}
-  .nav-cta-orange{background:var(--orange); color:#fff; padding:9px 18px; border-radius:7px; font-weight:700; font-size:14px;}
-  .theme-toggle{background:none; border:none; cursor:pointer; padding:6px; color:var(--slate-soft); display:flex; align-items:center;}
-  .theme-toggle svg{width:18px; height:18px;}
-  .nav-toggle{display:none; background:none; border:none; cursor:pointer; padding:4px;}
-  .nav-toggle span{display:block; width:24px; height:2px; background:var(--slate); margin:5px 0;}
-  @media(max-width:820px){
-    .nav-links{position:absolute; top:100%; left:0; right:0; background:var(--white); flex-direction:column; gap:0; border-bottom:1px solid var(--border); max-height:0; overflow:hidden; transition:max-height .25s;}
-    .nav-links.open{max-height:320px;}
-    .nav-links li{border-top:1px solid var(--border);}
-    .nav-links a{display:block; padding:15px 28px;}
-    .nav-toggle{display:block;} .nav-cta-orange{display:none;}
-  }
+  
 
   /* OWNER HEADER */
   .owner-head{background:linear-gradient(135deg,var(--orange-light),var(--bg)); border-bottom:1px solid var(--border); padding:36px 0 28px;}
-  .owner-head-inner{max-width:1120px; margin:0 auto; padding:0 28px; display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap;}
-  .owner-head h1{font-family:var(--serif); font-size:28px; font-weight:500; color:var(--slate); margin:0 0 4px;}
-  .owner-head p{font-size:14.5px; color:var(--slate-soft); margin:0;}
+  .owner-head-inner{max-width:1280px; margin:0 auto; padding:0 var(--gutter); display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap;}
+  .owner-head h1{font-family:var(--serif); font-size:clamp(26px,3.2vw,34px); font-weight:800; color:var(--slate); margin:0 0 6px;}
+  .owner-head p{font-size:15px; color:var(--slate-mid); margin:0;}
   .owner-head-avatar{width:56px; height:56px; border-radius:50%; background:var(--orange-light); border:2px solid var(--orange-mid); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:20px; color:var(--orange-dark);}
 
   /* TABS */
-  .owner-tabs{background:var(--white); border-bottom:1px solid var(--border); position:sticky; top:61px; z-index:40;}
-  .owner-tabs-inner{max-width:1120px; margin:0 auto; padding:0 28px; display:flex; gap:0;}
-  .owner-tab{background:none; border:none; border-bottom:3px solid transparent; padding:16px 20px; font-family:var(--sans); font-size:14.5px; font-weight:700; color:var(--slate-soft); cursor:pointer; transition:all .15s; display:flex; align-items:center; gap:8px;}
+  .owner-tabs{background:var(--white); border-bottom:1px solid var(--border); position:sticky; top:72px; z-index:40;}
+  .owner-tabs-inner{max-width:1280px; margin:0 auto; padding:0 var(--gutter); display:flex; gap:0; overflow-x:auto; scrollbar-width:none;}
+  .owner-tabs-inner::-webkit-scrollbar{display:none;}
+  .owner-tab{background:none; border:none; border-bottom:3px solid transparent; padding:0 20px; min-height:56px; font-family:var(--sans); font-size:15px; font-weight:700; color:var(--slate-mid); cursor:pointer; transition:all .15s; display:flex; align-items:center; gap:8px; white-space:nowrap; flex-shrink:0;}
   .owner-tab:hover{color:var(--slate);}
   .owner-tab.active{color:var(--orange); border-bottom-color:var(--orange);}
-  .tab-count{background:var(--orange-light); color:var(--orange-dark); border-radius:999px; padding:1px 7px; font-size:11.5px; font-weight:800;}
+  .tab-count{background:var(--orange-light); color:var(--orange-dark); border-radius:999px; padding:1px 7px; font-size:13px; font-weight:800;}
 
   /* PANELS */
-  .owner-panel{display:none; max-width:1120px; margin:0 auto; padding:32px 28px 60px;}
+  .owner-panel{display:none; max-width:1280px; margin:0 auto; padding:32px var(--gutter) 60px;}
   .owner-panel.active{display:block;}
-  @media(max-width:580px){.owner-panel{padding:20px 16px 40px;}}
+  @media(max-width:580px){.owner-panel{padding:20px var(--gutter) 40px;}}
 
   /* DASHBOARD */
-  .stat-row{display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:32px;}
-  @media(max-width:720px){.stat-row{grid-template-columns:repeat(2,1fr);}}
-  .stat-card{background:var(--white); border:1px solid var(--border); border-radius:14px; padding:18px 20px;}
-  .stat-label{font-size:12px; text-transform:uppercase; letter-spacing:.5px; color:var(--slate-soft); font-weight:700; margin:0 0 6px;}
-  .stat-val{font-size:28px; font-weight:800; color:var(--slate); margin:0 0 2px;}
-  .stat-sub{font-size:12.5px; color:var(--slate-soft); margin:0;}
+  .stat-row{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:16px; margin-bottom:32px;}
+  .stat-row-3{grid-template-columns:repeat(3,minmax(0,1fr));}
+  @media(max-width:720px){.stat-row{grid-template-columns:repeat(2,minmax(0,1fr));} .stat-row-3{grid-template-columns:1fr;}}
+  .stat-card{background:var(--white); border:1px solid var(--border); border-radius:16px; padding:20px 22px;}
+  .stat-label{font-size:13px; text-transform:uppercase; letter-spacing:.5px; color:var(--slate-soft); font-weight:700; margin:0 0 6px;}
+  .stat-val{font-size:clamp(26px,3vw,32px); font-weight:800; color:var(--slate); margin:0 0 2px;}
+  .stat-sub{font-size:13px; color:var(--slate-soft); margin:0;}
   .stat-positive{color:var(--green-dark);}
 
   .listing-mgmt{background:var(--white); border:1px solid var(--border); border-radius:16px; overflow:hidden; margin-bottom:24px;}
   .listing-mgmt-header{padding:18px 22px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between;}
   .listing-mgmt-header h3{margin:0; font-size:16px;}
-  .status-pill{padding:4px 12px; border-radius:999px; font-size:12px; font-weight:700;}
+  .status-pill{padding:4px 12px; border-radius:999px; font-size:13px; font-weight:700;}
   .status-active{background:var(--green-light); color:var(--green-dark);}
   .listing-mgmt-photo{width:100%; height:200px; object-fit:cover;}
   .listing-mgmt-body{padding:18px 22px;}
   .listing-mgmt-row{display:flex; gap:16px; flex-wrap:wrap; margin-top:12px;}
   .mgmt-stat{display:flex; flex-direction:column; gap:2px; background:var(--bg); border:1px solid var(--border); border-radius:10px; padding:10px 16px; min-width:100px;}
-  .mgmt-stat-label{font-size:11.5px; text-transform:uppercase; letter-spacing:.4px; color:var(--slate-soft); font-weight:700; margin:0;}
+  .mgmt-stat-label{font-size:13px; text-transform:uppercase; letter-spacing:.4px; color:var(--slate-soft); font-weight:700; margin:0;}
   .mgmt-stat-val{font-size:18px; font-weight:800; color:var(--slate); margin:0;}
   .mgmt-actions{display:flex; gap:10px; margin-top:16px; flex-wrap:wrap;}
-  .btn-mgmt{padding:10px 18px; border-radius:9px; font-family:var(--sans); font-size:14px; font-weight:700; cursor:pointer; transition:all .15s; border:1.5px solid var(--border);}
-  .btn-mgmt-primary{background:var(--orange); color:#fff; border-color:var(--orange);}
-  .btn-mgmt-primary:hover{background:var(--orange-dark); border-color:var(--orange-dark);}
+  .btn-mgmt{padding:0 20px; min-height:44px; border-radius:12px; font-family:var(--sans); font-size:15px; font-weight:700; cursor:pointer; transition:all .15s; border:1.5px solid var(--border-light);}
+  .btn-mgmt-primary{background:var(--fill); color:#fff; border-color:var(--orange);}
+  .btn-mgmt-primary:hover{background:var(--fill-hover); border-color:var(--orange-dark);}
   .btn-mgmt-secondary{background:none; color:var(--slate-mid);}
-  .btn-mgmt-secondary:hover{border-color:var(--slate-mid); color:var(--slate);}
-  .btn-mgmt-wa{background:#25D366; color:#fff; border-color:#25D366;}
-  .btn-mgmt-wa:hover{background:#1ebe59;}
+  .btn-mgmt-secondary:hover{border-color:var(--blue); color:var(--slate);}
+  .btn-mgmt-wa{background:#1E40AF; color:#fff; border-color:#1E40AF;}
+  .btn-mgmt-wa:hover{background:#1E3A8A;}
 
   .visits-section{margin-top:24px;}
   .visit-item{background:var(--white); border:1px solid var(--border); border-radius:12px; padding:16px 18px; margin-bottom:10px; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;}
   .visit-info h4{margin:0 0 3px; font-size:15px; color:var(--slate);}
-  .visit-info p{margin:0; font-size:13px; color:var(--slate-soft);}
+  .visit-info p{margin:0; font-size:14px; color:var(--slate-mid);}
   .visit-actions{display:flex; gap:8px;}
-  .btn-visit{padding:8px 16px; border-radius:8px; font-family:var(--sans); font-size:13px; font-weight:700; cursor:pointer; border:1.5px solid var(--border); background:none; color:var(--slate-mid); transition:all .15s;}
+  .btn-visit{padding:0 18px; min-height:40px; border-radius:10px; font-family:var(--sans); font-size:14px; font-weight:700; cursor:pointer; border:1.5px solid var(--border); background:none; color:var(--slate-mid); transition:all .15s;}
   .btn-visit-accept{border-color:var(--green); color:var(--green-dark); background:var(--green-light);}
   .btn-visit-accept:hover{background:var(--green-mid);}
   .btn-visit-decline{border-color:var(--border); color:var(--slate-soft);}
@@ -117,34 +82,37 @@
   .stepper{display:flex; align-items:center; gap:0; margin-bottom:32px;}
   .step-item{display:flex; align-items:center; gap:0; flex:1;}
   .step-num{width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:800; flex-shrink:0; border:2px solid var(--border); background:var(--white); color:var(--slate-soft); transition:all .2s;}
-  .step-num.done{background:var(--green); border-color:var(--green); color:#fff;}
-  .step-num.active{background:var(--orange); border-color:var(--orange); color:#fff;}
-  .step-label{font-size:12px; font-weight:700; color:var(--slate-soft); margin-left:8px; white-space:nowrap;}
+  .step-num.done{background:var(--fill); border-color:var(--green); color:#fff;}
+  .step-num.active{background:var(--fill); border-color:var(--orange); color:#fff;}
+  .step-label{font-size:13px; font-weight:700; color:var(--slate-soft); margin-left:8px; white-space:nowrap;}
   .step-label.active{color:var(--orange);}
   .step-label.done{color:var(--green-dark);}
   .step-line{flex:1; height:2px; background:var(--border); margin:0 8px;}
-  .step-line.done{background:var(--green);}
-  .wizard-card{background:var(--white); border:1px solid var(--border); border-radius:16px; padding:28px;}
+  .step-line.done{background:var(--fill);}
+  .wizard-card{background:var(--white); border:1px solid var(--border); border-radius:16px; padding:clamp(20px,3vw,32px);}
   .wizard-step{display:none;}
   .wizard-step.active{display:block;}
-  .wizard-title{font-family:var(--serif); font-size:22px; font-weight:500; color:var(--slate); margin:0 0 4px;}
+  .wizard-title{font-family:var(--serif); font-size:clamp(20px,2.4vw,24px); font-weight:800; color:var(--slate); margin:0 0 4px;}
   .wizard-sub{font-size:14.5px; color:var(--slate-soft); margin:0 0 24px;}
   .form-field{margin-bottom:18px;}
-  .form-field label{display:block; font-size:13.5px; font-weight:700; color:var(--slate); margin-bottom:6px;}
-  .form-field input,.form-field select,.form-field textarea{width:100%; padding:11px 14px; border:1.5px solid var(--border); border-radius:9px; font-family:var(--sans); font-size:14px; color:var(--slate-mid); background:var(--bg); transition:border .15s;}
-  .form-field input:focus,.form-field select:focus,.form-field textarea:focus{outline:none; border-color:var(--orange);}
+  .form-field label{display:block; font-size:14px; font-weight:700; color:var(--slate); margin-bottom:6px;}
+  .form-field input,.form-field select,.form-field textarea{width:100%; padding:0 14px; min-height:46px; border:1.5px solid var(--border-light); border-radius:10px; font-family:var(--sans); font-size:16px; color:var(--slate); background:var(--bg); transition:border .15s;}
+  .form-field textarea{padding:11px 14px; min-height:96px;}
+  .form-field input::placeholder,.form-field textarea::placeholder{color:var(--slate-soft); opacity:1;}
+  .form-field input:focus-visible,.form-field select:focus-visible,.form-field textarea:focus-visible{outline:3px solid var(--blue); outline-offset:1px; border-color:var(--blue);}
   .form-row{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
   @media(max-width:520px){.form-row{grid-template-columns:1fr;}}
-  .form-hint{font-size:12.5px; color:var(--slate-soft); margin-top:4px;}
+  .form-hint{font-size:13px; color:var(--slate-soft); margin-top:4px;}
   .checkbox-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-top:4px;}
-  .checkbox-item{display:flex; align-items:center; gap:8px; background:var(--bg); border:1.5px solid var(--border); border-radius:9px; padding:10px 14px; cursor:pointer; transition:all .15s; font-size:14px; color:var(--slate-mid);}
-  .checkbox-item input{display:none;}
+  .checkbox-item{display:flex; align-items:center; gap:8px; background:var(--bg); border:1.5px solid var(--border-light); border-radius:10px; padding:0 14px; min-height:46px; cursor:pointer; transition:all .15s; font-size:15px; color:var(--slate-mid);}
+  .checkbox-item:focus-visible{outline:3px solid var(--blue); outline-offset:1px;}
+  .checkbox-item input{position:absolute; opacity:0; width:1px; height:1px; pointer-events:none;}
   .checkbox-item.checked{background:var(--orange-light); border-color:var(--orange); color:var(--orange-dark);}
   .checkbox-box{width:18px; height:18px; border:2px solid var(--border); border-radius:5px; flex-shrink:0; display:flex; align-items:center; justify-content:center; transition:all .15s;}
-  .checkbox-item.checked .checkbox-box{background:var(--orange); border-color:var(--orange);}
+  .checkbox-item.checked .checkbox-box{background:var(--fill); border-color:var(--orange);}
   .checkbox-box-check{width:10px; height:10px; border-right:2px solid #fff; border-bottom:2px solid #fff; transform:rotate(45deg) translate(-1px,-2px);}
   .stepper-row{display:flex; align-items:center; gap:12px;}
-  .stepper-btn{width:36px; height:36px; border-radius:50%; border:1.5px solid var(--border); background:var(--bg); font-size:18px; font-weight:700; color:var(--slate-mid); cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all .15s;}
+  .stepper-btn{width:44px; height:44px; border-radius:50%; border:1.5px solid var(--border); background:var(--bg); font-size:18px; font-weight:700; color:var(--slate-mid); cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all .15s;}
   .stepper-btn:hover:not(:disabled){border-color:var(--orange); color:var(--orange);}
   .stepper-btn:disabled{opacity:.4; cursor:default;}
   .stepper-val{font-size:18px; font-weight:800; color:var(--slate); min-width:36px; text-align:center;}
@@ -154,12 +122,12 @@
   .photo-upload-text{font-size:15px; font-weight:700; color:var(--slate); margin:0 0 4px;}
   .photo-upload-sub{font-size:13px; color:var(--slate-soft); margin:0;}
   .photo-previews{display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:16px;}
-  .photo-preview{aspect-ratio:4/3; border-radius:8px; background:var(--green-light); display:flex; align-items:center; justify-content:center; color:var(--green-dark); font-size:12px; font-weight:700; border:1px solid var(--green-mid);}
+  .photo-preview{aspect-ratio:4/3; border-radius:8px; background:var(--green-light); display:flex; align-items:center; justify-content:center; color:var(--green-dark); font-size:13px; font-weight:700; border:1px solid var(--green-mid);}
   .wizard-nav{display:flex; justify-content:space-between; align-items:center; margin-top:28px; padding-top:20px; border-top:1px solid var(--border);}
-  .btn-wiz-back{background:none; border:1.5px solid var(--border); border-radius:9px; padding:11px 20px; font-family:var(--sans); font-size:14px; font-weight:700; color:var(--slate-soft); cursor:pointer; transition:all .15s;}
-  .btn-wiz-back:hover{border-color:var(--slate-mid); color:var(--slate);}
-  .btn-wiz-next{background:var(--orange); color:#fff; border:none; border-radius:9px; padding:11px 28px; font-family:var(--sans); font-size:14px; font-weight:700; cursor:pointer; transition:background .15s;}
-  .btn-wiz-next:hover{background:var(--orange-dark);}
+  .btn-wiz-back{background:none; border:1.5px solid var(--border-light); border-radius:12px; padding:0 22px; min-height:48px; font-family:var(--sans); font-size:15px; font-weight:700; color:var(--slate-mid); cursor:pointer; transition:all .15s;}
+  .btn-wiz-back:hover{border-color:var(--blue); color:var(--slate);}
+  .btn-wiz-next{background:var(--fill); color:#fff; border:none; border-radius:12px; padding:0 28px; min-height:48px; font-family:var(--sans); font-size:15px; font-weight:700; cursor:pointer; transition:background .15s;}
+  .btn-wiz-next:hover{background:var(--fill-hover);}
   .wizard-success{text-align:center; padding:20px 0;}
   .wizard-success-icon{width:64px; height:64px; background:var(--green-light); border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 16px;}
   .wizard-success h2{font-family:var(--serif); font-size:26px; margin:0 0 8px;}
@@ -168,33 +136,61 @@
   .wizard-success-steps li{display:flex; align-items:flex-start; gap:10px; font-size:14.5px; color:var(--slate-mid); margin-bottom:10px;}
   .success-dot{width:20px; height:20px; border-radius:50%; background:var(--green-light); display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:2px;}
   .success-dot svg{width:11px; height:11px; stroke:var(--green-dark); fill:none; stroke-width:2.5; stroke-linecap:round; stroke-linejoin:round;}
-  .btn-success-wa{display:inline-flex; align-items:center; gap:8px; background:#25D366; color:#fff; border:none; border-radius:10px; padding:13px 24px; font-family:var(--sans); font-size:15px; font-weight:700; cursor:pointer; margin-right:10px;}
-  .btn-success-back{display:inline-flex; align-items:center; gap:6px; background:none; border:1.5px solid var(--border); border-radius:10px; padding:11px 20px; font-family:var(--sans); font-size:14px; font-weight:700; color:var(--slate-soft); cursor:pointer;}
-
-  footer{background:var(--white); border-top:1px solid var(--border); padding:32px 0;}
-  .footer-inner{max-width:1120px; margin:0 auto; padding:0 28px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; font-size:13.5px; color:var(--slate-soft);}
-  .footer-logo-sm{font-weight:800; font-size:16px; color:var(--slate);}
+  .btn-success-wa{display:inline-flex; align-items:center; gap:8px; background:#1E40AF; color:#fff; border:none; border-radius:12px; padding:0 24px; min-height:48px; font-family:var(--sans); font-size:15px; font-weight:700; cursor:pointer; margin-right:10px;}
+  .btn-success-back{display:inline-flex; align-items:center; gap:6px; background:none; border:1.5px solid var(--border-light); border-radius:12px; padding:0 22px; min-height:48px; font-family:var(--sans); font-size:15px; font-weight:700; color:var(--slate-mid); cursor:pointer;}
+  @media(max-width:520px){.owner-head{padding:28px 0 22px;} .owner-head-inner{flex-wrap:nowrap;} .owner-head-avatar{width:44px; height:44px; font-size:16px; flex-shrink:0;} .owner-tab{padding:0 14px; font-size:14px;}}
+  /* phones: the five step labels do not fit beside the numbers, so only the current step keeps its label */
+  @media(max-width:620px){.step-label:not(.active){display:none;} .step-label{margin-left:6px;} .stepper{margin-bottom:24px;} .wizard-nav{gap:10px;} .btn-wiz-next,.btn-wiz-back{padding:0 18px;}}
+  @media(max-width:420px){.checkbox-grid{grid-template-columns:1fr;} .photo-previews{grid-template-columns:repeat(2,1fr);} .wizard-success .btn-success-wa{margin:0 0 10px; width:100%; justify-content:center;} .btn-success-back{width:100%; justify-content:center;}}
 </style>
+<link rel="stylesheet" href="site.css">
 </head>
 <body>
 
-<nav class="nav">
-  <div class="nav-row">
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="header-inner">
     <a href="index.html" class="logo">
-      <span class="logo-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M3 11L12 4L21 11V21H15V15H9V21H3V11Z" fill="white"/></svg></span>
-      MakanMate
-      <span class="logo-tag">Owner</span>
+      <div class="logo-icon">
+        <svg aria-hidden="true" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>
+      </div>
+      <span class="logo-name">MakanMate</span>
     </a>
-    <ul class="nav-links" id="navLinks">
-      <li><a href="owner.html" class="active">My dashboard</a></li>
-      <li><a href="explore.html">Browse listings</a></li>
-      <li><a href="index.html#faq">FAQ</a></li>
-    </ul>
-    <button id="themeToggle" class="theme-toggle"><svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg></button>
-    <a href="#addPanel" class="nav-cta-orange" onclick="showTab('add'); return true;">Add property</a>
-    <button class="nav-toggle" id="navToggle"><span></span><span></span><span></span></button>
+
+    <nav aria-label="Main">
+      <ul class="main-nav">
+        <li><a href="explore.html">Browse PGs</a></li>
+        <li><a href="index.html#how-content">How it works</a></li>
+        <li><a href="pune.html">Pune guide</a></li>
+        <li><a href="index.html#faq">Help</a></li>
+      </ul>
+    </nav>
+
+    <div class="header-actions">
+      <button type="button" id="themeToggle" class="theme-toggle" aria-label="Switch between light and dark theme"><svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg></button>
+      <button type="button" class="btn-download" data-coming-soon>
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0 5-5m-5 5-5-5M4 21h16"/></svg>
+        <span class="cs-label" aria-live="polite">Download app</span>
+      </button>
+      <a href="owner.html" class="btn-owner" aria-current="page">List your property</a>
+      <a href="index.html?signin=1" class="btn-signin">Sign in</a>
+      <button class="nav-hamburger" id="navToggle" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
   </div>
+</header>
+
+<nav class="mobile-nav" id="navLinks" aria-label="Mobile navigation">
+  <a href="explore.html">Browse PGs</a>
+  <a href="index.html#how-content">How it works</a>
+  <a href="pune.html">Pune guide</a>
+  <button type="button" data-coming-soon><span class="cs-label" aria-live="polite">Download app</span></button>
+  <a href="owner.html" class="mobile-owner">List your property</a>
+  <a href="index.html#faq">Help</a>
 </nav>
+
+<main id="main">
 
 <div class="owner-head">
   <div class="owner-head-inner">
@@ -207,17 +203,17 @@
 </div>
 
 <div class="owner-tabs">
-  <div class="owner-tabs-inner">
-    <button class="owner-tab active" data-tab="dashboard" onclick="showTab('dashboard')">
+  <div class="owner-tabs-inner" role="group" aria-label="Owner dashboard sections">
+    <button type="button" class="owner-tab active" data-tab="dashboard" aria-controls="panel-dashboard" aria-current="true" onclick="showTab('dashboard')">
       My listings <span class="tab-count">1</span>
     </button>
-    <button class="owner-tab" data-tab="visits" onclick="showTab('visits')">
+    <button type="button" class="owner-tab" data-tab="visits" aria-controls="panel-visits" onclick="showTab('visits')">
       Visits <span class="tab-count">3</span>
     </button>
-    <button class="owner-tab" data-tab="rent" onclick="showTab('rent')">
+    <button type="button" class="owner-tab" data-tab="rent" aria-controls="panel-rent" onclick="showTab('rent')">
       Rent
     </button>
-    <button class="owner-tab" data-tab="add" onclick="showTab('add')">
+    <button type="button" class="owner-tab" data-tab="add" aria-controls="panel-add" onclick="showTab('add')">
       + Add property
     </button>
   </div>
@@ -334,7 +330,7 @@
 <div class="owner-panel" id="panel-rent">
   <h2 style="margin-bottom:20px;">Rent & reminders</h2>
 
-  <div class="stat-row" style="grid-template-columns:repeat(3,1fr);">
+  <div class="stat-row stat-row-3">
     <div class="stat-card">
       <p class="stat-label">This month</p>
       <p class="stat-val">₹38,000</p>
@@ -384,7 +380,7 @@
 </div>
 
 <!-- ADD PROPERTY PANEL -->
-<div class="owner-panel" id="panel-add" id="addPanel">
+<div class="owner-panel" id="panel-add">
   <div class="wizard-wrap">
 
     <div class="stepper" id="wizardStepper">
@@ -451,10 +447,10 @@
         <div class="form-field">
           <label>Who is this for?</label>
           <div class="checkbox-grid">
-            <label class="checkbox-item" onclick="this.classList.toggle('checked')"><span class="checkbox-box"><span class="checkbox-box-check"></span></span>Working professionals</label>
-            <label class="checkbox-item" onclick="this.classList.toggle('checked')"><span class="checkbox-box"><span class="checkbox-box-check"></span></span>Students</label>
-            <label class="checkbox-item" onclick="this.classList.toggle('checked')"><span class="checkbox-box"><span class="checkbox-box-check"></span></span>Women only</label>
-            <label class="checkbox-item" onclick="this.classList.toggle('checked')"><span class="checkbox-box"><span class="checkbox-box-check"></span></span>Couples welcome</label>
+            <div class="checkbox-item" role="checkbox" tabindex="0" aria-checked="false" onclick="toggleCheck(this)" onkeydown="if(event.key===' '||event.key==='Enter'){event.preventDefault();toggleCheck(this)}"><span class="checkbox-box"><span class="checkbox-box-check"></span></span>Working professionals</div>
+            <div class="checkbox-item" role="checkbox" tabindex="0" aria-checked="false" onclick="toggleCheck(this)" onkeydown="if(event.key===' '||event.key==='Enter'){event.preventDefault();toggleCheck(this)}"><span class="checkbox-box"><span class="checkbox-box-check"></span></span>Students</div>
+            <div class="checkbox-item" role="checkbox" tabindex="0" aria-checked="false" onclick="toggleCheck(this)" onkeydown="if(event.key===' '||event.key==='Enter'){event.preventDefault();toggleCheck(this)}"><span class="checkbox-box"><span class="checkbox-box-check"></span></span>Women only</div>
+            <div class="checkbox-item" role="checkbox" tabindex="0" aria-checked="false" onclick="toggleCheck(this)" onkeydown="if(event.key===' '||event.key==='Enter'){event.preventDefault();toggleCheck(this)}"><span class="checkbox-box"><span class="checkbox-box-check"></span></span>Couples welcome</div>
           </div>
         </div>
         <div class="wizard-nav">
@@ -502,10 +498,10 @@
         <div class="form-field">
           <label>Sharing type</label>
           <div class="checkbox-grid">
-            <label class="checkbox-item" onclick="this.classList.toggle('checked')"><span class="checkbox-box"><span class="checkbox-box-check"></span></span>Single occupancy</label>
-            <label class="checkbox-item checked" onclick="this.classList.toggle('checked')"><span class="checkbox-box"><span class="checkbox-box-check"></span></span>Twin sharing</label>
-            <label class="checkbox-item" onclick="this.classList.toggle('checked')"><span class="checkbox-box"><span class="checkbox-box-check"></span></span>Triple sharing</label>
-            <label class="checkbox-item" onclick="this.classList.toggle('checked')"><span class="checkbox-box"><span class="checkbox-box-check"></span></span>Whole flat only</label>
+            <div class="checkbox-item" role="checkbox" tabindex="0" aria-checked="false" onclick="toggleCheck(this)" onkeydown="if(event.key===' '||event.key==='Enter'){event.preventDefault();toggleCheck(this)}"><span class="checkbox-box"><span class="checkbox-box-check"></span></span>Single occupancy</div>
+            <div class="checkbox-item checked" role="checkbox" tabindex="0" aria-checked="true" onclick="toggleCheck(this)" onkeydown="if(event.key===' '||event.key==='Enter'){event.preventDefault();toggleCheck(this)}"><span class="checkbox-box"><span class="checkbox-box-check"></span></span>Twin sharing</div>
+            <div class="checkbox-item" role="checkbox" tabindex="0" aria-checked="false" onclick="toggleCheck(this)" onkeydown="if(event.key===' '||event.key==='Enter'){event.preventDefault();toggleCheck(this)}"><span class="checkbox-box"><span class="checkbox-box-check"></span></span>Triple sharing</div>
+            <div class="checkbox-item" role="checkbox" tabindex="0" aria-checked="false" onclick="toggleCheck(this)" onkeydown="if(event.key===' '||event.key==='Enter'){event.preventDefault();toggleCheck(this)}"><span class="checkbox-box"><span class="checkbox-box-check"></span></span>Whole flat only</div>
           </div>
         </div>
         <div class="wizard-nav">
@@ -521,23 +517,23 @@
         <div class="form-field">
           <label>Included amenities</label>
           <div class="checkbox-grid">
-            <label class="checkbox-item" onclick="this.classList.toggle('checked')"><span class="checkbox-box"><span class="checkbox-box-check"></span></span>Wi-Fi</label>
-            <label class="checkbox-item" onclick="this.classList.toggle('checked')"><span class="checkbox-box"><span class="checkbox-box-check"></span></span>AC</label>
-            <label class="checkbox-item" onclick="this.classList.toggle('checked')"><span class="checkbox-box"><span class="checkbox-box-check"></span></span>Meals included</label>
-            <label class="checkbox-item" onclick="this.classList.toggle('checked')"><span class="checkbox-box"><span class="checkbox-box-check"></span></span>Laundry</label>
-            <label class="checkbox-item" onclick="this.classList.toggle('checked')"><span class="checkbox-box"><span class="checkbox-box-check"></span></span>Parking</label>
-            <label class="checkbox-item" onclick="this.classList.toggle('checked')"><span class="checkbox-box"><span class="checkbox-box-check"></span></span>Power backup</label>
-            <label class="checkbox-item" onclick="this.classList.toggle('checked')"><span class="checkbox-box"><span class="checkbox-box-check"></span></span>Pool / gym</label>
-            <label class="checkbox-item" onclick="this.classList.toggle('checked')"><span class="checkbox-box"><span class="checkbox-box-check"></span></span>CCTV / guard</label>
+            <div class="checkbox-item" role="checkbox" tabindex="0" aria-checked="false" onclick="toggleCheck(this)" onkeydown="if(event.key===' '||event.key==='Enter'){event.preventDefault();toggleCheck(this)}"><span class="checkbox-box"><span class="checkbox-box-check"></span></span>Wi-Fi</div>
+            <div class="checkbox-item" role="checkbox" tabindex="0" aria-checked="false" onclick="toggleCheck(this)" onkeydown="if(event.key===' '||event.key==='Enter'){event.preventDefault();toggleCheck(this)}"><span class="checkbox-box"><span class="checkbox-box-check"></span></span>AC</div>
+            <div class="checkbox-item" role="checkbox" tabindex="0" aria-checked="false" onclick="toggleCheck(this)" onkeydown="if(event.key===' '||event.key==='Enter'){event.preventDefault();toggleCheck(this)}"><span class="checkbox-box"><span class="checkbox-box-check"></span></span>Meals included</div>
+            <div class="checkbox-item" role="checkbox" tabindex="0" aria-checked="false" onclick="toggleCheck(this)" onkeydown="if(event.key===' '||event.key==='Enter'){event.preventDefault();toggleCheck(this)}"><span class="checkbox-box"><span class="checkbox-box-check"></span></span>Laundry</div>
+            <div class="checkbox-item" role="checkbox" tabindex="0" aria-checked="false" onclick="toggleCheck(this)" onkeydown="if(event.key===' '||event.key==='Enter'){event.preventDefault();toggleCheck(this)}"><span class="checkbox-box"><span class="checkbox-box-check"></span></span>Parking</div>
+            <div class="checkbox-item" role="checkbox" tabindex="0" aria-checked="false" onclick="toggleCheck(this)" onkeydown="if(event.key===' '||event.key==='Enter'){event.preventDefault();toggleCheck(this)}"><span class="checkbox-box"><span class="checkbox-box-check"></span></span>Power backup</div>
+            <div class="checkbox-item" role="checkbox" tabindex="0" aria-checked="false" onclick="toggleCheck(this)" onkeydown="if(event.key===' '||event.key==='Enter'){event.preventDefault();toggleCheck(this)}"><span class="checkbox-box"><span class="checkbox-box-check"></span></span>Pool / gym</div>
+            <div class="checkbox-item" role="checkbox" tabindex="0" aria-checked="false" onclick="toggleCheck(this)" onkeydown="if(event.key===' '||event.key==='Enter'){event.preventDefault();toggleCheck(this)}"><span class="checkbox-box"><span class="checkbox-box-check"></span></span>CCTV / guard</div>
           </div>
         </div>
         <div class="form-field">
           <label>House rules</label>
           <div class="checkbox-grid">
-            <label class="checkbox-item" onclick="this.classList.toggle('checked')"><span class="checkbox-box"><span class="checkbox-box-check"></span></span>Veg kitchen</label>
-            <label class="checkbox-item" onclick="this.classList.toggle('checked')"><span class="checkbox-box"><span class="checkbox-box-check"></span></span>No smoking</label>
-            <label class="checkbox-item" onclick="this.classList.toggle('checked')"><span class="checkbox-box"><span class="checkbox-box-check"></span></span>No pets</label>
-            <label class="checkbox-item" onclick="this.classList.toggle('checked')"><span class="checkbox-box"><span class="checkbox-box-check"></span></span>Guests allowed</label>
+            <div class="checkbox-item" role="checkbox" tabindex="0" aria-checked="false" onclick="toggleCheck(this)" onkeydown="if(event.key===' '||event.key==='Enter'){event.preventDefault();toggleCheck(this)}"><span class="checkbox-box"><span class="checkbox-box-check"></span></span>Veg kitchen</div>
+            <div class="checkbox-item" role="checkbox" tabindex="0" aria-checked="false" onclick="toggleCheck(this)" onkeydown="if(event.key===' '||event.key==='Enter'){event.preventDefault();toggleCheck(this)}"><span class="checkbox-box"><span class="checkbox-box-check"></span></span>No smoking</div>
+            <div class="checkbox-item" role="checkbox" tabindex="0" aria-checked="false" onclick="toggleCheck(this)" onkeydown="if(event.key===' '||event.key==='Enter'){event.preventDefault();toggleCheck(this)}"><span class="checkbox-box"><span class="checkbox-box-check"></span></span>No pets</div>
+            <div class="checkbox-item" role="checkbox" tabindex="0" aria-checked="false" onclick="toggleCheck(this)" onkeydown="if(event.key===' '||event.key==='Enter'){event.preventDefault();toggleCheck(this)}"><span class="checkbox-box"><span class="checkbox-box-check"></span></span>Guests allowed</div>
           </div>
         </div>
         <div class="form-field">
@@ -624,7 +620,7 @@
       <!-- Success -->
       <div class="wizard-step" id="stepSuccess">
         <div class="wizard-success">
-          <div class="wizard-success-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="#2DA847" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="wizard-success-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 7" stroke="#1E40AF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
           <h2>Listing submitted!</h2>
           <p>Our Pune team will visit your property within 2–3 working days to verify and take final photos. Once verified, your listing goes live.</p>
           <ul class="wizard-success-steps">
@@ -646,11 +642,38 @@
   </div>
 </div>
 
+</main>
+
 <footer>
   <div class="footer-inner">
-    <span class="footer-logo-sm">MakanMate Owner</span>
-    <span>Verified PGs in Pune. Zero brokerage.</span>
-    <a href="mailto:contact@makanmate.in" style="color:var(--orange); font-weight:700;">contact@makanmate.in</a>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <span class="footer-wordmark">MakanMate</span>
+        <p>A home away from home in a new city. Verified PGs in Pune, zero brokerage.</p>
+      </div>
+      <div class="footer-col">
+        <span class="footer-col-title">Tenants</span>
+        <a href="explore.html">Browse PGs</a>
+        <a href="index.html#how-content">How it works</a>
+        <a href="pune.html">Pune starter guide</a>
+        <a href="index.html#faq">Help &amp; safety</a>
+      </div>
+      <div class="footer-col">
+        <span class="footer-col-title">Owners</span>
+        <a href="owner.html">List your property</a>
+        <a href="owner.html">Owner dashboard</a>
+      </div>
+      <div class="footer-col">
+        <span class="footer-col-title">Contact</span>
+        <a href="mailto:contact@makanmate.in">contact@makanmate.in</a>
+        <a href="https://instagram.com/makanmate.in" target="_blank" rel="noopener">Instagram</a>
+        <a href="https://t.me/makanmate" target="_blank" rel="noopener">Telegram community</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 MakanMate · Pune, India</span>
+      <span>Privacy · Terms · Report a listing</span>
+    </div>
   </div>
 </footer>
 
@@ -666,16 +689,22 @@
     html.setAttribute('data-theme', next);
     localStorage.setItem('mm-theme', next);
   });
-  const navToggle = document.getElementById('navToggle');
-  const navLinks = document.getElementById('navLinks');
-  navToggle.addEventListener('click', () => navLinks.classList.toggle('open'));
+
+  // Option chips in the wizard (keyboard and mouse)
+  function toggleCheck(el) {
+    const on = el.classList.toggle('checked');
+    el.setAttribute('aria-checked', String(on));
+  }
 
   // Tab switching
   function showTab(name) {
     document.querySelectorAll('.owner-panel').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.owner-tab').forEach(t => t.classList.remove('active'));
     document.getElementById('panel-' + name).classList.add('active');
-    document.querySelector(`[data-tab="${name}"]`).classList.add('active');
+    document.querySelectorAll('.owner-tab').forEach(t => t.removeAttribute('aria-current'));
+    const activeTab = document.querySelector(`[data-tab="${name}"]`);
+    activeTab.classList.add('active'); activeTab.setAttribute('aria-current', 'true');
+    activeTab.scrollIntoView({block:'nearest', inline:'center'});
     window.scrollTo({top:0, behavior:'smooth'});
   }
 
@@ -761,5 +790,6 @@
   const hash = location.hash.replace('#','');
   if (hash === 'add') showTab('add');
 </script>
+<script src="site.js" defer></script>
 </body>
 </html>
