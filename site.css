@@ -82,7 +82,7 @@ button, input, select, textarea { font-family: inherit; }
   color: #fff; flex-shrink: 0;
 }
 .logo-name {
-  font-family: var(--serif); font-weight: 600; font-size: 23px; letter-spacing: -.3px;
+  font-family: var(--serif); font-weight: 800; font-size: 25px; letter-spacing: -.035em; color: #172554; line-height: 1;
 }
 .main-nav { display: flex; gap: 26px; list-style: none; margin: 0; padding: 0; }
 .main-nav a {
@@ -254,3 +254,5 @@ footer {
 .gallery-counter, .gallery-tour-badge, .badge-tour { background: rgba(23,37,84,.82) !important; }
 .photo-label { background: linear-gradient(to top, rgba(23,37,84,.9), transparent) !important; }
 .modal-overlay { background: rgba(23,37,84,.55) !important; }
+
+[data-theme="dark"] .logo-name { color: #fff; }

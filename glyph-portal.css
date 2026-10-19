@@ -43,7 +43,7 @@
   background: var(--gp-paper); color: var(--gp-ink); padding: 0 10px; font: inherit;
 }
 :where(.gp) [data-gp-select]:focus-visible { outline: 2px solid var(--gp-field); outline-offset: 4px; }
-@media (any-pointer: coarse) { :where(.gp) [data-gp-touch-picker] { display: flex; } }
+/* The "Choose a letter" menu for touch screens was removed on request: the picker stays hidden */
 :where(.gp) [data-gp-fallback] {
   position: absolute; inset: 0; display: none; place-items: center;
   font-size: min(calc(100cqw / var(--gp-characters)), 38cqh); line-height: 1; color: var(--gp-field);
@@ -223,5 +223,5 @@
   .gp-search .popular-pills { display: none; }
   .gp-search .search-card { margin: 0; }
 }
-/* Touch screens also show the "Choose a letter" picker at the bottom: hide the search card where they would meet */
-@media (any-pointer: coarse) { @container (max-height: 779px) { .gp-search { display: none; } } }
+/* Very short phones (about 640px tall): the supporting line steps aside so the whole search card, button included, stays on screen */
+@media (max-width: 600px) { @container (max-height: 679px) { .gp-support { display: none; } .gp-search { top: calc(var(--gp-word-bottom, 50%) + 24px); } } }

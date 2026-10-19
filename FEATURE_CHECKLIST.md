@@ -4,7 +4,7 @@ Written 2026-10-17 from the site as cloned (branch `main`, commit `ff6654d`). Ru
 
 ## Site-wide
 
-- [x] Palette (2026-10-17, replaces ivory, green and orange): white and blue only, text black or dark blue, filled buttons blue (`--fill` #1E40AF, white text 8.7:1), navy (#172554) for the owner banner, Pune call to action and footer. Only the logo mark stays green (kept from the old top). Audit script found 0 off-palette colours on all pages; contrast AAA (7:1, large text 4.5:1)
+- [x] Palette (2026-10-17, replaces ivory, green and orange): white and blue only, text black or dark blue, filled buttons blue (`--fill` #1E40AF, white text 8.7:1), navy (#172554) for the owner banner, Pune call to action and footer. The green house icon next to the logo was removed on request 2026-10-19: the logo is the word MakanMate in navy (#172554), Plus Jakarta Sans 800. Audit script found 0 off-palette colours on all pages; contrast AAA (7:1, large text 4.5:1)
 - [x] Fonts: Plus Jakarta Sans for everything, Mukta as the Devanagari fallback (all pages)
 - [x] One shared look for Explore, Listing, Pune and Owner: `site.css` (header, footer, tokens, dark theme) and `site.js` (menu button, "Coming soon"); the home page keeps its own copy in `index.html`
 - [ ] Saved listings kept in the browser (`mm_saved` / `mm-saved`)
@@ -21,7 +21,7 @@ Written 2026-10-17 from the site as cloned (branch `main`, commit `ff6654d`). Ru
 - [ ] Sign-in modal: name, mobile number, validation errors, success state
 - [x] Opening frame (replaces the old hero section, which was removed on request 2026-10-17): headline "Find a verified PG in Pune. Pay", the giant word ZERO BROKERAGE, the supporting line, and small sliding text (no card box) at the right: a heading with a line typed under it for Verified in person, Full move-in cost upfront and Refundable token (3 items, 2 s hold after typing; "No brokerage" is the big word) (`glyph-portal.js`, `glyph-portal.css`, `hero-facts.js`)
 - [x] Search under the big word: 3 tabs (PGs and hostels, Shared flats, Whole flats), Near, Budget, For, Search button, and the Popular pills (Under ₹9,000, Women only, Near Hinjewadi IT Park, Meals included); shared search code, custom dropdowns (`select-menu.js`); stacked layout on phones; pills hidden under 600px tall
-- [x] Letter choosing: hover, tap or arrow-key a letter to pick where the zoom goes in; "Choose a letter" menu on touch screens; hidden skip link ("See how it works") for keyboard users
+- [x] Letter choosing: hover, tap or arrow-key a letter to pick where the zoom goes in; (the "Choose a letter" menu for touch screens was removed on request 2026-10-19, so phones show the search card instead); hidden skip link ("See how it works") for keyboard users
 - [x] Zoom into a letter as you scroll (fast: 0.8 of a screen of scrolling), then the steps open: "From first search to move-in, in days" with 4 numbered steps; reachable from the "How it works" links (`#how-content`); plain blue panel with reduced motion or no JS
 - [x] One hidden page heading (h1) for screen readers and search engines
 - [ ] Removed with the hero by request: hero photo, bus-time tag, move-in cost card, the animated grid background, the separate rotating trust card in the hero, the old trust strip and the old standalone "How it works" section (its text now lives in the steps above)
