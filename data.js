@@ -15,7 +15,7 @@ const MM = {
       amenities:["Wi-Fi","CCTV & security","Hot water","Power backup","Laundry","Daily housekeeping"],
       rules:["Women only","Visitors in lobby only","Gate closes at 10 pm"],
       tags:["Women only","Baner","CCTV"],
-      owner:{name:"Sadguru PG",initials:"SP",replyTime:"~30 min",phone:"919363515052",since:"2024"},
+      owner:{name:"Sadguru PG",initials:"SP",replyTime:"~30 min",since:"2024"},
       nearby:[{label:"Bus stop",dist:"300 m"},{label:"Grocery",dist:"200 m"},{label:"Hospital",dist:"1.5 km"},{label:"Cafés",dist:"Nearby"}],
       reasons:[{good:true,text:"Women only — safe & secure"},{good:true,text:"CCTV & 24×7 security"},{good:true,text:"Baner — well connected"},{good:false,text:"4 photos available currently"}],
       reviews:[],
@@ -35,7 +35,7 @@ const MM = {
       amenities:["Wi-Fi","Hot water","Power backup","CCTV","Laundry","Study table & chair"],
       rules:["Unisex","CCTV & security","Gate closes at 11 pm"],
       tags:["Unisex","Baner","Wi-Fi"],
-      owner:{name:"Krishna PG",initials:"KP",replyTime:"~30 min",phone:"918180805118",since:"2024"},
+      owner:{name:"Krishna PG",initials:"KP",replyTime:"~30 min",since:"2024"},
       nearby:[{label:"Bus stop",dist:"350 m"},{label:"Grocery",dist:"250 m"},{label:"Hospital",dist:"1.8 km"},{label:"Cafés",dist:"Nearby"}],
       reasons:[{good:true,text:"Unisex — open to all"},{good:true,text:"10 photos to browse"},{good:true,text:"Baner — near IT hubs"},{good:false,text:"Contact owner for room options"}],
       reviews:[],
@@ -55,7 +55,7 @@ const MM = {
       amenities:["Wi-Fi","Hot water","Power backup","CCTV & security","Laundry","Meals available","Parking","Study table & chair"],
       rules:["Boys only","No alcohol on premises","Gate closes at 11 pm","Visitors in lobby"],
       tags:["Boys only","Baner","Meals available"],
-      owner:{name:"DownTown PG",initials:"DP",replyTime:"~30 min",phone:"917766986677",since:"2024"},
+      owner:{name:"DownTown PG",initials:"DP",replyTime:"~30 min",since:"2024"},
       nearby:[{label:"Bus stop",dist:"300 m"},{label:"Grocery",dist:"200 m"},{label:"Hospital",dist:"1.6 km"},{label:"IT parks",dist:"~25 min"}],
       reasons:[{good:true,text:"32 photos — full transparency"},{good:true,text:"Boys only — dedicated space"},{good:true,text:"Meals & parking available"},{good:false,text:"Contact owner for vacancy"}],
       reviews:[],
@@ -75,7 +75,7 @@ const MM = {
       amenities:["Wi-Fi","Hot water","Power backup","CCTV","Laundry","Study table & chair","Parking"],
       rules:["CCTV & security","Gate closes at 11 pm","Visitors in lobby"],
       tags:["Balewadi","Wi-Fi","Parking"],
-      owner:{name:"SKY Inn PG",initials:"SI",replyTime:"~30 min",phone:"919112233977",since:"2024"},
+      owner:{name:"SKY Inn PG",initials:"SI",replyTime:"~30 min",since:"2024"},
       nearby:[{label:"Bus stop",dist:"400 m"},{label:"Grocery",dist:"300 m"},{label:"Hospital",dist:"1.5 km"},{label:"Balewadi High St",dist:"1 km"}],
       reasons:[{good:true,text:"Balewadi — near Baner & Hinjewadi"},{good:true,text:"18 photos available"},{good:true,text:"Parking available"},{good:false,text:"Contact owner for gender preference"}],
       reviews:[],
@@ -95,7 +95,7 @@ const MM = {
       amenities:["Wi-Fi (50 Mbps)","Hot water","Power backup","CCTV & security","Laundry","Daily housekeeping","Meals available","AC rooms available","Parking"],
       rules:["CCTV & security","Gate closes at 11 pm","Visitors in lobby"],
       tags:["Luxury","Pashan","AC rooms"],
-      owner:{name:"Sri Lakshmi PG",initials:"SL",replyTime:"~20 min",phone:"919112488666",since:"2024"},
+      owner:{name:"Sri Lakshmi PG",initials:"SL",replyTime:"~20 min",since:"2024"},
       nearby:[{label:"Bus stop",dist:"250 m"},{label:"Grocery",dist:"200 m"},{label:"Hospital",dist:"1 km"},{label:"Pashan Lake",dist:"500 m"}],
       reasons:[{good:true,text:"Luxury PG — AC rooms available"},{good:true,text:"Daily housekeeping & meals"},{good:true,text:"Near Pashan & Baner"},{good:false,text:"Premium pricing — ₹12,000/bed"}],
       reviews:[],
@@ -115,7 +115,7 @@ const MM = {
       amenities:["Wi-Fi","Hot water","Power backup","CCTV & security","Laundry","Meals available","Study table & chair"],
       rules:["CCTV & security","Gate closes at 11 pm","Visitors in lobby"],
       tags:["Indweller Stay","Baner","Meals available"],
-      owner:{name:"Indweller Stay",initials:"IS",replyTime:"~30 min",phone:"919529043356",since:"2024"},
+      owner:{name:"Indweller Stay",initials:"IS",replyTime:"~30 min",since:"2024"},
       nearby:[{label:"Bus stop",dist:"300 m"},{label:"Grocery",dist:"250 m"},{label:"Hospital",dist:"1.5 km"},{label:"IT parks",dist:"~22 min"}],
       reasons:[{good:true,text:"Indweller Stay — managed chain"},{good:true,text:"Meals & laundry included"},{good:true,text:"Baner — central location"},{good:false,text:"Contact owner for availability"}],
       reviews:[],
@@ -135,7 +135,7 @@ const MM = {
       amenities:["Wi-Fi","Hot water","Power backup","CCTV","Laundry","Study table & chair"],
       rules:["CCTV & security","Gate closes at 11 pm","Visitors in lobby"],
       tags:["Indweller Stay","Baner","Wi-Fi"],
-      owner:{name:"Indweller Stay",initials:"IS",replyTime:"~30 min",phone:"919529043356",since:"2024"},
+      owner:{name:"Indweller Stay",initials:"IS",replyTime:"~30 min",since:"2024"},
       nearby:[{label:"Bus stop",dist:"350 m"},{label:"Grocery",dist:"300 m"},{label:"Hospital",dist:"1.6 km"},{label:"IT parks",dist:"~22 min"}],
       reasons:[{good:true,text:"Indweller Stay managed property"},{good:true,text:"Baner — near tech parks"},{good:true,text:"Affordable at ₹9,500/bed"},{good:false,text:"6 photos available currently"}],
       reviews:[],
@@ -155,7 +155,7 @@ const MM = {
       amenities:["Wi-Fi","Hot water","Power backup","CCTV & security","Laundry","Daily housekeeping","Meals available"],
       rules:["Women only","CCTV & security","Gate closes at 10 pm","Visitors in lobby"],
       tags:["Women only","Hinjewadi","Near IT park"],
-      owner:{name:"Hometown PG",initials:"HP",replyTime:"~20 min",phone:"918698198073",since:"2024"},
+      owner:{name:"Hometown PG",initials:"HP",replyTime:"~20 min",since:"2024"},
       nearby:[{label:"Hinjewadi IT park",dist:"~1 km"},{label:"Bus stop",dist:"400 m"},{label:"Grocery",dist:"300 m"},{label:"Hospital",dist:"1.2 km"}],
       reasons:[{good:true,text:"Walk to Hinjewadi IT park"},{good:true,text:"Women only — safe stay"},{good:true,text:"Meals & housekeeping included"},{good:false,text:"Owner has 4–5 more PGs — ask"}],
       reviews:[],
@@ -175,7 +175,7 @@ const MM = {
       amenities:["Wi-Fi","Hot water","Power backup","CCTV","Laundry","Meals available","Parking"],
       rules:["CCTV & security","Gate closes at 11 pm","Visitors in lobby"],
       tags:["Indweller Stay","Baner","16 photos"],
-      owner:{name:"Indweller Stay",initials:"IS",replyTime:"~30 min",phone:"917972382077",since:"2024"},
+      owner:{name:"Indweller Stay",initials:"IS",replyTime:"~30 min",since:"2024"},
       nearby:[{label:"Bus stop",dist:"300 m"},{label:"Grocery",dist:"250 m"},{label:"Hospital",dist:"1.5 km"},{label:"IT parks",dist:"~22 min"}],
       reasons:[{good:true,text:"Indweller Stay managed property"},{good:true,text:"16 photos — see every corner"},{good:true,text:"Meals & parking available"},{good:false,text:"Contact for current vacancy"}],
       reviews:[],
@@ -195,7 +195,7 @@ const MM = {
       amenities:["Wi-Fi","Hot water","Power backup","CCTV","Laundry"],
       rules:["CCTV & security","Gate closes at 11 pm","Visitors in lobby"],
       tags:["Indweller Stay","Baner","Affordable"],
-      owner:{name:"Indweller Stay",initials:"IS",replyTime:"~30 min",phone:"917972382077",since:"2024"},
+      owner:{name:"Indweller Stay",initials:"IS",replyTime:"~30 min",since:"2024"},
       nearby:[{label:"Bus stop",dist:"350 m"},{label:"Grocery",dist:"300 m"},{label:"Hospital",dist:"1.8 km"},{label:"IT parks",dist:"~22 min"}],
       reasons:[{good:true,text:"Indweller Stay managed property"},{good:true,text:"Affordable at ₹9,000/bed"},{good:true,text:"Baner — central location"},{good:false,text:"Limited vacancy — contact soon"}],
       reviews:[],
@@ -215,7 +215,7 @@ const MM = {
       amenities:["Wi-Fi","Hot water","Power backup","CCTV & security","Laundry","Study table & chair","Meals available"],
       rules:["Boys only","No alcohol on premises","Gate closes at 11 pm","Visitors in lobby"],
       tags:["Boys only","Baner","Meals available"],
-      owner:{name:"Sri Vigneswara PG",initials:"SV",replyTime:"~30 min",phone:"917768909000",since:"2024"},
+      owner:{name:"Sri Vigneswara PG",initials:"SV",replyTime:"~30 min",since:"2024"},
       nearby:[{label:"Bus stop",dist:"300 m"},{label:"Grocery",dist:"200 m"},{label:"Hospital",dist:"1.5 km"},{label:"IT parks",dist:"~22 min"}],
       reasons:[{good:true,text:"Boys only — dedicated space"},{good:true,text:"Meals & study area included"},{good:true,text:"Owner has 2 more PGs"},{good:false,text:"Post paint work — contact for status"}],
       reviews:[],
@@ -235,7 +235,7 @@ const MM = {
       amenities:["Wi-Fi","Hot water","Power backup","CCTV","Laundry"],
       rules:["Boys only","Gate closes at 11 pm","Visitors in lobby"],
       tags:["Boys only","Baner","Budget-friendly"],
-      owner:{name:"7 Hills PG",initials:"7H",replyTime:"~30 min",phone:"918799852093",since:"2024"},
+      owner:{name:"7 Hills PG",initials:"7H",replyTime:"~30 min",since:"2024"},
       nearby:[{label:"Bus stop",dist:"400 m"},{label:"Grocery",dist:"300 m"},{label:"Hospital",dist:"1.8 km"},{label:"IT parks",dist:"~22 min"}],
       reasons:[{good:true,text:"Budget-friendly at ₹8,500/bed"},{good:true,text:"Boys only — Baner"},{good:true,text:"Wi-Fi & power backup"},{good:false,text:"7 photos available currently"}],
       reviews:[],
@@ -255,7 +255,7 @@ const MM = {
       amenities:["Wi-Fi","Hot water","Power backup","CCTV & security","Laundry","Meals available","Study table & chair"],
       rules:["CCTV & security","Gate closes at 11 pm","Visitors in lobby"],
       tags:["Baner","Meals available","12 photos"],
-      owner:{name:"Elegance PG",initials:"EP",replyTime:"~30 min",phone:"919545678919",since:"2024"},
+      owner:{name:"Elegance PG",initials:"EP",replyTime:"~30 min",since:"2024"},
       nearby:[{label:"Bus stop",dist:"300 m"},{label:"Grocery",dist:"200 m"},{label:"Hospital",dist:"1.5 km"},{label:"IT parks",dist:"~22 min"}],
       reasons:[{good:true,text:"Elegantly maintained — 12 photos"},{good:true,text:"Meals & study area included"},{good:true,text:"Baner — prime location"},{good:false,text:"Contact owner for gender preference"}],
       reviews:[],
@@ -275,7 +275,7 @@ const MM = {
       amenities:["Wi-Fi","Hot water","Power backup","CCTV","Laundry","Meals available","Parking"],
       rules:["Boys only","No alcohol on premises","Gate closes at 11 pm","Visitors in lobby"],
       tags:["Boys only","Baner","Meals available"],
-      owner:{name:"Tirumala PG",initials:"TP",replyTime:"~30 min",phone:"916301025352",since:"2024"},
+      owner:{name:"Tirumala PG",initials:"TP",replyTime:"~30 min",since:"2024"},
       nearby:[{label:"Bus stop",dist:"350 m"},{label:"Grocery",dist:"250 m"},{label:"Hospital",dist:"1.6 km"},{label:"IT parks",dist:"~22 min"}],
       reasons:[{good:true,text:"Boys only — well maintained"},{good:true,text:"13 photos — transparent listing"},{good:true,text:"Meals & parking available"},{good:false,text:"Contact owner for room types"}],
       reviews:[],
@@ -295,7 +295,7 @@ const MM = {
       amenities:["Wi-Fi","Hot water","Power backup","CCTV & security","Laundry","Daily housekeeping","Meals available"],
       rules:["Women only","CCTV & security","Gate closes at 10 pm","Visitors in lobby"],
       tags:["Women only","Baner","Meals available"],
-      owner:{name:"Lovely PG",initials:"LP",replyTime:"~30 min",phone:"918623839149",since:"2024"},
+      owner:{name:"Lovely PG",initials:"LP",replyTime:"~30 min",since:"2024"},
       nearby:[{label:"Bus stop",dist:"300 m"},{label:"Grocery",dist:"200 m"},{label:"Hospital",dist:"1.5 km"},{label:"IT parks",dist:"~22 min"}],
       reasons:[{good:true,text:"Women only — safe & homely"},{good:true,text:"Meals & housekeeping included"},{good:true,text:"CCTV & gate security"},{good:false,text:"Contact owner for vacancy"}],
       reviews:[],
@@ -307,4 +307,29 @@ const MM = {
   moveIn(l){ return l.rent + l.deposit + l.maintenance; },
   coverPhoto(l){ return l.photos.length ? `images/${l.photos[0]}.jpg` : null; },
   byId(id){ return this.listings.find(l => l.id === id); },
+
+  // Owners' phone numbers are not published on the site. Tenants reach the owner through MakanMate:
+  // this is MakanMate's own WhatsApp line (the same one the home page uses), with the listing named in the message.
+  CONTACT_PHONE: "919000012345",
+  contactUrl(l){
+    const msg = `Hi MakanMate, I am interested in ${l.title} (${l.area.replace(", Pune","")}). Please connect me with the owner.`;
+    return `https://wa.me/${this.CONTACT_PHONE}?text=${encodeURIComponent(msg)}`;
+  },
+
+  // Nearby places for a listing. Hinjewadi IT Park comes first: it is where most working tenants commute to.
+  // Distance is a straight line from the listing's map point (approximate), unless the listing already states its own.
+  HINJEWADI: { lat:18.5912, lng:73.7389 },
+  kmToHinjewadi(l){
+    const t = x => x * Math.PI / 180, R = 6371;
+    const dLat = t(this.HINJEWADI.lat - l.lat), dLng = t(this.HINJEWADI.lng - l.lng);
+    const q = Math.sin(dLat/2)**2 + Math.cos(t(l.lat)) * Math.cos(t(this.HINJEWADI.lat)) * Math.sin(dLng/2)**2;
+    return 2 * R * Math.asin(Math.sqrt(q));
+  },
+  nearbyOf(l){
+    const own = l.nearby.find(n => /hinjewadi/i.test(n.label));
+    const rest = l.nearby.filter(n => !/IT park/i.test(n.label));
+    if (own) return [own, ...rest.filter(n => n !== own)];
+    const km = Math.max(1, Math.round(this.kmToHinjewadi(l)));
+    return [{ label:"Hinjewadi IT Park", dist:`~${km} km · approx.` }, ...rest];
+  },
 };

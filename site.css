@@ -21,8 +21,8 @@
   --logo-bg: #17744C;                            /* the logo mark, unchanged from the home page */
   --nav-bg: rgba(255,255,255,.97);
   --gutter: 64px; --section-y: clamp(56px,7vw,96px);   /* page side padding (same as the header) and section spacing */
-  --sans: 'Plus Jakarta Sans', 'Mukta', system-ui, sans-serif;
-  --serif: 'Plus Jakarta Sans', 'Mukta', system-ui, sans-serif;
+  --sans: 'Plus Jakarta Sans', 'Mukta', 'Noto Sans Telugu', system-ui, sans-serif;
+  --serif: 'Plus Jakarta Sans', 'Mukta', 'Noto Sans Telugu', system-ui, sans-serif;
 }
 [data-theme="dark"] {
   --blue: #A9BCFF; --blue-dark: #C9D6FF;
@@ -256,3 +256,7 @@ footer {
 .modal-overlay { background: rgba(23,37,84,.55) !important; }
 
 [data-theme="dark"] .logo-name { color: #fff; }
+
+/* Telugu: taller letterforms need a little more line height */
+html[lang="te"] body { line-height: 1.75; }
+html[lang="te"] h1, html[lang="te"] h2, html[lang="te"] h3, html[lang="te"] h4 { line-height: 1.4; letter-spacing: 0; }

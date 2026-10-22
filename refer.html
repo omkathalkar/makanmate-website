@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+  <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Refer a friend — MakanMate</title>
+<meta name="description" content="Share MakanMate with a friend moving to Pune: verified PGs, full move-in cost upfront, no brokerage.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Mukta:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css">
+<style>
+  .wrap{max-width:1280px; margin:0 auto; padding:0 var(--gutter);}
+  .ref-hero{background:linear-gradient(135deg,var(--blue-100),var(--blue-50)); border-bottom:1px solid var(--border); padding:var(--section-y) 0 clamp(40px,5vw,64px);}
+  .ref-hero-grid{display:grid; grid-template-columns:1.1fr .9fr; gap:clamp(28px,5vw,72px); align-items:center;}
+  @media(max-width:900px){.ref-hero-grid{grid-template-columns:1fr;}}
+  .ref-eyebrow{display:inline-block; background:var(--blue); color:#fff; font-size:13px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; padding:6px 14px; border-radius:999px; margin:0 0 16px;}
+  .ref-hero h1{font-size:clamp(30px,4.4vw,48px); font-weight:800; line-height:1.1; margin:0 0 16px;}
+  .ref-hero p.lede{font-size:clamp(16px,1.6vw,18px); color:var(--slate-mid); margin:0; max-width:52ch;}
+  .ref-invited{display:none; margin:0 0 18px; padding:12px 16px; border:1px solid var(--border-light); border-radius:12px; background:var(--white); font-size:15px; color:var(--slate);}
+  .ref-invited.show{display:block;}
+  .ref-card{background:var(--white); border:1px solid var(--border); border-radius:20px; padding:clamp(20px,3vw,32px); box-shadow:0 12px 40px rgba(23,37,84,.08);}
+  .ref-card h2{font-size:20px; font-weight:800; margin:0 0 6px;}
+  .ref-card .sub{font-size:15px; color:var(--slate-mid); margin:0 0 18px;}
+  .ref-field label{display:block; font-size:14px; font-weight:700; color:var(--slate); margin-bottom:6px;}
+  .ref-field input{width:100%; min-height:48px; padding:0 14px; border:1.5px solid var(--border-light); border-radius:12px; background:var(--bg); font-family:var(--sans); font-size:16px; color:var(--slate);}
+  .ref-field input::placeholder{color:var(--slate-soft); opacity:1;}
+  .ref-field input:focus-visible{outline:3px solid var(--blue); outline-offset:1px; border-color:var(--blue);}
+  .ref-err{display:none; font-size:14px; color:var(--slate); margin:8px 0 0; font-weight:600;}
+  .ref-err.show{display:block;}
+  .ref-err::before{content:"! "; font-weight:800;}
+  .btn-ref{display:inline-flex; align-items:center; justify-content:center; gap:8px; min-height:48px; padding:0 22px; border-radius:12px; border:2px solid var(--fill); background:var(--fill); color:#fff; font-family:var(--sans); font-size:16px; font-weight:700; cursor:pointer; transition:background .15s,border-color .15s; text-decoration:none;}
+  .btn-ref:hover{background:var(--fill-hover); border-color:var(--fill-hover);}
+  .btn-ref.ghost{background:transparent; color:var(--slate); border-color:var(--border-light);}
+  .btn-ref.ghost:hover{border-color:var(--blue); background:var(--blue-50);}
+  .btn-ref.block{width:100%; margin-top:14px;}
+  .ref-result{display:none;}
+  .ref-result.show{display:block;}
+  .ref-code-label{font-size:13px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--slate-mid); margin:0 0 6px;}
+  .ref-code{font-size:clamp(28px,4vw,36px); font-weight:800; letter-spacing:.08em; color:var(--blue); margin:0 0 14px; word-break:break-all;}
+  .ref-link{display:flex; align-items:center; gap:8px; background:var(--bg); border:1px solid var(--border); border-radius:12px; padding:10px 12px; font-size:14px; color:var(--slate); word-break:break-all;}
+  .ref-actions{display:flex; flex-wrap:wrap; gap:10px; margin-top:14px;}
+  .ref-actions .btn-ref{flex:1 1 180px;}
+  .ref-status{font-size:14px; color:var(--slate-mid); margin:12px 0 0; min-height:1.4em;}
+  .ref-reset{background:none; border:0; padding:8px 0; color:var(--blue); font:inherit; font-size:14px; font-weight:700; text-decoration:underline; text-underline-offset:3px; cursor:pointer; margin-top:6px;}
+  .steps{padding:var(--section-y) 0;}
+  .steps h2{font-size:clamp(26px,3vw,36px); font-weight:800; margin:0 0 32px;}
+  .steps-grid{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:20px;}
+  @media(max-width:800px){.steps-grid{grid-template-columns:1fr;}}
+  .step{background:var(--bg); border:1px solid var(--border); border-radius:16px; padding:24px;}
+  .step-n{width:40px; height:40px; border-radius:12px; background:var(--blue); color:#fff; font-weight:800; display:grid; place-items:center; margin-bottom:14px;}
+  .step h3{font-size:18px; font-weight:700; margin:0 0 8px;}
+  .step p{font-size:15px; color:var(--slate-mid); margin:0;}
+  .ref-note{margin-top:28px; padding:16px 20px; border:1px dashed var(--border-light); border-radius:14px; font-size:15px; color:var(--slate-mid);}
+  .ref-note strong{color:var(--slate);}
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="header-inner">
+    <a href="index.html" class="logo">
+      <span class="logo-name">MakanMate</span>
+    </a>
+
+    <nav aria-label="Main">
+      <ul class="main-nav">
+        <li><a href="explore.html">Browse PGs</a></li>
+        <li><a href="index.html#how-content">How it works</a></li>
+        <li><a href="pune.html">Pune guide</a></li>
+        <li><a href="index.html#faq">Help</a></li>
+      </ul>
+    </nav>
+
+    <div class="header-actions">
+      <button type="button" id="themeToggle" class="theme-toggle" aria-label="Switch between light and dark theme"><svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg></button>
+      <button type="button" class="btn-download" data-coming-soon>
+        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0 5-5m-5 5-5-5M4 21h16"/></svg>
+        <span class="cs-label" aria-live="polite">Download app</span>
+      </button>
+      <a href="owner.html" class="btn-owner">List your property</a>
+      <a href="index.html?signin=1" class="btn-signin">Sign in</a>
+      <button class="nav-hamburger" id="navToggle" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<nav class="mobile-nav" id="navLinks" aria-label="Mobile navigation">
+  <a href="explore.html">Browse PGs</a>
+  <a href="index.html#how-content">How it works</a>
+  <a href="pune.html">Pune guide</a>
+  <a href="refer.html">Refer a friend</a>
+  <button type="button" data-coming-soon><span class="cs-label" aria-live="polite">Download app</span></button>
+  <a href="owner.html" class="mobile-owner">List your property</a>
+  <a href="index.html#faq">Help</a>
+</nav>
+
+<main id="main">
+
+<section class="ref-hero">
+  <div class="wrap ref-hero-grid">
+    <div>
+      <span class="ref-eyebrow">Refer a friend</span>
+      <h1>Know someone moving to Pune?</h1>
+      <p class="lede">Send them MakanMate. They find a verified PG with the full move-in cost upfront and no brokerage, and you help a friend skip the broker maze.</p>
+    </div>
+
+    <div class="ref-card">
+      <p class="ref-invited" id="refInvited" role="status"></p>
+
+      <div id="refForm">
+        <h2>Get your invite link</h2>
+        <p class="sub">Enter your first name and we make a code that is yours.</p>
+        <div class="ref-field">
+          <label for="refName">Your first name</label>
+          <input type="text" id="refName" autocomplete="given-name" maxlength="24" placeholder="e.g. Priya">
+          <p class="ref-err" id="refErr" role="alert">Please enter your name (letters only).</p>
+        </div>
+        <button type="button" class="btn-ref block" id="refMake">Create my link</button>
+      </div>
+
+      <div class="ref-result" id="refResult">
+        <p class="ref-code-label">Your code</p>
+        <p class="ref-code" id="refCode"></p>
+        <div class="ref-link"><span id="refLink"></span></div>
+        <div class="ref-actions">
+          <a class="btn-ref" id="refWa" target="_blank" rel="noopener">Share on WhatsApp</a>
+          <button type="button" class="btn-ref ghost" id="refCopy">Copy link</button>
+        </div>
+        <p class="ref-status" id="refStatus" role="status" aria-live="polite"></p>
+        <button type="button" class="ref-reset" id="refReset">Not you? Use a different name</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="steps">
+  <div class="wrap">
+    <h2>How it works</h2>
+    <div class="steps-grid">
+      <div class="step"><div class="step-n">1</div><h3>Share your link</h3><p>Send it on WhatsApp or anywhere else. It carries your personal code.</p></div>
+      <div class="step"><div class="step-n">2</div><h3>Your friend browses</h3><p>They see verified PGs, the full move-in cost and photos. No sign-up needed to look.</p></div>
+      <div class="step"><div class="step-n">3</div><h3>They find a place</h3><p>When they book through MakanMate, your code is on the booking.</p></div>
+    </div>
+    <p class="ref-note"><strong>Rewards:</strong> reward details are still being finalised. Codes made now are kept in this browser; we will announce how referrals are rewarded before they count.</p>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <span class="footer-wordmark">MakanMate</span>
+        <p>A home away from home in a new city. Verified PGs in Pune, zero brokerage.</p>
+      </div>
+      <div class="footer-col">
+        <span class="footer-col-title">Tenants</span>
+        <a href="explore.html">Browse PGs</a>
+        <a href="index.html#how-content">How it works</a>
+        <a href="pune.html">Pune starter guide</a>
+        <a href="refer.html">Refer a friend</a>
+        <a href="index.html#faq">Help &amp; safety</a>
+      </div>
+      <div class="footer-col">
+        <span class="footer-col-title">Owners</span>
+        <a href="owner.html">List your property</a>
+        <a href="owner.html">Owner dashboard</a>
+      </div>
+      <div class="footer-col">
+        <span class="footer-col-title">Contact</span>
+        <a href="mailto:contact@makanmate.in">contact@makanmate.in</a>
+        <a href="https://instagram.com/makanmate.in" target="_blank" rel="noopener">Instagram</a>
+        <a href="https://t.me/makanmate" target="_blank" rel="noopener">Telegram community</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 MakanMate · Pune, India</span>
+      <span>Privacy · Terms · Report a listing</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var KEY = "mm-refer", REF = "mm-ref";
+    var $ = function (id) { return document.getElementById(id); };
+    var origin = (location.protocol === "http:" || location.protocol === "https:") ? location.origin : "https://makanmate.in";
+    // Theme (same switch as the other pages)
+    try { var t = localStorage.getItem("mm-theme"); if (t) document.documentElement.setAttribute("data-theme", t); } catch (e) {}
+    var themeBtn = $("themeToggle");
+    if (themeBtn) themeBtn.addEventListener("click", function () {
+      var html = document.documentElement, next = html.getAttribute("data-theme") === "dark" ? "light" : "dark";
+      html.setAttribute("data-theme", next); try { localStorage.setItem("mm-theme", next); } catch (e) {}
+    });
+
+    function load() { try { return JSON.parse(localStorage.getItem(KEY) || "null"); } catch (e) { return null; } }
+    function save(v) { try { localStorage.setItem(KEY, JSON.stringify(v)); } catch (e) {} }
+    function makeCode(name) {
+      var letters = name.toUpperCase().replace(/[^A-Z]/g, "").slice(0, 5);
+      var alphabet = "23456789ABCDEFGHJKLMNPQRSTUVWXYZ", tail = "", i;
+      var buf = new Uint32Array(3); (window.crypto || window.msCrypto).getRandomValues(buf);
+      for (i = 0; i < 3; i++) tail += alphabet[buf[i] % alphabet.length];
+      return letters + "-" + tail;
+    }
+    function show(rec) {
+      var link = origin + "/?ref=" + encodeURIComponent(rec.code);
+      $("refCode").textContent = rec.code;
+      $("refLink").textContent = link;
+      var msg = "Hi! I use MakanMate to find verified PGs in Pune with the full move-in cost upfront and no brokerage. Have a look: " + link;
+      $("refWa").href = "https://wa.me/?text=" + encodeURIComponent(msg);
+      $("refForm").style.display = "none"; $("refResult").classList.add("show");
+      $("refStatus").textContent = "";
+      $("refCopy").onclick = function () {
+        function ok() { $("refStatus").textContent = "Link copied."; }
+        function fallback() {
+          var ta = document.createElement("textarea"); ta.value = link; ta.setAttribute("readonly", ""); ta.style.position = "fixed"; ta.style.opacity = "0";
+          document.body.appendChild(ta); ta.select();
+          try { document.execCommand("copy") ? ok() : ($("refStatus").textContent = "Press and hold the link to copy it."); } catch (e) { $("refStatus").textContent = "Press and hold the link to copy it."; }
+          document.body.removeChild(ta);
+        }
+        if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(link).then(ok, fallback); else fallback();
+      };
+    }
+    var rec = load();
+    if (rec && rec.code) show(rec);
+
+    $("refMake").addEventListener("click", function () {
+      var name = $("refName").value.trim();
+      if (!/^[A-Za-z\u0C00-\u0C7F]+([ '\-][A-Za-z\u0C00-\u0C7F]+)*$/.test(name) || name.replace(/[^A-Za-z]/g, "").length < 2) {
+        $("refErr").classList.add("show"); $("refName").setAttribute("aria-invalid", "true"); $("refName").focus(); return;
+      }
+      $("refErr").classList.remove("show"); $("refName").removeAttribute("aria-invalid");
+      rec = { name: name, code: makeCode(name), made: new Date().toISOString().slice(0, 10) };
+      save(rec); show(rec);
+    });
+    $("refName").addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); $("refMake").click(); } });
+    $("refReset").addEventListener("click", function () {
+      try { localStorage.removeItem(KEY); } catch (e) {}
+      $("refResult").classList.remove("show"); $("refForm").style.display = ""; $("refName").value = ""; $("refName").focus();
+    });
+
+    // Someone arrived through a friend's link (site.js stored the code)
+    var invited; try { invited = localStorage.getItem(REF); } catch (e) {}
+    if (invited && !(rec && rec.code === invited)) {
+      var box = $("refInvited"); box.textContent = "You were invited with code " + invited + ". It is saved on this device."; box.classList.add("show");
+    }
+  })();
+</script>
+
+<script src="site.js" defer></script>
+</body>
+</html>

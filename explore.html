@@ -19,6 +19,12 @@
   .explore-head{padding:36px 0 0; background:var(--white); border-bottom:1px solid var(--border);}
   .explore-head-inner{max-width:1280px; margin:0 auto; padding:0 var(--gutter);}
   .explore-head h1{font-family:var(--serif); font-size:clamp(26px,3.2vw,34px); font-weight:800; color:var(--slate); margin:0 0 6px;}
+  .head-flex{display:flex; align-items:flex-end; justify-content:space-between; gap:16px; flex-wrap:wrap;}
+  .head-tools{display:flex; align-items:center; gap:10px; margin-bottom:22px;}
+  .head-tools-label,.movein-label{font-size:14px; font-weight:700; color:var(--slate-mid); white-space:nowrap;}
+  .movein-filter{display:flex; align-items:center; gap:8px;}
+  .card-movein{font-size:13px; color:var(--slate-mid); margin:2px 0 0;}
+  .card-movein strong{color:var(--slate); font-weight:800;}
   .explore-head p{font-size:15px; color:var(--slate-mid); margin:0 0 22px;}
 
   /* FILTER BAR */
@@ -129,6 +135,7 @@
   <a href="explore.html" aria-current="page">Browse PGs</a>
   <a href="index.html#how-content">How it works</a>
   <a href="pune.html">Pune guide</a>
+  <a href="refer.html">Refer a friend</a>
   <button type="button" data-coming-soon><span class="cs-label" aria-live="polite">Download app</span></button>
   <a href="owner.html" class="mobile-owner">List your property</a>
   <a href="index.html#faq">Help</a>
@@ -137,9 +144,21 @@
 <main id="main">
 
 <div class="explore-head">
-  <div class="explore-head-inner">
-    <h1>Find your place in Pune</h1>
-    <p id="resultLine">7 verified listings · no contact fees · browse free</p>
+  <div class="explore-head-inner head-flex">
+    <div>
+      <h1>Find your place in Pune</h1>
+      <p id="resultLine">7 verified listings · no contact fees · browse free</p>
+    </div>
+    <div class="head-tools">
+      <label for="sortSelect" class="head-tools-label">Sort by</label>
+      <select class="sort-select" id="sortSelect">
+        <option value="match">Recommended</option>
+        <option value="price-asc">Rent: low to high</option>
+        <option value="price-desc">Rent: high to low</option>
+        <option value="movein-asc">Move-in cost: low to high</option>
+        <option value="safety">Safety score</option>
+      </select>
+    </div>
   </div>
 </div>
 
@@ -161,11 +180,11 @@
       <button class="chip" data-budget="12k+">₹12k+</button>
     </div>
     <div class="filter-divider"></div>
-    <select class="sort-select" id="sortSelect" aria-label="Sort listings">
-      <option value="match">Recommended</option>
-      <option value="price-asc">Price: low to high</option>
-      <option value="price-desc">Price: high to low</option>
-      <option value="safety">Safety score</option>
+    <select class="sort-select" id="moveinSelect" aria-label="Move-in cost (first month rent plus deposit and maintenance)">
+      <option value="">Move-in cost: any</option>
+      <option value="27000">Move-in up to ₹27k</option>
+      <option value="30000">Move-in up to ₹30k</option>
+      <option value="33000">Move-in up to ₹33k</option>
     </select>
     <span class="result-count" id="resultCount">7 listings</span>
   </div>
@@ -190,6 +209,7 @@
         <a href="explore.html">Browse PGs</a>
         <a href="index.html#how-content">How it works</a>
         <a href="pune.html">Pune starter guide</a>
+        <a href="refer.html">Refer a friend</a>
         <a href="index.html#faq">Help &amp; safety</a>
       </div>
       <div class="footer-col">
@@ -246,6 +266,7 @@
     near: (params.get('near') || '').trim().slice(0, 60),
     area: (params.get('area') || '').trim().toLowerCase().slice(0, 40),
     maxRent: parseInt(params.get('budget'), 10) || 0,
+    moveIn: parseInt(params.get('movein'), 10) || 0,
     gender: ['women','men'].indexOf(params.get('for')) > -1 ? params.get('for') : '',
     meals: params.get('meals') === '1',
     saved: params.get('saved') === '1'
@@ -258,6 +279,7 @@
     if (urlFilters.near && h.indexOf(urlFilters.near.toLowerCase()) === -1) return false;
     if (urlFilters.area && h.indexOf(urlFilters.area) === -1) return false;
     if (urlFilters.maxRent && l.rent > urlFilters.maxRent) return false;
+    if (urlFilters.moveIn && MM.moveIn(l) > urlFilters.moveIn) return false;
     if (urlFilters.meals && !/meal/i.test((l.tags || []).join(' ') + ' ' + (l.amenities || []).join(' '))) return false;
     if (urlFilters.gender) {
       const t = (l.tags || []).join(' ').toLowerCase();
@@ -287,6 +309,7 @@
     });
     if (activeSort === 'price-asc') list.sort((a,b) => a.rent - b.rent);
     else if (activeSort === 'price-desc') list.sort((a,b) => b.rent - a.rent);
+    else if (activeSort === 'movein-asc') list.sort((a,b) => MM.moveIn(a) - MM.moveIn(b));
     else if (activeSort === 'safety') list.sort((a,b) => b.safety - a.safety);
     else list.sort((a,b) => (b.match - a.match) || (b.safety - a.safety));
     return list;
@@ -323,6 +346,7 @@
           <span class="card-rent">${MM.fmt(l.rent)}</span>
           <span class="card-rent-unit">${l.rentUnit}</span>
         </div>
+        <p class="card-movein">Move-in cost <strong>${MM.fmt(MM.moveIn(l))}</strong> <span title="First month rent + deposit + maintenance">(rent + deposit)</span></p>
         <div class="card-meta">
           <span><span class="meta-dot"></span>Safety ${l.safety}</span>
           <span><span class="meta-dot"></span>Bus ${l.busMin} min</span>
@@ -341,7 +365,8 @@
     const items = [];
     if (urlFilters.near) items.push(['near', 'Near “' + urlFilters.near + '”']);
     if (urlFilters.area) items.push(['area', 'Area: ' + urlFilters.area.replace(/\b\w/g, c => c.toUpperCase())]);
-    if (urlFilters.maxRent) items.push(['maxRent', 'Up to ' + MM.fmt(urlFilters.maxRent)]);
+    if (urlFilters.maxRent) items.push(['maxRent', 'Rent up to ' + MM.fmt(urlFilters.maxRent)]);
+    if (urlFilters.moveIn) items.push(['moveIn', 'Move-in up to ' + MM.fmt(urlFilters.moveIn)]);
     if (urlFilters.gender) items.push(['gender', urlFilters.gender === 'women' ? 'Women' : 'Men']);
     if (urlFilters.meals) items.push(['meals', 'Meals included']);
     if (urlFilters.saved) items.push(['saved', 'Saved only']);
@@ -362,6 +387,7 @@
     if (urlFilters.near) p.set('near', urlFilters.near);
     if (urlFilters.area) p.set('area', urlFilters.area);
     if (urlFilters.maxRent) p.set('budget', urlFilters.maxRent);
+    if (urlFilters.moveIn) p.set('movein', urlFilters.moveIn);
     if (urlFilters.gender) p.set('for', urlFilters.gender);
     if (urlFilters.meals) p.set('meals', '1');
     if (urlFilters.saved) p.set('saved', '1');
@@ -376,6 +402,9 @@
   }
 
   function render() {
+    const mi = document.getElementById('moveinSelect');
+    if (urlFilters.moveIn && ![...mi.options].some(o => o.value === String(urlFilters.moveIn))) mi.add(new Option('Up to ' + MM.fmt(urlFilters.moveIn), String(urlFilters.moveIn)));
+    mi.value = urlFilters.moveIn ? String(urlFilters.moveIn) : '';
     const list = getFiltered();
     const grid = document.getElementById('listingGrid');
     const count = document.getElementById('resultCount');
@@ -407,6 +436,10 @@
     chip.classList.add('active');
     activeBudget = chip.dataset.budget;
     render();
+  });
+  document.getElementById('moveinSelect').addEventListener('change', e => {
+    urlFilters.moveIn = parseInt(e.target.value, 10) || 0;
+    syncUrl(); render();
   });
   document.getElementById('sortSelect').addEventListener('change', e => {
     activeSort = e.target.value;

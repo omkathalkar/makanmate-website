@@ -82,6 +82,13 @@ Written 2026-10-17 from the site as cloned (branch `main`, commit `ff6654d`). Ru
 - [ ] Rooms and beds steppers (+/-), photo preview
 - [ ] "Listing submitted" success screen
 
+## Added 2026-10-23
+- [x] Telugu (`i18n.js`): English / తెలుగు switch at the top of the Owner page, remembered in the browser; every string on all four tabs and the 5-step wizard is translated, text the page writes later is too; needs review by a native Telugu speaker
+- [x] Move-in cost filter on Explore (select: any, up to ₹27k, ₹30k, ₹33k; `?movein=`; pill; sort by move-in cost; each card shows its move-in cost)
+- [x] Hinjewadi IT Park first in Nearby places on every listing (own stated distance if the listing has one, otherwise a straight-line estimate marked "approx.")
+- [x] Refer a friend (`refer.html`): name makes a code, personal link, WhatsApp share, copy; `?ref=` is kept on the visitor's device and shown on the Refer page; reward details not decided yet, so no reward is promised
+- [x] Owner phone numbers removed from public `data.js`; the listing contact button messages MakanMate's own WhatsApp line (`MM.CONTACT_PHONE`, currently the number the home page already uses) naming the listing, and the page says the owner's number stays private
+
 ## Web-app prototypes
 
 - [ ] `tenant/` installable web app (manifest, service worker, icons, screens, chips, sheets)

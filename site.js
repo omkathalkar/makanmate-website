@@ -2,6 +2,12 @@
 (function () {
   "use strict";
 
+  // A friend's invite link (?ref=CODE): keep the code on this device so a booking can carry it later
+  try {
+    var ref = new URLSearchParams(location.search).get("ref");
+    if (ref && /^[A-Za-z0-9-]{4,16}$/.test(ref) && !localStorage.getItem("mm-ref")) localStorage.setItem("mm-ref", ref.toUpperCase());
+  } catch (e) {}
+
   // Menu button (the same one the home page uses)
   var burger = document.getElementById("navToggle");
   var menu = document.getElementById("navLinks");

@@ -1333,6 +1333,7 @@ footer {
         <a href="explore.html">Browse PGs</a>
         <a href="#how-content">How it works</a>
         <a href="#areas">Pune starter guide</a>
+        <a href="refer.html">Refer a friend</a>
         <a href="#faq">Help &amp; safety</a>
       </div>
       <div class="footer-col">
@@ -1503,6 +1504,12 @@ document.querySelectorAll('[data-coming-soon]').forEach(btn => {
 
 // Sign in links on the other pages come here with ?signin=1 and open the window straight away
 if (new URLSearchParams(location.search).has('signin')) { window.addEventListener('load', function () { openModal(); }); }
+
+  // A friend's invite link (?ref=CODE): keep the code on this device so a booking can carry it later
+try {
+  var ref = new URLSearchParams(location.search).get("ref");
+  if (ref && /^[A-Za-z0-9-]{4,16}$/.test(ref) && !localStorage.getItem("mm-ref")) localStorage.setItem("mm-ref", ref.toUpperCase());
+} catch (e) {}
 
 // ── MOBILE NAV ──
 const mobileMenuBtn = document.getElementById('mobileMenuBtn');
