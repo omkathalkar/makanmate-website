@@ -8,7 +8,7 @@
  * only the way it is mounted differs.
  *
  * Markup:
- *   <section data-glyph-portal data-word="MAKANMATE" data-font-weight="800"
+ *   <section data-glyph-portal data-word="PEHLAPATA" data-font-weight="800"
  *            data-scroll-length="2.4" data-enter-label="See the four promises">
  *     <template data-gp-front> ...optional text drawn over the opening frame... </template>
  *     ...everything else becomes the section that is revealed after the zoom...

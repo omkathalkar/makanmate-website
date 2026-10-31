@@ -1,4 +1,4 @@
-/* MakanMate listings data — 15 onboarded PGs (Baner / Balewadi / Pashan / Hinjewadi, Pune) */
+/* PehlaPata listings data — 15 onboarded PGs (Baner / Balewadi / Pashan / Hinjewadi, Pune) */
 const MM = {
   listings: [
     {

@@ -1,14 +1,14 @@
-# MakanMate — Startup Overview
+# PehlaPata — Startup Overview
 
 *Last updated: 27 September 2026 · Pilot city: Pune*
 
 ---
 
-## What is MakanMate?
+## What is PehlaPata?
 
-MakanMate is a verified, zero-brokerage PG and rental discovery platform for Pune (India), built for students, job-seekers, bachelors, couples, and anyone relocating to a new city. The core promise: **browse every listing free, see a phone number for free, pay zero brokerage — always.**
+PehlaPata is a verified, zero-brokerage PG and rental discovery platform for Pune (India), built for students, job-seekers, bachelors, couples, and anyone relocating to a new city. The core promise: **browse every listing free, see a phone number for free, pay zero brokerage — always.**
 
-Every property is physically visited by the MakanMate team before it goes live. Photos, rent figures, and commute times match what you find on move-in day.
+Every property is physically visited by the PehlaPata team before it goes live. Photos, rent figures, and commute times match what you find on move-in day.
 
 ---
 
@@ -26,7 +26,7 @@ Existing platforms (NoBroker, 99acres, MagicBricks) either charge to unlock cont
 
 ## The Solution
 
-| Platform problem | MakanMate answer |
+| Platform problem | PehlaPata answer |
 |---|---|
 | Contact unlock fees | Zero fees to browse or message, always |
 | Fake/stale listings | In-person verification before going live |
@@ -49,9 +49,9 @@ Existing platforms (NoBroker, 99acres, MagicBricks) either charge to unlock cont
 
 ## Two Products, One Codebase
 
-MakanMate ships two separate Android apps built from a single Kotlin/Compose codebase using build variants. They are **intentionally kept separate**: owner UX (large targets, one job/screen, voice input, non-tech-savvy) and tenant UX (discovery-heavy, dense cards) serve fundamentally different people and would compromise each other if merged. The backend will share auth tokens and user IDs.
+PehlaPata ships two separate Android apps built from a single Kotlin/Compose codebase using build variants. They are **intentionally kept separate**: owner UX (large targets, one job/screen, voice input, non-tech-savvy) and tenant UX (discovery-heavy, dense cards) serve fundamentally different people and would compromise each other if merged. The backend will share auth tokens and user IDs.
 
-### 1. MakanMate (Tenant app)
+### 1. PehlaPata (Tenant app)
 For people finding a place.
 
 **Bottom tabs:** Explore · Community · Saved · Chats · My Stay
@@ -62,13 +62,13 @@ For people finding a place.
 - **Listing detail** — photo gallery → why it matches → commute at 9 am → full move-in cost → flat details → split-rent calculator → safety score → owner → reviews → sticky Chat/Visit/Reserve actions
 - **Book a visit** — in-person or WhatsApp video, pick day + slot, WhatsApp reminder 2 h before, "reached safely?" check
 - **Save & compare** — shortlist, compare up to 3 on rent / safety / commute / move-in cost (better value in green)
-- **Reserve** — ₹5,000 token via UPI held by MakanMate, adjusted into deposit, full refund within 48 h
+- **Reserve** — ₹5,000 token via UPI held by PehlaPata, adjusted into deposit, full refund within 48 h
 - **Paperwork** — DigiLocker ID → work/college proof → e-sign leave & licence (Aadhaar OTP) → police verification
 - **My Stay** — pay rent (UPI / AutoPay / HRA receipt), raise repairs, view papers, house rules, city guide, move-out notice
 - **Safety & SOS** — press-and-hold SOS → 112 + live location to trusted contacts; helplines 112/1091/108
 - **Community (new)** — social feed + local services marketplace (see below)
 
-### 2. MakanMate Owner (Owner app)
+### 2. PehlaPata Owner (Owner app)
 For PG and flat owners. Designed for non-tech-savvy owners — large tap targets, one job per screen, emoji icons, voice input, EN/HI/MR.
 
 **Bottom tabs:** Home · Properties · Rent · Tenants · More
@@ -90,7 +90,7 @@ For PG and flat owners. Designed for non-tech-savvy owners — large tap targets
 
 ## Community Feature (Tenant App)
 
-The Community tab makes MakanMate a social platform for people navigating housing in Pune — not just a listing directory.
+The Community tab makes PehlaPata a social platform for people navigating housing in Pune — not just a listing directory.
 
 ### Feed
 Posts from real people in the community, categorised:
@@ -151,9 +151,9 @@ Canvas-based map showing all properties and nearby competitor PGs without requir
 
 ---
 
-## Website (makanmate.in)
+## Website (pehlapata.com)
 
-Static HTML/CSS/JS — no framework, no build step. Hosted on GitHub Pages at `makanmate.in` (GoDaddy DNS, Let's Encrypt SSL). Form backend via Google Apps Script → Google Sheet.
+Static HTML/CSS/JS — no framework, no build step. Hosted on GitHub Pages at `pehlapata.com` (GoDaddy DNS, Let's Encrypt SSL). Form backend via Google Apps Script → Google Sheet.
 
 **Repo:** `omkathalkar/makanmate-website`, branch `main`
 
@@ -225,7 +225,7 @@ Each listing carries: safety score (0–10), match % (weighted by budget / commu
 1. **Answer the real question first** — tenant: "does it fit me?"; owner: "what needs me today?"
 2. **WhatsApp-first** — OTP, chat relay, reminders, visit confirmations, owner assistant all run on WhatsApp. The app never requires it to be open.
 3. **Built for non-tech-savvy owners** — 48dp tap targets, one job per screen, emoji icons, voice input, 3 languages.
-4. **Trust by default** — owner and tenant ID-verified; phone numbers hidden until both parties agree; money through MakanMate only.
+4. **Trust by default** — owner and tenant ID-verified; phone numbers hidden until both parties agree; money through PehlaPata only.
 5. **Show the whole cost** — move-in cost = first month + deposit + maintenance + agreement fees; brokerage always ₹0.
 6. **Browse first, sign in later** — full listings (photos, safety score, rent, distances) visible without an account.
 7. **Community over contract** — introduce new arrivals to others in the same area; local services, feed, flatmate connections.
@@ -296,7 +296,7 @@ TenantRating(id, tenancyId, month, paymentScore, cleanlinessScore, behaviourScor
 | Layer | Choice |
 |---|---|
 | Hosting | GitHub Pages (`omkathalkar/makanmate-website`) |
-| Domain | `makanmate.in` — GoDaddy DNS, Let's Encrypt SSL |
+| Domain | `pehlapata.com` — GoDaddy DNS, Let's Encrypt SSL |
 | Form backend | Google Apps Script → Google Sheet |
 | Framework | None — pure HTML/CSS/JS |
 
@@ -364,7 +364,7 @@ TenantRating(id, tenancyId, month, paymentScore, cleanlinessScore, behaviourScor
 
 - India's **Digital Personal Data Protection Act, 2023** — clear consent, collect minimum, account deletion on request.
 - Phone numbers hidden from both sides by default until both parties agree.
-- Money flows through MakanMate's nodal account; personal UPI IDs never shared until tenancy begins.
+- Money flows through PehlaPata's nodal account; personal UPI IDs never shared until tenancy begins.
 - Tenant personal details (ID, emergency contact) visible to owner only after tenancy begins.
 - No personal data in analytics events.
 
@@ -387,7 +387,7 @@ Tenant-side is always free — no unlock fees, no subscriptions, no brokerage.
 ## Repository Structure
 
 ```
-omkathalkar/makanmate-website   GitHub Pages — live at makanmate.in
+omkathalkar/makanmate-website   GitHub Pages — live at pehlapata.com
   index.html                    Landing page
   explore.html                  Listing grid
   listing.html                  Listing detail
@@ -396,16 +396,16 @@ omkathalkar/makanmate-website   GitHub Pages — live at makanmate.in
   data.js                       Shared listing data (MM object)
   images/                       Listing photos + UI images
 
-~/Desktop/makanmate/MakanMate   Android app (local, no GitHub remote yet)
+~/Desktop/pehlapata/PehlaPata   Android app (local, no GitHub remote yet)
   app/src/main/                 Shared: MainActivity, theme/Color.kt, Components.kt, res/
   app/src/tenant/               Tenant app: AppRoot, data/(Listings, ChatScript, CommunityData), ui/
   app/src/owner/                Owner app: AppRoot, data/OwnerData, ui/
   docs/PRODUCT_SPEC.md          Full product spec (canonical source of truth)
   docs/prototypes/              HTML clickable prototypes (visual reference)
 
-~/Desktop/makanmate/MAKANMATE_OVERVIEW.md   This file
+~/Desktop/pehlapata/MAKANMATE_OVERVIEW.md   This file
 ```
 
 ---
 
-*MakanMate is in active development. Website live at makanmate.in. Android apps build cleanly (70 tasks, both flavors) as of 27 September 2026. Backend not yet started.*
+*PehlaPata is in active development. Website live at pehlapata.com. Android apps build cleanly (70 tasks, both flavors) as of 27 September 2026. Backend not yet started.*

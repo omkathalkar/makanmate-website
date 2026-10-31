@@ -6,7 +6,7 @@
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Listing — MakanMate</title>
+<title>Listing — PehlaPata</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Mukta:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -161,7 +161,7 @@
 <header class="site-header">
   <div class="header-inner">
     <a href="index.html" class="logo">
-      <span class="logo-name">MakanMate</span>
+      <span class="logo-name">PehlaPata</span>
     </a>
 
     <nav aria-label="Main">
@@ -238,7 +238,7 @@
   <div class="footer-inner">
     <div class="footer-grid">
       <div class="footer-brand">
-        <span class="footer-wordmark">MakanMate</span>
+        <span class="footer-wordmark">PehlaPata</span>
         <p>A home away from home in a new city. Verified PGs in Pune, zero brokerage.</p>
       </div>
       <div class="footer-col">
@@ -255,13 +255,13 @@
       </div>
       <div class="footer-col">
         <span class="footer-col-title">Contact</span>
-        <a href="mailto:contact@makanmate.in">contact@makanmate.in</a>
-        <a href="https://instagram.com/makanmate.in" target="_blank" rel="noopener">Instagram</a>
-        <a href="https://t.me/makanmate" target="_blank" rel="noopener">Telegram community</a>
+        <a href="mailto:contact@pehlapata.com">contact@pehlapata.com</a>
+        <a href="https://instagram.com/pehlapata" target="_blank" rel="noopener">Instagram</a>
+        <a href="https://t.me/pehlapata" target="_blank" rel="noopener">Telegram community</a>
       </div>
     </div>
     <div class="footer-bottom">
-      <span>© 2026 MakanMate · Pune, India</span>
+      <span>© 2026 PehlaPata · Pune, India</span>
       <span>Privacy · Terms · Report a listing</span>
     </div>
   </div>
@@ -289,7 +289,7 @@
     document.getElementById('listingLayout').innerHTML = '<div style="grid-column:1/-1; text-align:center; padding:56px 0;"><h1 class="listing-title">We could not find that listing</h1><p class="listing-area" style="margin:8px 0 22px;">It may have been removed or the link is incomplete.</p><a href="explore.html" class="btn-reserve" style="display:inline-flex; width:auto; padding:0 28px;">Browse all listings</a></div>';
     throw new Error('Listing not found: ' + id);
   }
-  document.title = l.title + ' — MakanMate';
+  document.title = l.title + ' — PehlaPata';
 
   // Save state
   const savedList = JSON.parse(localStorage.getItem('mm-saved') || '[]');
@@ -341,7 +341,7 @@
   // Main content
   function stars(r){ return '★'.repeat(Math.round(r))+'☆'.repeat(5-Math.round(r)); }
 
-  const waMsg = encodeURIComponent(`Hi, I saw ${l.title} on MakanMate and I'm interested. When can I visit?`);
+  const waMsg = encodeURIComponent(`Hi, I saw ${l.title} on PehlaPata and I'm interested. When can I visit?`);
   const waUrl = `https://wa.me/${l.owner.phone}?text=${waMsg}`;
 
   const flatSection = l.flat ? `

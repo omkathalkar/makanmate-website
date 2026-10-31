@@ -1,17 +1,17 @@
-# MakanMate website: feature checklist
+# PehlaPata website: feature checklist
 
 Written 2026-10-17 from the site as cloned (branch `main`, commit `ff6654d`). Rule for the redesign: **no feature on this list is removed.** The look can change, the features stay. Tick each box when it works in the new design.
 
 ## Site-wide
 
-- [x] Palette (2026-10-17, replaces ivory, green and orange): white and blue only, text black or dark blue, filled buttons blue (`--fill` #1E40AF, white text 8.7:1), navy (#172554) for the owner banner, Pune call to action and footer. The green house icon next to the logo was removed on request 2026-10-19: the logo is the word MakanMate in navy (#172554), Plus Jakarta Sans 800. Audit script found 0 off-palette colours on all pages; contrast AAA (7:1, large text 4.5:1)
+- [x] Palette (2026-10-17, replaces ivory, green and orange): white and blue only, text black or dark blue, filled buttons blue (`--fill` #1E40AF, white text 8.7:1), navy (#172554) for the owner banner, Pune call to action and footer. The green house icon next to the logo was removed on request 2026-10-19: the logo is the word PehlaPata in navy (#172554), Plus Jakarta Sans 800. Audit script found 0 off-palette colours on all pages; contrast AAA (7:1, large text 4.5:1)
 - [x] Fonts: Plus Jakarta Sans for everything, Mukta as the Devanagari fallback (all pages)
 - [x] One shared look for Explore, Listing, Pune and Owner: `site.css` (header, footer, tokens, dark theme) and `site.js` (menu button, "Coming soon"); the home page keeps its own copy in `index.html`
 - [ ] Saved listings kept in the browser (`mm_saved` / `mm-saved`)
 - [ ] Signed-in user kept in the browser (`mm_user`)
 - [x] Theme choice kept in the browser (`mm-theme`): light and navy dark theme on Explore, Listing and Owner
 - [x] Mobile layout and hamburger menu on every page (no sideways scroll at 320, 360, 390, 768, 1024, 1280, 1440, 1920 px; menu closes with Escape)
-- [ ] Favicon, apple-touch-icon, CNAME `makanmate.in`
+- [ ] Favicon, apple-touch-icon, CNAME `pehlapata.com`
 
 ## Home (`index.html`)
 

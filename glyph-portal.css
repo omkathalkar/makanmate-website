@@ -87,7 +87,7 @@
   :where(.gp) [data-gp-hint] { display: none; }
 }
 
-/* ---- MakanMate theme ---- */
+/* ---- PehlaPata theme ---- */
 .gp-section [data-gp-default-field] {
   position: absolute; inset: 0; transform: scale(var(--gp-field-scale, 1));
   /* Navy to blue; every point stays at least 8.7:1 against white text */

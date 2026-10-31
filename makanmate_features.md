@@ -1,4 +1,4 @@
-# MakanMate — Full Feature List
+# PehlaPata — Full Feature List
 
 *Last updated: 3 October 2026 · Pilot city: Pune*
 
@@ -44,7 +44,7 @@
 - Share visit details with family in one tap
 
 ### Reserve a Room
-- ₹5,000 token via UPI, held by MakanMate in escrow
+- ₹5,000 token via UPI, held by PehlaPata in escrow
 - Adjusted into deposit on move-in
 - Full refund if owner cancels, place doesn't match, or cancelled within 48 hours
 
@@ -174,7 +174,7 @@
 
 ---
 
-## Website (makanmate.in)
+## Website (pehlapata.com)
 
 - Landing page with hero search widget: PGs / shared flats / whole flats, budget filter, gender filter
 - Explore page with listing grid and filter chips
@@ -185,7 +185,7 @@
 - Save / unsave listings to localStorage
 - Waitlist / early-access form with Google Sheets backend (seeker + owner modes)
 - Favicon: SVG + multi-size ICO + apple-touch-icon
-- Hosted on GitHub Pages, custom domain makanmate.in (GoDaddy DNS)
+- Hosted on GitHub Pages, custom domain pehlapata.com (GoDaddy DNS)
 
 ---
 
@@ -194,7 +194,7 @@
 - Phone OTP auth via Firebase + WhatsApp authentication template
 - Listings API with photo storage (Firebase Storage / Supabase)
 - In-app chat relay — both sides' real phone numbers stay hidden
-- Money flows through MakanMate nodal account — Razorpay / Cashfree
+- Money flows through PehlaPata nodal account — Razorpay / Cashfree
 - UPI intent, payment links, UPI AutoPay
 - Reserve token in escrow with automated refund logic
 - DigiLocker KYC integration
